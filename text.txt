@@ -1,0 +1,32 @@
+CREATE TABLE books(
+	id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    name varchar(100) NOT NULL,
+    author varchar(100) NOT NULL,
+    created_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_on timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+) ENGINE=INNODB DEFAULT CHARSET=utf8 ;
+
+
+let express = require('express');
+let bodyParser = require('body-parser');
+let mysql = require('mysql');
+var app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//homepage route
+app.get('/', (req, res) => {
+    return res.send({
+        error: false,
+        message: 'Welcome to RESTful CRUD API with NodeJS, Express and MySQL',
+        written_by: 'Paxharpol',
+        published_on: 'https://www.facebook.com/Ppchrpl.13'
+    })
+})
+
+app.listen(2077, () => {
+    console.log('Node App is running on port 2077');
+})
+
+module.exports = app;
