@@ -1,136 +1,50 @@
-let express = require('express');
-let bodyParser = require('body-parser');
-let mysql = require('mysql');
-let app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
 const cors = require('cors');
+const parserLimit = { limit: "10mb" }
+require('dotenv').config();
+
+const index = require("./routes/index");
+const book = require("./routes/book");
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json(parserLimit));
+app.use(bodyParser.urlencoded({
+    limit: "10mb",
+    extended: true,
+    parameterLimit: 10000,
+}));
 
-//homepage route
-app.get('/', (req, res) => {
-    return res.send({
-        error: false,
-        message: 'Welcome to RESTful CRUD API with NodeJS, Express and MySQL',
-        written_by: 'Paxharpol',
-        published_on: 'https://www.facebook.com/Ppchrpl.13'
+//ยังไม่รู้การทำงาน------------------------------------------------------------------------------------------
+// app.use(async (req, res, next) => {
+//     var allowedOrigins = ["http://localhost:4200", "http://localhost:4000"];
+//     var origin = req.headers.origin;
+//     res.header("Access-Control-Allow-Credentials", true);
+//     if (allowedOrigins.indexOf(origin) > -1) {
+//         res.setHeader("Access-Control-Allow-Origin", origin);
+//     }
+//     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTION");
+//     res.header(
+//         "Access-Control-Allow-Headers",
+//         "Content-Type, Option, Authorization"
+//     );
+//     if ("OPTIONS" == req.method) {
+//         res.sendStatus(200); //200 is OK
+//     } else {
+//         next();
+//     }
+// });
+app.use("/", index);
+app.use("/api/v1/book", book);
+
+if (process.env.NODE_ENV === 'test') {
+    //listen port
+    app.listen(process.env.PORT, () => {
+        console.log('API Server');
+        console.log('SERVER Status: Running');
+        console.log('Running port: ' + process.env.PORT);
     })
-})
-//connection to mysql database
-let dbCon = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'nodejs_api'
-})
-dbCon.connect();
-
-//retrieve all data
-app.get('/api/v1/books', (req, res) => {
-    dbCon.query('SELECT * FROM books', (error, results, fields) => {
-        if (error) throw error;
-
-        let message = ""
-        if (results === undefined || results.length == 0) {
-            message = "Books table is empty";
-        } else {
-            message = "Successfully retrieved all books";
-        }
-        return res.send({ error: false, data: results, message: message })
-    })
-
-})
-
-//retrieve data by id
-app.get('/api/v1/book/:id', (req, res) => {
-    let id = req.params.id;
-
-    //validation
-    if (!id) {
-        return res.status(400).send({ error: true, message: 'Please provide book\'s id.' })
-    } else {
-        dbCon.query('SELECT * FROM books WHERE id =  ?', id, (error, results, fields) => {
-            if (error) throw error;
-
-            let message = ""
-            if (results === undefined || results.length == 0) {
-                message = "Book not found";
-            } else {
-                message = "Successfully retrieved book data";
-            }
-            return res.send({ error: false, data: results, message: message })
-        })
-    }
-})
-
-//create data
-app.post('/api/v1/book', (req, res) => {
-    let name = req.body.name;
-    let author = req.body.author;
-
-    //validation
-    if (!name || !author) {
-        return res.status(400).send({ error: true, message: 'Please provide book\'s name and author.' })
-    } else {
-        dbCon.query('INSERT INTO books (name, author) VALUES(?, ?)', [name, author], (error, results, fields) => {
-            if (error) throw error;
-            return res.send({ error: false, data: results, message: 'Book successfully added' })
-        })
-    }
-})
-
-//update data
-app.put('/api/v1/book', (req, res) => {
-    let id = req.body.id;
-    let name = req.body.name;
-    let author = req.body.author;
-
-    //validation
-    if (!id || !name || !author) {
-        return res.status(400).send({ error: true, message: 'Please provide book\'s id name and author.' })
-    } else {
-        dbCon.query('UPDATE books SET name = ?, author = ? WHERE id = ?', [name, author, id], (error, results, fields) => {
-            if (error) throw error;
-
-            let message = ""
-            if (results.changedRows === 0) {
-                message = "Book not found or data are same";
-            } else {
-                message = "Book successfully updated";
-            }
-            return res.send({ error: false, data: results, message: message })
-        })
-    }
-})
-
-//delete data by id
-app.delete('/api/v1/book/:id', (req, res) => {
-    let id = req.params.id;
-
-    //validation
-    if (!id) {
-        return res.status(400).send({ error: true, message: 'Please provide book\'s id.' })
-    } else {
-        dbCon.query('DELETE FROM books WHERE id =  ?', id, (error, results, fields) => {
-            if (error) throw error;
-
-            let message = ""
-            if (results.affectedRows === 0) {
-                message = "Book not found";
-            } else {
-                message = "Data successfully delete";
-            }
-            return res.send({ error: false, data: results, message: message })
-        })
-    }
-})
-
-//listen port
-app.listen(2077, () => {
-    console.log('Node App is running on port 2077');
-})
+}
 
 module.exports = app;
-
-// Helo
