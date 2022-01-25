@@ -7,6 +7,7 @@ require('dotenv').config();
 
 const index = require("./routes/index");
 const book = require("./routes/book");
+const member = require("./routes/Member");
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
@@ -37,6 +38,7 @@ app.use(bodyParser.urlencoded({
 // });
 app.use("/", index);
 app.use("/api/v1/book", book);
+app.use("/api/v1/Member", member);
 
 if (process.env.NODE_ENV === 'test') {
     //listen port
