@@ -20,16 +20,15 @@ router.get("/types", async (req, res) => {
 
 router.post("/addtype", async (req, res) => {   
     try {
-        console.log("req",req);
-        
+        console.log("req",req);       
         let name = req.body.name;      
-        let empid = req.body.empid;
+        let createby= req.body.createby;
      
 
-        const results = await services.addType(name, empid);
+        const results = await services.addType(name,createby);
         //validation
-        if (!name || !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Type\'s name and empid.' })
+        if (!name || !createby) {
+            return res.status(400).send({ error: true, message: 'Please provide Type\'s name and create by.' })
         } else {
             return res.send({ error: false, data: results, message: 'Type successfully added' })
         }
@@ -69,12 +68,12 @@ router.put("/updatetypebyid", async (req, res) => {
         console.log("req",req);
         let id = req.body.id;
         let name = req.body.name;       
-        let empid = req.body.empid;
+        let updateby = req.body.updateby;
 
-        const results = await services.updateTypeById(name, empid, id);
+        const results = await services.updateTypeById(name, updateby, id);
         //validation
-        if (!id || !name || !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Type\'s id name and empid.' })
+        if (!id || !name || !updateby) {
+            return res.status(400).send({ error: true, message: 'Please provide Type\'s id name and updateby.' })
         } else {
             let message = ""
             if (results.changedRows === 0) {
