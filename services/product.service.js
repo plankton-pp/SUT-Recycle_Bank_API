@@ -24,11 +24,11 @@ getProducts = () => {
 //     });
 // };
 
-addProduct = (typid, name, price, empid) => {
+addProduct = (typeid, name, price, createby) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO `product` (`Material_ID`, `Type_ID`, `Name`, `Price_per_kg`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, current_timestamp(), '', current_timestamp(), ?);";
-            const result = await conn.query(sql, [typid, name, price, empid]);
+            const sql = "INSERT INTO `product` (`Material_ID`, `Type_ID`, `Name`, `Price_per_unit`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, '', '', UNIX_TIMESTAMP(NOW()), ?);";
+            const result = await conn.query(sql, [typeid, name, price, createby]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -48,11 +48,11 @@ deleteProductById = (id) => {
     });
 };
 
-updateProductById = (matid, typid, name, price, empid) => {
+updateProductById = (matid, typeid, name, price, updateby) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Price_per_kg = ?, Update_By = ? WHERE Material_ID = ?";
-            const result = await conn.query(sql, [typid, name, price, empid, matid]);
+            const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Price_per_unit = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Material_ID = ?";
+            const result = await conn.query(sql, [typeid, name, price, updateby, matid]);
             resolve(result);
         } catch (e) {
             reject(e);
