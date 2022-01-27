@@ -3,7 +3,7 @@ const router = express.Router();
 const services = require('../services/product.service')
 
 //retrieve all data
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const result = await services.getProducts();
         let message = ""
@@ -35,9 +35,9 @@ router.get("/products", async (req, res) => {
 //     }
 // });
 
-router.post("/addProduct", async (req, res) => {
+router.post("/", async (req, res) => {
     try {       
-        console.log(req);
+        //console.log(req);
         let typeid = req.body.typeid;
         let name = req.body.name;
         let price = req.body.price;        
@@ -56,7 +56,7 @@ router.post("/addProduct", async (req, res) => {
 });
 
 //delete data by id
-router.delete("/deleteproductby/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         let id = req.params.id;
 
@@ -79,9 +79,9 @@ router.delete("/deleteproductby/:id", async (req, res) => {
 });
 
 //update data
-router.put("/updateproduct", async (req, res) => {
+router.put("/", async (req, res) => {
     try {
-        console.log(req);
+        //console.log(req);
         let matid = req.body.matid;
         let typeid = req.body.typeid;
         let name = req.body.name;
