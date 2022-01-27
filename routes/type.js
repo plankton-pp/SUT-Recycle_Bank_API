@@ -3,7 +3,7 @@ const router = express.Router();
 const services = require('../services/type.service')
 
 //retrieve all data
-router.get("/types", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const result = await services.getType();
         let message = ""
@@ -18,9 +18,9 @@ router.get("/types", async (req, res) => {
     }
 });
 
-router.post("/addtype", async (req, res) => {   
+router.post("/", async (req, res) => {   
     try {
-        console.log("req",req);       
+        //console.log("req",req);       
         let name = req.body.name;      
         let createby= req.body.createby;
      
@@ -39,9 +39,9 @@ router.post("/addtype", async (req, res) => {
 
 
 //delete data by id
-router.delete("/deleteById/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
-        console.log("type.id",req.params.id);
+       //console.log("type.id",req.params.id);
         let id = req.params.id;
 
         const results = await services.deleteTypeById(id);
@@ -63,9 +63,9 @@ router.delete("/deleteById/:id", async (req, res) => {
 });
 
 //update data
-router.put("/updatetypebyid", async (req, res) => {
+router.put("/", async (req, res) => {
     try {
-        console.log("req",req);
+        //console.log("req",req);
         let id = req.body.id;
         let name = req.body.name;       
         let updateby = req.body.updateby;

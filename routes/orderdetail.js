@@ -3,7 +3,7 @@ const router = express.Router();
 const services = require('../services/orderdetail.service')
 
 //retrieve all data
-router.get("/orderdetails", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const result = await services.getOrderDetails();
         let message = ""
@@ -35,7 +35,7 @@ router.get("/orderdetails", async (req, res) => {
 //     }
 // });
 
-router.post("/addorderdetail", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         
         let placeid = req.body.placeid;
@@ -56,7 +56,7 @@ router.post("/addorderdetail", async (req, res) => {
 });
 
 //delete data by id
-router.delete("/deleteorderdetailbyid/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         let id = req.params.id;
 
@@ -79,7 +79,7 @@ router.delete("/deleteorderdetailbyid/:id", async (req, res) => {
 });
 
 // //update data
-router.put("/updateorderdetail", async (req, res) => {
+router.put("/", async (req, res) => {
     try {
         let id = req.body.id;
         let placeid = req.body.placeid;
