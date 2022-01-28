@@ -29,6 +29,7 @@ addPlace = (memid, placeby, status, empid) => {
         try {
             const sql = "INSERT INTO `place` (`Place_ID`, `Member_ID`, `Place_By`, `Status`, `Create_Date`, `Update_Date`, `Employee_ID`) VALUES (NULL, ?, ?, ?, UNIX_TIMESTAMP(NOW()), '', ?);";
             const result = await conn.query(sql, [memid, placeby, status, empid]);
+            console.log("result",result);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -60,6 +61,17 @@ updatePlaceById = (memid, placeby, status, empid, id) => {
     });
 };
 
+getLastplace = (memid,placeid,status,datenow,empid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "SELECT Place_ID FROM `place` WHERE Member_ID = ? and Place_By = ? and Status = ? and Create_Date < ? and Employee_ID =? Order by Create_Date desc limit 1 ";
+            const result = await conn.query(sql, [memid,placeid,status,datenow,empid]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 module.exports = {
     getPlaces,
@@ -67,4 +79,5 @@ module.exports = {
     addPlace,
     deletePlaceById,
     updatePlaceById,
+    getLastplace
 };
