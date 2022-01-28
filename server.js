@@ -7,7 +7,9 @@ require('dotenv').config();
 
 const index = require("./routes/index");
 const book = require("./routes/book");
-const member = require("./routes/Member");
+const member = require("./routes/member");
+const wallet = require("./routes/wallet");
+const transaction = require("./routes/transaction");
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
@@ -38,7 +40,9 @@ app.use(bodyParser.urlencoded({
 // });
 app.use("/", index);
 app.use("/api/v1/book", book);
-app.use("/api/v1/Member", member);
+app.use("/api/v1/member", member);
+app.use("/api/v1/wallet", wallet);
+app.use("/api/v1/transaction", transaction);
 
 if (process.env.NODE_ENV === 'test') {
     //listen port
