@@ -41,13 +41,18 @@ router.post("/", async (req, res) => {
         let placeby = req.body.placeby;
         let status = req.body.status;
         let empid = req.body.empid;
+        let datenow = Date.now();
+        datenow = datenow.toString();
+        datenow = datenow.substr(0, 9);
 
         const results = await services.addPlace(memid, placeby, status, empid);
+        // const results2 = await services.getLastplace(memid,placeby,status,datenow,empid);
         //validation
         if (!memid || !placeby|| !status|| !empid) {
             return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status or empid.' })
         } else {
-            return res.send({ error: false, data: results, message: 'Place successfully added' })
+            return res.send({ error: false, data: results, message: 'Place successfully added' ,lastplace: results.insertId})
+            
         }
     } catch (e) {
         throw e;
@@ -103,6 +108,31 @@ router.put("/", async (req, res) => {
         throw e;
     }
 });
+
+
+//getlastplace
+router.post("/getlastplce", async (req, res) => {
+    try {
+        let memid = req.body.memid;
+        let placeby = req.body.placeby;
+        let status = req.body.status;
+        let empid = req.body.empid;
+        let datenow = Date.now();
+        datenow = datenow.toString();
+        datenow = datenow.substr(0, 9);
+
+        const results = await services.getLastplace(memid,placeby,status,datenow,empid);
+        //validation
+        if (!memid || !placeby|| !status|| !empid) {
+            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status or empid.' })
+        } else {
+            return res.send({ error: false, data: results, message: 'successfully get last place' })
+        }
+    } catch (e) {
+        throw e;
+    }
+});
+
 
 
 module.exports = router;
