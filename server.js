@@ -11,6 +11,7 @@ const type = require("./routes/type");
 const product = require("./routes/product");
 const place = require("./routes/place");
 const orderdetail = require("./routes/orderdetail");
+const emailing = require("./routes/email");
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
@@ -39,12 +40,14 @@ app.use(bodyParser.urlencoded({
 //         next();
 //     }
 // });
+
 app.use("/", index);
 app.use("/api/v1/book", book);
 app.use("/api/v1/type", type);
 app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
 app.use("/api/v1/orderdetail", orderdetail);
+app.use("/api/v1/email", emailing);
 
 if (process.env.NODE_ENV === 'test') {
     //listen port

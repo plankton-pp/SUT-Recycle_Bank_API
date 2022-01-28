@@ -3,7 +3,7 @@ const router = express.Router();
 const services = require('../services/product.service')
 
 //retrieve all data
-router.get("/products", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const result = await services.getProducts();
         let message = ""
@@ -35,18 +35,18 @@ router.get("/products", async (req, res) => {
 //     }
 // });
 
-router.post("/addProduct", async (req, res) => {
+router.post("/", async (req, res) => {
     try {       
-        console.log(req);
-        let typid = req.body.typid;
+        //console.log(req);
+        let typeid = req.body.typeid;
         let name = req.body.name;
         let price = req.body.price;        
-        let empid = req.body.empid;
+        let createby = req.body.createby;
 
-        const results = await services.addProduct(typid, name, price, empid);
+        const results = await services.addProduct(typeid, name, price, createby);
         //validation
-        if (!typid || !name || !price || !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide product\'s typid name price and empid.' })
+        if (!typeid || !name || !price || !createby) {
+            return res.status(400).send({ error: true, message: 'Please provide product\'s typeid name price and createby.' })
         } else {
             return res.send({ error: false, data: results, message: 'type successfully added' })
         }
@@ -56,7 +56,7 @@ router.post("/addProduct", async (req, res) => {
 });
 
 //delete data by id
-router.delete("/deleteproductby/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         let id = req.params.id;
 
@@ -79,19 +79,19 @@ router.delete("/deleteproductby/:id", async (req, res) => {
 });
 
 //update data
-router.put("/updateproduct", async (req, res) => {
+router.put("/", async (req, res) => {
     try {
-        console.log(req);
+        //console.log(req);
         let matid = req.body.matid;
-        let typid = req.body.typid;
+        let typeid = req.body.typeid;
         let name = req.body.name;
         let price = req.body.price;        
-        let empid = req.body.empid;
+        let updateby = req.body.updateby;
 
-        const results = await services.updateProductById(matid, typid, name, price, empid);
+        const results = await services.updateProductById(matid, typeid, name, price, updateby);
         //validation
-        if (!matid|| !typid|| !name|| !price|| !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide pruduct\'s matid typid name price empid.' })
+        if (!matid|| !typeid|| !name|| !price|| !updateby) {
+            return res.status(400).send({ error: true, message: 'Please provide pruduct\'s matid typeid name price updateby.' })
         } else {
             let message = ""
             if (results.changedRows === 0) {

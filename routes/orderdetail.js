@@ -3,7 +3,7 @@ const router = express.Router();
 const services = require('../services/orderdetail.service')
 
 //retrieve all data
-router.get("/orderdetails", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
         const result = await services.getOrderDetails();
         let message = ""
@@ -35,18 +35,18 @@ router.get("/orderdetails", async (req, res) => {
 //     }
 // });
 
-router.post("/addorderdetail", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         
-        let plcid = req.body.plcid;
-        let prdid = req.body.prdid;
+        let placeid = req.body.placeid;
+        let productid = req.body.productid;
         let weight = req.body.weight;
         let totalprice = req.body.totalprice;
 
-        const results = await services.addOrderDetail(plcid, prdid, weight, totalprice);
+        const results = await services.addOrderDetail(placeid, productid, weight, totalprice);
         //validation
-        if (!plcid || !prdid || !weight || !totalprice) {
-            return res.status(400).send({ error: true, message: 'Please provide plcid prdid weight and totalprice.' })
+        if (!placeid || !productid || !weight || !totalprice) {
+            return res.status(400).send({ error: true, message: 'Please provide placeid productid weight and totalprice.' })
         } else {
             return res.send({ error: false, data: results, message: 'orderdetail successfully added' })
         }
@@ -56,7 +56,7 @@ router.post("/addorderdetail", async (req, res) => {
 });
 
 //delete data by id
-router.delete("/orderdetailbyid/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     try {
         let id = req.params.id;
 
@@ -79,19 +79,19 @@ router.delete("/orderdetailbyid/:id", async (req, res) => {
 });
 
 // //update data
-router.put("/updateorderdetail", async (req, res) => {
+router.put("/", async (req, res) => {
     try {
         let id = req.body.id;
-        let plcid = req.body.plcid;
-        let prdid = req.body.prdid;
+        let placeid = req.body.placeid;
+        let productid = req.body.productid;
         let weight = req.body.weight;
         let totalprice = req.body.totalprice;
        
 
-        const results = await services.updateOrderDetailById(plcid, prdid, weight, totalprice, id);
+        const results = await services.updateOrderDetailById(placeid, productid, weight, totalprice, id);
         //validation
-        if (!plcid || !prdid || ! weight || ! totalprice || ! id) {
-            return res.status(400).send({ error: true, message: 'Please provide Order Detail plcid prdid weight totalprice or id.' })
+        if (!placeid || !productid || ! weight || ! totalprice || ! id) {
+            return res.status(400).send({ error: true, message: 'Please provide Order Detail placeid productid weight totalprice or id.' })
         } else {
             let message = ""
             if (results.changedRows === 0) {
