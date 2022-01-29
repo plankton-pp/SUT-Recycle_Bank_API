@@ -39,8 +39,8 @@ loginMember = (Member_User, Member_Password) => {
 searchMember = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT * FROM members WHERE Firstname like ? or Lastname like ? or Phone_number like ? or Phone_number2 like ? or Email like ?";
-            const result = await conn.query(sql, [keyword,keyword,keyword,keyword,keyword]);
+            const sql = "SELECT * FROM members WHERE ID like ? or Firstname like ? or Lastname like ? or Phone_number like ? or Phone_number2 like ? or Email like ?";
+            const result = await conn.query(sql, [keyword,keyword,keyword,keyword,keyword,keyword]);
             resolve(result);
         } catch (e) {
             reject(e);
