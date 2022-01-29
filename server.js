@@ -10,6 +10,7 @@ const book = require("./routes/book");
 const member = require("./routes/member");
 const wallet = require("./routes/wallet");
 const transaction = require("./routes/transaction");
+const employee = require("./routes/employee");
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
@@ -43,6 +44,7 @@ app.use("/api/v1/book", book);
 app.use("/api/v1/member", member);
 app.use("/api/v1/wallet", wallet);
 app.use("/api/v1/transaction", transaction);
+app.use("/api/v1/employee", employee);
 
 if (process.env.NODE_ENV === 'test') {
     //listen port
