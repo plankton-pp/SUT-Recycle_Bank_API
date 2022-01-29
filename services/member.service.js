@@ -24,6 +24,18 @@ getMemberById = (id) => {
     });
 };
 
+loginMember = (Member_User, Member_Password) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "SELECT * FROM members WHERE Username = ? and Password = ?";
+            const result = await conn.query(sql, [Member_User, Member_Password]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 searchMember = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -36,11 +48,11 @@ searchMember = (keyword) => {
     });
 };
 
-addMember = (Usernmae, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) => {
+addMember = (Username, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "INSERT INTO members (Username, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            const result = await conn.query(sql, [Usernmae, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark]);
+            const result = await conn.query(sql, [Username, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -76,6 +88,7 @@ updateMemberById = (Firstname, Lastname, id) => {
 module.exports = {
     getMembers,
     getMemberById,
+    loginMember,
     searchMember,
     addMember,
     deleteMemberById,
