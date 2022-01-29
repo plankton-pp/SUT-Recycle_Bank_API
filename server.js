@@ -7,14 +7,11 @@ require('dotenv').config();
 
 const index = require("./routes/index");
 const book = require("./routes/book");
-<<<<<<< HEAD
 const member = require("./routes/Member");
-=======
 const type = require("./routes/type");
 const product = require("./routes/product");
 const place = require("./routes/place");
 const orderdetail = require("./routes/orderdetail");
->>>>>>> edf06580830236f915876c073b5459e7128952c5
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
@@ -45,14 +42,11 @@ app.use(bodyParser.urlencoded({
 // });
 app.use("/", index);
 app.use("/api/v1/book", book);
-<<<<<<< HEAD
 app.use("/api/v1/Member", member);
-=======
 app.use("/api/v1/type", type);
 app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
 app.use("/api/v1/orderdetail", orderdetail);
->>>>>>> edf06580830236f915876c073b5459e7128952c5
 
 if (process.env.NODE_ENV === 'test') {
     //listen port
