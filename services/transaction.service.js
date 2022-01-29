@@ -3,7 +3,7 @@ const conn = require('../config/dbConfig')
 getAllTransactions = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT * FROM transaction";
+            const sql = "SELECT * FROM transactions";
             const result = await conn.query(sql, []);
             resolve(result);
         } catch (e) {
