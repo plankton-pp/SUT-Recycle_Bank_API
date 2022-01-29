@@ -35,6 +35,69 @@ router.get("/:ID", async (req, res) => {
     }
 });
 
+router.post("/login", async (req, res) => {
+    try {
+        
+        let Member_User = req.body.username;  
+        let Member_Password = req.body.password; 
+        
+        const result = await services.loginMember(Member_User, Member_Password);
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Can not login";
+        } else {
+            message = "logged in";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
+router.post("/", async (req, res) => {
+    try {
+        
+        let Member_User = req.body.username;  
+        let Member_Password = req.body.password; 
+        let Firstname = req.body.firstname; 
+        let Lastname = req.body.lastname;  
+        let Role = req.body.role; 
+        let No_members = req.body.no; 
+        let Bank = req.body.bank; 
+        let Acc_number = req.body.accnumber; 
+        let Phone_number = req.body.phone; 
+        let Remark = req.body.remark; 
+
+        const results = await services.addMember(Member_User, Member_Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Remark);
+        //validation
+        if (!Member_User || !Member_Password || !Firstname || !Lastname || !Role || !No_members || !Bank || !Acc_number || !Phone_number) {
+            return res.status(400).send({ error: true, message: 'Please provide Member\'s data.' })
+        } else {
+            return res.send({ error: false, data: results, message: 'Member successfully added' })
+        }
+    } catch (e) {
+        throw e;
+    }
+});
+
+router.get("/key/:KEY", async (req, res) => {
+    try {
+        
+        let keyword = req.params.KEY;  
+
+        const result = await services.searchMember(keyword);
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Member not found";
+        } else {
+            message = "Successfully retrieved Member data";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
 router.post("/", async (req, res) => {
     try {
         
@@ -60,6 +123,7 @@ router.post("/", async (req, res) => {
         throw e;
     }
 });
+
 
 //delete data by id
 router.delete("/:id", async (req, res) => {
