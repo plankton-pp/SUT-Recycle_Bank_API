@@ -24,11 +24,23 @@ getMemberById = (id) => {
     });
 };
 
-addMember = (Member_User, Member_Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Remark) => {
+searchMember = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO members (Member_User, Member_Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Remark) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            const result = await conn.query(sql, [Member_User, Member_Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Remark]);
+            const sql = "SELECT * FROM members WHERE Firstname like ? or Lastname like ? or Phone_number like ? or Phone_number2 like ? or Email like ?";
+            const result = await conn.query(sql, [keyword,keyword,keyword,keyword,keyword]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+addMember = (Usernmae, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "INSERT INTO members (Username, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            const result = await conn.query(sql, [Usernmae, Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -64,6 +76,7 @@ updateMemberById = (Firstname, Lastname, id) => {
 module.exports = {
     getMembers,
     getMemberById,
+    searchMember,
     addMember,
     deleteMemberById,
     updateMemberById,

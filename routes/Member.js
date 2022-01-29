@@ -35,6 +35,24 @@ router.get("/:ID", async (req, res) => {
     }
 });
 
+router.get("/key/:KEY", async (req, res) => {
+    try {
+        
+        let keyword = req.params.KEY;  
+
+        const result = await services.searchMember(keyword);
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Member not found";
+        } else {
+            message = "Successfully retrieved Member data";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
 router.post("/", async (req, res) => {
     try {
         
@@ -60,6 +78,7 @@ router.post("/", async (req, res) => {
         throw e;
     }
 });
+
 
 //delete data by id
 router.delete("/:id", async (req, res) => {
