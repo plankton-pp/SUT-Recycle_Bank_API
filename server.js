@@ -15,6 +15,7 @@ const type = require("./routes/type");
 const product = require("./routes/product");
 const place = require("./routes/place");
 
+const orderdetail = require("./routes/orderdetail");
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
