@@ -7,7 +7,7 @@ require('dotenv').config();
 
 const index = require("./routes/index");
 const book = require("./routes/book");
-const member = require("./routes/Member");
+const member = require("./routes/member");
 const type = require("./routes/type");
 const product = require("./routes/product");
 const place = require("./routes/place");
@@ -43,7 +43,7 @@ app.use(bodyParser.urlencoded({
 // });
 app.use("/", index);
 app.use("/api/v1/book", book);
-app.use("/api/v1/Member", member);
+app.use("/api/v1/member", member);
 app.use("/api/v1/type", type);
 app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
