@@ -8,9 +8,12 @@ require('dotenv').config();
 const index = require("./routes/index");
 const book = require("./routes/book");
 const member = require("./routes/member");
+const wallet = require("./routes/wallet");
+const transaction = require("./routes/transaction");
 const type = require("./routes/type");
 const product = require("./routes/product");
 const place = require("./routes/place");
+
 const orderdetail = require("./routes/orderdetail");
 const deposit = require("./routes/deposit");
 
@@ -44,11 +47,14 @@ app.use(bodyParser.urlencoded({
 app.use("/", index);
 app.use("/api/v1/book", book);
 app.use("/api/v1/member", member);
+app.use("/api/v1/wallet", wallet);
+app.use("/api/v1/transaction", transaction);
 app.use("/api/v1/type", type);
 app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
 app.use("/api/v1/orderdetail", orderdetail);
 app.use("/api/v1/deposit", deposit);
+
 
 if (process.env.NODE_ENV === 'test') {
     //listen port

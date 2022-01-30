@@ -62,15 +62,16 @@ router.post("/", async (req, res) => {
         let Firstname = req.body.firstname; 
         let Lastname = req.body.lastname;  
         let Role = req.body.role; 
-        let No_members = req.body.no; 
         let Bank = req.body.bank; 
         let Acc_number = req.body.accnumber; 
         let Phone_number = req.body.phone; 
+        let Phone_number2 = req.body.phone2;
+        let Email = req.body.Email;
         let Remark = req.body.remark; 
 
-        const results = await services.addMember(Member_User, Member_Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Remark);
+        const results = await services.addMember(Member_User, Member_Password, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark);
         //validation
-        if (!Member_User || !Member_Password || !Firstname || !Lastname || !Role || !No_members || !Bank || !Acc_number || !Phone_number) {
+        if (!Member_User || !Member_Password || !Firstname || !Lastname || !Role || !Bank || !Acc_number || !Phone_number) {
             return res.status(400).send({ error: true, message: 'Please provide Member\'s data.' })
         } else {
             return res.send({ error: false, data: results, message: 'Member successfully added' })
