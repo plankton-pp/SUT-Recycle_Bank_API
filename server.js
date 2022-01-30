@@ -7,7 +7,6 @@ require('dotenv').config();
 
 const index = require("./routes/index");
 const book = require("./routes/book");
-const member = require("./routes/member");
 const wallet = require("./routes/wallet");
 const transaction = require("./routes/transaction");
 const member = require("./routes/Member");

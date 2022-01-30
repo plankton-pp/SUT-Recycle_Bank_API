@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
 router.get("/:ID", async (req, res) => {
     try {
         let id = req.params.ID;
-        const result = await services.getTransactionByPlace_Member_ID(id);
+        const result = await services.getTransactionByMember_ID(id);
         let message = ""
         if (result === undefined || result.length == 0) {
             message = "Transaction not found";
@@ -39,12 +39,12 @@ router.post("/", async (req, res) => {
     try {
         
         let Place_ID = req.body.Place_ID; 
-        let Place_Member_ID = req.body.Place_Member_ID; 
+        let Place_Members_ID = req.body.Place_Members_ID; 
         let Place_Employee_ID = req.body.Place_Employee_ID; 
 
-        const results = await services.addTransaction(Place_ID, Place_Member_ID, Place_Employee_ID);
+        const results = await services.addTransaction(Place_ID, Place_Members_ID, Place_Employee_ID);
         //validation
-        if (!Place_ID || !Place_Member_ID || !Place_Employee_ID) {
+        if (!Place_ID || !Place_Members_ID || !Place_Employee_ID) {
             return res.status(400).send({ error: true, message: 'Please provide Transaction\'s data.' })
         } else {
             return res.send({ error: false, data: results, message: 'Transaction successfully added' })
