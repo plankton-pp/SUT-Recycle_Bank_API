@@ -35,24 +35,24 @@ router.get("/:ID", async (req, res) => {
     }
 });
 
-// router.post("/login", async (req, res) => {
-//     try {
+router.post("/login", async (req, res) => {
+    try {
         
-//         let Member_User = req.body.username;  
-//         let Member_Password = req.body.password; 
+        let Username = req.body.username;  
+        let Password = req.body.password; 
         
-//         const result = await services.loginMember(Member_User, Member_Password);
-//         let message = ""
-//         if (result === undefined || result.length == 0) {
-//             message = "Can not login";
-//         } else {
-//             message = "logged in";
-//         }
-//         return res.send({ error: false, data: result, message: message })
-//     } catch (e) {
-//         throw e;
-//     }
-// });
+        const result = await services.loginEmployee(Username, Password);
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Can not login";
+        } else {
+            message = "logged in";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
 
 router.post("/", async (req, res) => {
     try {
@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
         let Lastname = req.body.Lastname;  
         let Employee_ID = req.body.Employee_ID;  
         let Username = req.body.Username;  
-        let Password = req.body.Password ;  
+        let Password = req.body.Password;  
         let Role = req.body.Role;  
         let Phone = req.body.Phone;  
         let Email = req.body.Email;  
