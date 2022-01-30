@@ -47,12 +47,8 @@ app.use(bodyParser.urlencoded({
 app.use("/", index);
 app.use("/api/v1/book", book);
 app.use("/api/v1/member", member);
-<<<<<<< HEAD
 app.use("/api/v1/wallet", wallet);
 app.use("/api/v1/transaction", transaction);
-app.use("/api/v1/Member", member);
-=======
->>>>>>> 1847c1f298c7ac0f01dd1b98b6ff9199aec07f1b
 app.use("/api/v1/type", type);
 app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);

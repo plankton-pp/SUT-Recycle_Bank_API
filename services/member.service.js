@@ -3,7 +3,7 @@ const conn = require('../config/dbConfig')
 getMembers = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT * FROM members";
+            const sql = "SELECT ID, Username, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark FROM members";
             const result = await conn.query(sql, []);
             resolve(result);
         } catch (e) {
