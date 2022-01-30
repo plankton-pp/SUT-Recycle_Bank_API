@@ -39,7 +39,7 @@ addWallet = (Member_ID, Balance, Transactions_ID, Transactions_Place_ID, Transac
 deleteWalletByMember_ID = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "DELETE FROM wellets WHERE Member_ID =  ?";
+            const sql = "DELETE FROM wallets WHERE Member_ID =  ?";
             const result = await conn.query(sql, [id]);
             resolve(result);
         } catch (e) {
