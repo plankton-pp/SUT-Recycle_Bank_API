@@ -39,8 +39,9 @@ loginMember = (Member_User, Member_Password) => {
 searchMember = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
+            var dynamicInput = '%'.concat(keyword.concat('%'));
             const sql = "SELECT * FROM members WHERE ID like ? or Firstname like ? or Lastname like ? or Phone_number like ? or Phone_number2 like ? or Email like ?";
-            const result = await conn.query(sql, [keyword,keyword,keyword,keyword,keyword,keyword]);
+            const result = await conn.query(sql, [dynamicInput,dynamicInput,dynamicInput,dynamicInput,dynamicInput,dynamicInput]);
             resolve(result);
         } catch (e) {
             reject(e);

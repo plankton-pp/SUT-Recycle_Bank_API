@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        
+
         let placeid = req.body.placeid;
         let productid = req.body.productid;
         let weight = req.body.weight;
@@ -86,11 +86,10 @@ router.put("/", async (req, res) => {
         let productid = req.body.productid;
         let weight = req.body.weight;
         let totalprice = req.body.totalprice;
-       
 
         const results = await services.updateOrderDetailById(placeid, productid, weight, totalprice, id);
         //validation
-        if (!placeid || !productid || ! weight || ! totalprice || ! id) {
+        if (!placeid || !productid || !weight || !totalprice || !id) {
             return res.status(400).send({ error: true, message: 'Please provide Order Detail placeid productid weight totalprice or id.' })
         } else {
             let message = ""
