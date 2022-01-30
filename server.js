@@ -11,6 +11,12 @@ const member = require("./routes/member");
 const wallet = require("./routes/wallet");
 const transaction = require("./routes/transaction");
 const employee = require("./routes/employee");
+const type = require("./routes/type");
+const product = require("./routes/product");
+const place = require("./routes/place");
+
+const orderdetail = require("./routes/orderdetail");
+const deposit = require("./routes/deposit");
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
@@ -45,6 +51,12 @@ app.use("/api/v1/member", member);
 app.use("/api/v1/wallet", wallet);
 app.use("/api/v1/transaction", transaction);
 app.use("/api/v1/employee", employee);
+app.use("/api/v1/type", type);
+app.use("/api/v1/product", product);
+app.use("/api/v1/place", place);
+app.use("/api/v1/orderdetail", orderdetail);
+app.use("/api/v1/deposit", deposit);
+
 
 if (process.env.NODE_ENV === 'test') {
     //listen port

@@ -60,8 +60,7 @@ router.post("/", async (req, res) => {
 //delete data by Member_ID
 router.delete("/:id", async (req, res) => {
     try {
-        let Member_ID = req.params.Member_ID;
-
+        let Member_ID = req.params.id;
         const results = await services.deleteWalletByMember_ID(Member_ID);
         //validation
         if (!Member_ID) {
