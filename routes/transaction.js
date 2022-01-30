@@ -54,28 +54,28 @@ router.post("/", async (req, res) => {
     }
 });
 
-// //delete data by Member_ID
-// router.delete("/:id", async (req, res) => {
-//     try {
-//         let Member_ID = req.params.Member_ID;
+//delete data by ID
+router.delete("/:id", async (req, res) => {
+    try {
+        let ID = req.params.id;
 
-//         const results = await services.deleteWalletByMember_ID(Member_ID);
-//         //validation
-//         if (!Member_ID) {
-//             return res.status(400).send({ error: true, message: 'Please provide member\'s id.' })
-//         } else {
-//             let message = ""
-//             if (results.affectedRows === 0) {
-//                 message = "Wallet not found";
-//             } else {
-//                 message = "Data successfully delete";
-//             }
-//             return res.send({ error: false, data: results, message: message })
-//         }
-//     } catch (e) {
-//         throw e;
-//     }
-// });
+        const results = await services.deleteTransactionByID(ID);
+        //validation
+        if (!ID) {
+            return res.status(400).send({ error: true, message: 'Please provide transaction\'s id.' })
+        } else {
+            let message = ""
+            if (results.affectedRows === 0) {
+                message = "Transaction not found";
+            } else {
+                message = "Data successfully delete";
+            }
+            return res.send({ error: false, data: results, message: message })
+        }
+    } catch (e) {
+        throw e;
+    }
+});
 
 // //update data
 // router.put("/", async (req, res) => {

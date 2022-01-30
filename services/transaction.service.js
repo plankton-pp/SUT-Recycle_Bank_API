@@ -36,17 +36,17 @@ addTransaction = (Place_ID, Place_Members_ID, Place_Employee_ID) => {
     });
 };
 
-// deleteWalletByMember_ID = (id) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             const sql = "DELETE FROM wellets WHERE Member_ID =  ?";
-//             const result = await conn.query(sql, [id]);
-//             resolve(result);
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
+deleteTransactionByID = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "DELETE FROM transactions WHERE ID =  ?";
+            const result = await conn.query(sql, [id]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 // updateWalletById = (Balance, id) => {
 //     return new Promise(async (resolve, reject) => {
@@ -65,4 +65,5 @@ module.exports = {
     getAllTransactions,
     getTransactionByMember_ID,
     addTransaction,
+    deleteTransactionByID,
 };
