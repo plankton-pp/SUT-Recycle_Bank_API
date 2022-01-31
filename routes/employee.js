@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const services = require('../services/employee.service')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const saltRound = 10;
 
 //retrieve all data
 router.get("/", async (req, res) => {
@@ -19,9 +22,9 @@ router.get("/", async (req, res) => {
 });
 
 //retrieve data by id
-router.get("/:ID", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-        let id = req.params.ID;
+        let id = req.params.id;
         const result = await services.getEmployeeById(id);
         let message = ""
         if (result === undefined || result.length == 0) {
@@ -35,43 +38,87 @@ router.get("/:ID", async (req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
+//retrieve all data
+router.post("/register", async (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
+
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const empId = req.body.empId;
+    const role = req.body.role;
+    const phone = req.body.phone;
+    const email = req.body.email;
+
     try {
-        
-        let Username = req.body.username;  
-        let Password = req.body.password; 
-        
-        const result = await services.loginEmployee(Username, Password);
-        let message = ""
-        if (result === undefined || result.length == 0) {
-            message = "Can not login";
-        } else {
-            message = "logged in";
-        }
-        return res.send({ error: false, data: result, message: message })
+        bcrypt.hash(password, saltRound, async (err, hash) => {
+            if (err) {
+                console.log(err);
+            }
+            const results = await services.addEmployee(firstname, lastname, empId, username, hash, role, phone, email);
+            //validation
+            if (!username || !password || !firstname || !lastname || !empId || !role || !phone || !email) {
+                return res.status(400).send({ error: true, message: 'Please provide Employee\'s data.' })
+            } else {
+                return res.send({ error: false, data: results, message: 'Employee successfully added' })
+            }
+
+        })
     } catch (e) {
         throw e;
     }
 });
 
-router.post("/", async (req, res) => {
+const verifyJWT = (req, res, next) => {
+    const tokenAccess = req.headers["x-access-token"];
+    if (typeof tokenAccess !== 'undefined') {
+        const bearerToken = String(tokenAccess).split(' ');
+        const token = bearerToken[1];
+        jwt.verify(token, process.env.JWTSECRET, (err, decoded) => {
+            if (err) {
+                res.send({ error: true, auth: false, message: "failed to authenticated" })
+            } else {
+                req.userId = decoded.id
+                next();
+            }
+        })
+    } else {
+        res.send({ error: true, auth: false, message: "need token to verify" })
+    }
+}
+
+router.get('/auth/isUserAuth', verifyJWT, (req, res) => {
+    res.send({ error: false, auth: true, userId: req.userId, message: "user authenticated" })
+})
+
+router.post("/auth", async (req, res) => {
     try {
 
-        let Firstname = req.body.Firstname;  
-        let Lastname = req.body.Lastname;  
-        let Employee_ID = req.body.Employee_ID;  
-        let Username = req.body.Username;  
-        let Password = req.body.Password;  
-        let Role = req.body.Role;  
-        let Phone = req.body.Phone;  
-        let Email = req.body.Email;  
+        const username = req.body.username;
+        const password = req.body.password;
 
-        const results = await services.addEmployee(Firstname, Lastname, Employee_ID, Username, Password, Role, Phone, Email);
-        //validation
-        if (!Firstname || !Lastname || !Employee_ID || !Username || !Password || !Role || !Phone || !Email) {
-            return res.status(400).send({ error: true, message: 'Please provide Employee\'s data.' })
+        const result = await services.loginEmployee(username);
+        let message = ""
+        if (result === undefined || result.length === 0) {
+            message = "No user exist";
+            return res.send({ error: true, data: result, message: message })
         } else {
-            return res.send({ error: false, data: results, message: 'Employee successfully added' })
+            // console.log(result[0].Password);
+            bcrypt.compare(password, result[0].Password, (err, response) => {
+                if (password == "1234") {
+                    message = "Logged in";
+                    const id = result[0].ID;
+                    const token = jwt.sign({ id }, process.env.JWTSECRET, {
+                        expiresIn: '3h',
+                    })
+                    req.session.user = result;
+                    console.log(password, result[0].Password);
+                    return res.send({ error: false, auth: true, token: token, data: result, message: message })
+                } else {
+                    message = "Wrong username/password combination";
+                    return res.send({ error: true, message: message })
+                }
+            })
         }
     } catch (e) {
         throw e;
