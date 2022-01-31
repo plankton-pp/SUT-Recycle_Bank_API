@@ -24,11 +24,11 @@ getPlaces = () => {
 //     });
 // };
 
-addPlace = (memid, placeby, status, empid) => {
+addPlace = (memid, placeby, netprice, status, empid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO `place` (`Place_ID`, `Member_ID`, `Place_By`, `Status`, `Create_Date`, `Update_Date`, `Employee_ID`) VALUES (NULL, ?, ?, ?, UNIX_TIMESTAMP(NOW()), '', ?);";
-            const result = await conn.query(sql, [memid, placeby, status, empid]);
+            const sql = "INSERT INTO `place` (`Place_ID`, `Member_ID`, `Place_By`, `Net_Price`, `Status`, `Create_Date`, `Update_Date`, `Employee_ID`) VALUES (NULL, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), '', ?);";
+            const result = await conn.query(sql, [memid, placeby, netprice, status, empid]);
             console.log("result",result);
             resolve(result);
         } catch (e) {
@@ -49,11 +49,11 @@ deletePlaceById = (id) => {
     });
 };
 
-updatePlaceById = (memid, placeby, status, empid, id) => {
+updatePlaceById = (memid, placeby, netprice, status, empid, id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE place SET Member_ID = ?,Place_By = ?,Status = ?, Employee_ID = ?,Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Place_ID = ?";
-            const result = await conn.query(sql, [memid, placeby, status, empid, id]);
+            const sql = "UPDATE place SET Member_ID = ?,Place_By = ?,Status = ?,Net_Price = ?, Employee_ID = ?,Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Place_ID = ?";
+            const result = await conn.query(sql, [memid, placeby, netprice, status, empid, id]);
             resolve(result);
         } catch (e) {
             reject(e);
