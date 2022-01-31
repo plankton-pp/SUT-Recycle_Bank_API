@@ -1,9 +1,9 @@
 const conn = require('../config/dbConfig')
 
-getOrderDetails = () => {
+getPlaceDetails = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT * FROM order_detail";
+            const sql = "SELECT * FROM placedetail";
             const result = await conn.query(sql, []);
             resolve(result);
         } catch (e) {
@@ -24,11 +24,11 @@ getOrderDetails = () => {
 //     });
 // };
 
-addOrderDetail = (placeid, productid, weight, totalprice) => {
+addPlaceDetail = (placeid, productid, unit, totalprice) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO `order_detail` (`Detail_ID`, `Place_ID`, `Product_ID`, `Weight`, `Total_Price`, `Create_Date`, `Update_Date`) VALUES (NULL, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), '')";
-            const result = await conn.query(sql, [placeid, productid, weight, totalprice]);
+            const sql = "INSERT INTO `placedetail` (`Place_Detail_ID`, `Place_ID`, `Product_ID`, `Unit`, `Total_Price`, `Create_Date`, `Update_Date`) VALUES (NULL, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), '')";
+            const result = await conn.query(sql, [placeid, productid, unit, totalprice]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -36,10 +36,10 @@ addOrderDetail = (placeid, productid, weight, totalprice) => {
     });
 };
 
-deleteOrderDetailById = (id) => {
+deletePlaceDetailById = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "DELETE FROM order_detail WHERE Detail_ID =  ?";
+            const sql = "DELETE FROM placedetail WHERE Place_Detail_ID =  ?";
             const result = await conn.query(sql, [id]);
             resolve(result);
         } catch (e) {
@@ -48,11 +48,11 @@ deleteOrderDetailById = (id) => {
     });
 };
 
-updateOrderDetailById = (placeid, productid, weight, totalprice, id) => {
+updatePlaceDetailById = (placeid, productid, unit, totalprice, id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE order_detail SET Place_ID = ?, Product_ID = ?, Weight = ?, Total_Price = ?,Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Detail_ID = ?";
-            const result = await conn.query(sql, [placeid, productid, weight, totalprice, id]);
+            const sql = "UPDATE placedetail SET Place_ID = ?, Product_ID = ?, Unit = ?, Total_Price = ?,Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Place_Detail_ID = ?";
+            const result = await conn.query(sql, [placeid, productid, unit, totalprice, id]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -62,9 +62,9 @@ updateOrderDetailById = (placeid, productid, weight, totalprice, id) => {
 
 
 module.exports = {
-    getOrderDetails,
+    getPlaceDetails,
     // getBookById,
-    addOrderDetail,
-    deleteOrderDetailById,
-    updateOrderDetailById,
+    addPlaceDetail,
+    deletePlaceDetailById,
+    updatePlaceDetailById,
 };

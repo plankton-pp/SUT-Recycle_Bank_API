@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const services = require('../services/orderdetail.service')
+const services = require('../services/placedetail.service')
 
 //retrieve all data
 router.get("/", async (req, res) => {
     try {
-        const result = await services.getOrderDetails();
+        const result = await services.getPlaceDetails();
         let message = ""
         if (result === undefined || result.length == 0) {
-            message = "Order Details table is empty";
+            message = "Place Details table is empty";
         } else {
-            message = "Successfully retrieved all Order Details";
+            message = "Successfully retrieved all Place Details";
         }
         return res.send({ error: false, data: result, message: message })
     } catch (e) {
@@ -40,15 +40,15 @@ router.post("/", async (req, res) => {
 
         let placeid = req.body.placeid;
         let productid = req.body.productid;
-        let weight = req.body.weight;
+        let unit = req.body.unit;
         let totalprice = req.body.totalprice;
 
-        const results = await services.addOrderDetail(placeid, productid, weight, totalprice);
+        const results = await services.addPlaceDetail(placeid, productid, unit, totalprice);
         //validation
-        if (!placeid || !productid || !weight || !totalprice) {
-            return res.status(400).send({ error: true, message: 'Please provide placeid productid weight and totalprice.' })
+        if (!placeid || !productid || !unit || !totalprice) {
+            return res.status(400).send({ error: true, message: 'Please provide placeid productid unit and totalprice.' })
         } else {
-            return res.send({ error: false, data: results, message: 'orderdetail successfully added' })
+            return res.send({ error: false, data: results, message: 'placedetail successfully added' })
         }
     } catch (e) {
         throw e;
@@ -60,14 +60,14 @@ router.delete("/:id", async (req, res) => {
     try {
         let id = req.params.id;
 
-        const results = await services.deleteOrderDetailById(id);
+        const results = await services.deletePlaceDetailById(id);
         //validation
         if (!id) {
-            return res.status(400).send({ error: true, message: 'Please provide orderdetail\'s id.' })
+            return res.status(400).send({ error: true, message: 'Please provide placedetail\'s id.' })
         } else {
             let message = ""
             if (results.affectedRows === 0) {
-                message = "Order Detail not found";
+                message = "Place Detail not found";
             } else {
                 message = "Data successfully delete";
             }
@@ -84,19 +84,19 @@ router.put("/", async (req, res) => {
         let id = req.body.id;
         let placeid = req.body.placeid;
         let productid = req.body.productid;
-        let weight = req.body.weight;
+        let unit = req.body.unit;
         let totalprice = req.body.totalprice;
 
-        const results = await services.updateOrderDetailById(placeid, productid, weight, totalprice, id);
+        const results = await services.updatePlaceDetailById(placeid, productid, unit, totalprice, id);
         //validation
-        if (!placeid || !productid || !weight || !totalprice || !id) {
-            return res.status(400).send({ error: true, message: 'Please provide Order Detail placeid productid weight totalprice or id.' })
+        if (!placeid || !productid || !unit || !totalprice || !id) {
+            return res.status(400).send({ error: true, message: 'Please provide PlaceDetail placeid productid weight totalprice or id.' })
         } else {
             let message = ""
             if (results.changedRows === 0) {
-                message = "Order Detail not found or data are same";
+                message = "PlaceDetail not found or data are same";
             } else {
-                message = "Order Detail successfully updated";
+                message = "PlaceDetail successfully updated";
             }
             return res.send({ error: false, data: results, message: message })
         }
