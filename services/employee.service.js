@@ -24,11 +24,11 @@ getEmployeeById = (id) => {
     });
 };
 
-loginEmployee = (Username, Password) => {
+loginEmployee = (username) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT ID,Firstname, Lastname, Employee_ID, Username, Role, Phone, Email FROM employee WHERE Username = ? and Password = MD5(?)";
-            const result = await conn.query(sql, [Username, Password]);
+            const sql = "SELECT * FROM employee WHERE Username = ?";
+            const result = await conn.query(sql, [username]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -39,7 +39,7 @@ loginEmployee = (Username, Password) => {
 addEmployee = (Firstname, Lastname, Employee_ID, Username, Password, Role, Phone, Email) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO employee (Firstname, Lastname, Employee_ID, Username, Password, Role, Phone, Email) VALUES(?, ?, ?, ?, MD5(?), ?, ?, ?)";
+            const sql = "INSERT INTO employee (Firstname, Lastname, Employee_ID, Username, Password, Role, Phone, Email) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
             const result = await conn.query(sql, [Firstname, Lastname, Employee_ID, Username, Password, Role, Phone, Email]);
             resolve(result);
         } catch (e) {
