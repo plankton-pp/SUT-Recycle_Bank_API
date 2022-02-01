@@ -97,10 +97,8 @@ router.post("/auth", async (req, res) => {
 router.post("/register", async (req, res) => {
     const username = req.body.username
     const password = req.body.password
-
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
-    const empId = req.body.empId;
     const role = req.body.role;
     const phone = req.body.phone;
     const email = req.body.email;
