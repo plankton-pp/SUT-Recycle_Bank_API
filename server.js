@@ -17,6 +17,7 @@ const place = require("./routes/place");
 
 const orderdetail = require("./routes/orderdetail");
 const deposit = require("./routes/deposit");
+const report2 = require("./routes/report2");
 
 app.use(cors());
 app.use(bodyParser.json(parserLimit));
@@ -56,6 +57,7 @@ app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
 app.use("/api/v1/orderdetail", orderdetail);
 app.use("/api/v1/deposit", deposit);
+app.use("/api/v1/report2", report2);
 
 
 if (process.env.NODE_ENV === 'test') {
