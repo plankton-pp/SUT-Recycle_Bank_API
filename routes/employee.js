@@ -55,11 +55,11 @@ router.post("/register", async (req, res) => {
             if (err) {
                 console.log(err);
             }
-            const results = await services.addEmployee(firstname, lastname, empId, username, hash, role, phone, email);
             //validation
             if (!username || !password || !firstname || !lastname || !empId || !role || !phone || !email) {
                 return res.status(400).send({ error: true, message: 'Please provide Employee\'s data.' })
             } else {
+                const results = await services.addEmployee(firstname, lastname, empId, username, hash, role, phone, email);
                 return res.send({ error: false, data: results, message: 'Employee successfully added' })
             }
 
@@ -105,7 +105,7 @@ router.post("/auth", async (req, res) => {
         } else {
             // console.log(result[0].Password);
             bcrypt.compare(password, result[0].Password, (err, response) => {
-                if (password == "1234") {
+                if (password) {
                     message = "Logged in";
                     const id = result[0].ID;
                     const token = jwt.sign({ id }, process.env.JWTSECRET, {
