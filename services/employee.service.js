@@ -24,7 +24,7 @@ getEmployeeById = (id) => {
     });
 };
 
-loginEmployee = (username) => {
+getEmployeeByUsername = (username) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "SELECT * FROM employee WHERE Username = ?";
@@ -76,7 +76,7 @@ updateEmployeeById = (Firstname, Lastname, id) => {
 module.exports = {
     getEmployees,
     getEmployeeById,
-    loginEmployee,
+    getEmployeeByUsername,
     addEmployee,
     deleteEmployeeById,
     updateEmployeeById,
