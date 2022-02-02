@@ -24,7 +24,7 @@ getMemberById = (id) => {
     });
 };
 
-loginMember = (Member_User) => {
+getMemberByUsername = (Member_User) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "SELECT * FROM members WHERE Username = ?";
@@ -89,7 +89,7 @@ updateMemberById = (Firstname, Lastname, id) => {
 module.exports = {
     getMembers,
     getMemberById,
-    loginMember,
+    getMemberByUsername,
     searchMember,
     addMember,
     deleteMemberById,

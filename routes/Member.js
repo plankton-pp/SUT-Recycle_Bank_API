@@ -38,6 +38,21 @@ router.get("/:ID", async (req, res) => {
     }
 });
 
+router.post("/checkDuplicate", async (req, res) => {
+    const username = req.body.username
+    try {
+        const results = await services.getMemberByUsername(username);
+        if (results === undefined || results.length == 0) {
+            return res.send({ error: false, data: results, message: "no user duplicate", duplicate: false })
+        } else {
+            return res.send({ error: true, data: results, message: "duplicate username", duplicate: true })
+        }
+    } catch (e) {
+        throw e;
+    }
+})
+
+
 const verifyJWT = (req, res, next) => {
     const tokenAccess = req.headers["x-access-token"];
     if (typeof tokenAccess !== 'undefined') {
@@ -66,7 +81,7 @@ router.post("/auth", async (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
 
-        const result = await services.loginMember(username);
+        const result = await services.getMemberByUsername(username);
         let message = ""
         if (result === undefined || result.length === 0) {
             message = "No user exist";
