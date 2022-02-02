@@ -38,11 +38,23 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-//retrieve all data
+router.post("/checkDuplicate", async (req, res) => {
+    const username = req.body.username
+    try {
+        const results = await services.getEmployeeByUsername(username);
+        if (results === undefined || results.length == 0) {
+            return res.send({ error: false, data: results, message: "no user duplicate", duplicate: false })
+        } else {
+            return res.send({ error: true, data: results, message: "duplicate username", duplicate: true })
+        }
+    } catch (e) {
+        throw e;
+    }
+})
+
 router.post("/register", async (req, res) => {
     const username = req.body.username
     const password = req.body.password
-
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const empId = req.body.empId;
@@ -97,7 +109,7 @@ router.post("/auth", async (req, res) => {
         const username = req.body.username;
         const password = req.body.password;
 
-        const result = await services.loginEmployee(username);
+        const result = await services.getEmployeeByUsername(username);
         let message = ""
         if (result === undefined || result.length === 0) {
             message = "No user exist";
@@ -112,7 +124,6 @@ router.post("/auth", async (req, res) => {
                         expiresIn: '3h',
                     })
                     req.session.user = result;
-                    console.log(password, result[0].Password);
                     return res.send({ error: false, auth: true, token: token, data: result, message: message })
                 } else {
                     message = "Wrong username/password combination";

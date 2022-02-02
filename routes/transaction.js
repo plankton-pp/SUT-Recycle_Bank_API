@@ -41,10 +41,11 @@ router.post("/", async (req, res) => {
         let Place_ID = req.body.Place_ID; 
         let Place_Members_ID = req.body.Place_Members_ID; 
         let Place_Employee_ID = req.body.Place_Employee_ID; 
+        let Type = req.body.Type; 
 
-        const results = await services.addTransaction(Place_ID, Place_Members_ID, Place_Employee_ID);
+        const results = await services.addTransaction(Place_ID, Place_Members_ID, Place_Employee_ID, Type);
         //validation
-        if (!Place_ID || !Place_Members_ID || !Place_Employee_ID) {
+        if (!Place_ID || !Place_Members_ID || !Place_Employee_ID || !Type) {
             return res.status(400).send({ error: true, message: 'Please provide Transaction\'s data.' })
         } else {
             return res.send({ error: false, data: results, message: 'Transaction successfully added' })
