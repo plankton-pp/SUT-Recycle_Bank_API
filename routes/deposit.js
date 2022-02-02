@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
         let empid = req.body.empid;
         let netprice = req.body.netprice;        
         let datenow = Date.now();
-        let type = "waitting";
+        let type = "waiting";
         datenow = datenow.toString();
         datenow = datenow.substr(0, 9);
 
