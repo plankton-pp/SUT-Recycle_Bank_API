@@ -43,12 +43,14 @@ router.post("/", async (req, res) => {
         let detail = req.body.detail;        
         let price = req.body.price;        
         let createby = req.body.createby;
+        let unitdetail = req.body.unitdetail;
+        
         // console.log("result",req);
-        const results = await services.addProduct(typeid, name, detail, price, createby);
+        const results = await services.addProduct(typeid, name, detail, price, unitdetail, createby);
         
         //validation
-        if (!typeid || !name|| !price || !createby) {
-            return res.status(400).send({ error: true, message: 'Please provide product\'s typeid name price and createby.' })
+        if (!typeid || !name|| !price || !createby || !unitdetail) {
+            return res.status(400).send({ error: true, message: 'Please provide product\'s typeid name price unitdetail and createby.' })
         } else {
             return res.send({ error: false, data: results, message: 'type successfully added' })
         }
@@ -88,19 +90,44 @@ router.put("/", async (req, res) => {
         let typeid = req.body.typeid;
         let name = req.body.name;
         let detail = req.body.detail;        
-        let price = req.body.price;        
-        let updateby = req.body.updateby;
-
-        const results = await services.updateProductById(matid, typeid, name, detail, price, updateby);
+        let price = req.body.price;    
+        let updateby = req.body.updateby;   
+        let unitdetail = req.body.unitdetail;    
+        
+        const results = await services.updateProductById(matid, typeid, name, detail, price, updateby, unitdetail);
         //validation
-        if (!matid|| !typeid|| !name|| !price|| !updateby) {
-            return res.status(400).send({ error: true, message: 'Please provide pruduct\'s matid typeid name price updateby.' })
+        if (!matid|| !typeid|| !name|| !price|| !updateby|| !unitdetail) {
+            return res.status(400).send({ error: true, message: 'Please provide pruduct\'s matid typeid name price updateby unitdetail.' })
         } else {
             let message = ""
             if (results.changedRows === 0) {
                 message = "Product not found or data are same";
             } else {
                 message = "Product successfully updated";
+            }
+            return res.send({ error: false, data: results, message: message })
+        }
+    } catch (e) {
+        throw e;
+    }
+});
+
+//update Fee
+router.put("/fee", async (req, res) => {
+    try {
+        //console.log(req);
+        let fee = req.body.fee;  
+        
+        const results = await services.updateFee(fee);
+        //validation
+        if (!fee) {
+            return res.status(400).send({ error: true, message: 'Please provide fee.' })
+        } else {
+            let message = ""
+            if (results.changedRows === 0) {
+                message = "Product not found ";
+            } else {
+                message = "fee successfully updated";
             }
             return res.send({ error: false, data: results, message: message })
         }

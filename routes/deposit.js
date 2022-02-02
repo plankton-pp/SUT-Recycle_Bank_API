@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const servicesPlace = require('../services/place.service')
 const servicesPlaceDetail = require('../services/placedetail.service')
+const servicesTransaction = require('../services/transaction.service')
 
 router.post("/", async (req, res) => {
     try {
@@ -9,11 +10,13 @@ router.post("/", async (req, res) => {
         let placeby = req.body.placeby;
         let status = req.body.status;
         let empid = req.body.empid;
+        let netprice = req.body.netprice;        
         let datenow = Date.now();
+        let type = "waitting";
         datenow = datenow.toString();
         datenow = datenow.substr(0, 9);
 
-        const resultsPlace = await servicesPlace.addPlace(memid, placeby, status, empid);
+        const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice, status, empid);
         // const results2 = await services.getLastplace(memid,placeby,status,datenow,empid);
         //validation
         if (!memid || !placeby || !status || !empid) {
@@ -49,6 +52,15 @@ router.post("/", async (req, res) => {
                     //         console.log(allResults[`dataOrder-${index + 1}`]);
                     //     }
                     // })
+
+                    
+                    const results = await servicesTransaction.addTransaction(placeid, memid, empid, type);
+                        //validation
+                        if (!placeid || !memid || !empid || !type) {
+                            return res.status(400).send({ error: true, message: 'Please provide placeid memid empid and type.' })
+                        } else {
+                            return res.send({ error: false, data: results, message: 'Transaction successfully added' })
+                        }
                 }
             } catch (e) {
                 throw e;
