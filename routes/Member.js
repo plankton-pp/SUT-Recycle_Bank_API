@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const services = require('../services/member.service')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const saltRound = 10;
 
 //retrieve all data
 router.get("/", async (req, res) => {
@@ -35,47 +38,89 @@ router.get("/:ID", async (req, res) => {
     }
 });
 
-router.post("/login", async (req, res) => {
+const verifyJWT = (req, res, next) => {
+    const tokenAccess = req.headers["x-access-token"];
+    if (typeof tokenAccess !== 'undefined') {
+        const bearerToken = String(tokenAccess).split(' ');
+        const token = bearerToken[1];
+        jwt.verify(token, process.env.JWTSECRET, (err, decoded) => {
+            if (err) {
+                res.send({ error: true, auth: false, message: "failed to authenticated" })
+            } else {
+                req.userId = decoded.id
+                next();
+            }
+        })
+    } else {
+        res.send({ error: true, auth: false, message: "need token to verify" })
+    }
+}
+
+router.get('/auth/isUserAuth', verifyJWT, (req, res) => {
+    res.send({ error: false, auth: true, userId: req.userId, message: "user authenticated" })
+})
+
+router.post("/auth", async (req, res) => {
     try {
-        
-        let Member_User = req.body.username;  
-        let Member_Password = req.body.password; 
-        
-        const result = await services.loginMember(Member_User, Member_Password);
+
+        const username = req.body.username;
+        const password = req.body.password;
+
+        const result = await services.loginMember(username);
         let message = ""
-        if (result === undefined || result.length == 0) {
-            message = "Can not login";
+        if (result === undefined || result.length === 0) {
+            message = "No user exist";
+            return res.send({ error: true, data: result, message: message })
         } else {
-            message = "logged in";
+            // console.log(result[0].Password);
+            bcrypt.compare(password, result[0].Password, (err, response) => {
+                if (password) {
+                    message = "Logged in";
+                    const id = result[0].ID;
+                    const token = jwt.sign({ id }, process.env.JWTSECRET, {
+                        expiresIn: '3h',
+                    })
+                    req.session.user = result;
+                    console.log(password, result[0].Password);
+                    return res.send({ error: false, auth: true, token: token, data: result, message: message })
+                } else {
+                    message = "Wrong username/password combination";
+                    return res.send({ error: true, message: message })
+                }
+            })
         }
-        return res.send({ error: false, data: result, message: message })
     } catch (e) {
         throw e;
     }
 });
 
-router.post("/", async (req, res) => {
-    try {
-        
-        let Member_User = req.body.username;  
-        let Member_Password = req.body.password; 
-        let Firstname = req.body.firstname; 
-        let Lastname = req.body.lastname;  
-        let Role = req.body.role; 
-        let Bank = req.body.bank; 
-        let Acc_number = req.body.accnumber; 
-        let Phone_number = req.body.phone; 
-        let Phone_number2 = req.body.phone2;
-        let Email = req.body.Email;
-        let Remark = req.body.remark; 
+router.post("/register", async (req, res) => {
+    const username = req.body.username
+    const password = req.body.password
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const role = req.body.role;
+    const phone = req.body.phone;
+    const email = req.body.email;
+    const bank = req.body.bank;
+    const accnumber = req.body.accnumber;
+    const phone2 = req.body.phone2;
+    const remark = req.body.remark;
 
-        const results = await services.addMember(Member_User, Member_Password, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark);
-        //validation
-        if (!Member_User || !Member_Password || !Firstname || !Lastname || !Role || !Bank || !Acc_number || !Phone_number) {
-            return res.status(400).send({ error: true, message: 'Please provide Member\'s data.' })
-        } else {
-            return res.send({ error: false, data: results, message: 'Member successfully added' })
-        }
+    try {
+        bcrypt.hash(password, saltRound, async (err, hash) => {
+            if (err) {
+                console.log(err);
+            }
+            //validation
+            if (!username || !password || !firstname || !lastname || !role || !bank || !accnumber || !phone) {
+                return res.status(400).send({ error: true, message: 'Please provide Member\'s data.' })
+            } else {
+                const results = await services.addMember(username, hash, firstname, lastname, role, bank, accnumber, phone, phone2, email, remark);
+                return res.send({ error: false, data: results, message: 'Member successfully added' })
+            }
+
+        })
     } catch (e) {
         throw e;
     }
@@ -83,8 +128,8 @@ router.post("/", async (req, res) => {
 
 router.get("/key/:KEY", async (req, res) => {
     try {
-        
-        let keyword = req.params.KEY;  
+
+        let keyword = req.params.KEY;
 
         const result = await services.searchMember(keyword);
         let message = ""
@@ -94,32 +139,6 @@ router.get("/key/:KEY", async (req, res) => {
             message = "Successfully retrieved Member data";
         }
         return res.send({ error: false, data: result, message: message })
-    } catch (e) {
-        throw e;
-    }
-});
-
-router.post("/", async (req, res) => {
-    try {
-        
-        let Member_User = req.body.user;  
-        let Member_Password = req.body.password; 
-        let Firstname = req.body.firstname; 
-        let Lastname = req.body.lastname;  
-        let Role = req.body.role; 
-        let No_members = req.body.no; 
-        let Bank = req.body.bank; 
-        let Acc_number = req.body.accnumber; 
-        let Phone_number = req.body.phone; 
-        let Remark = req.body.remark; 
-
-        const results = await services.addMember(Member_User, Member_Password, Firstname, Lastname, Role, No_members, Bank, Acc_number, Phone_number, Remark);
-        //validation
-        if (!Member_User || !Member_Password || !Firstname || !Lastname || !Role || !No_members || !Bank || !Acc_number || !Phone_number) {
-            return res.status(400).send({ error: true, message: 'Please provide Member\'s data.' })
-        } else {
-            return res.send({ error: false, data: results, message: 'Member successfully added' })
-        }
     } catch (e) {
         throw e;
     }

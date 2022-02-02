@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const servicesPlace = require('../services/place.service')
-const servicesOrderDetail = require('../services/orderdetail.service')
+const servicesPlaceDetail = require('../services/placedetail.service')
 
 router.post("/", async (req, res) => {
     try {
@@ -28,12 +28,12 @@ router.post("/", async (req, res) => {
                 let products = Array.from(req.body.product);
                 if (products && products.length > 0) {
                     products.forEach(async (item, index) => {
-                        const results = await servicesOrderDetail.addOrderDetail(placeid, item.productid, item.weight, item.totalprice);
+                        const results = await servicesPlaceDetail.addPlaceDetail(placeid, item.productid, item.unit, item.totalprice);
                         //validation
-                        if (!placeid || !item.productid || !item.weight || !item.totalprice) {
-                            return res.status(400).send({ error: true, message: 'Please provide placeid productid weight and totalprice.' })
+                        if (!placeid || !item.productid || !item.unit || !item.totalprice) {
+                            return res.status(400).send({ error: true, message: 'Please provide placeid productid unit and totalprice.' })
                         } else {
-                            allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'orderdetail successfully added' }
+                            allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'placedetail successfully added' }
                             console.log(allResults[`dataOrder-${index + 1}`]);
                         }
                     })

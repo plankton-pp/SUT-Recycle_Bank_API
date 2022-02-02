@@ -24,11 +24,11 @@ getMemberById = (id) => {
     });
 };
 
-loginMember = (Member_User, Member_Password) => {
+loginMember = (Member_User) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT ID, Username, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark FROM members WHERE Username = ? and Password = MD5(?)";
-            const result = await conn.query(sql, [Member_User, Member_Password]);
+            const sql = "SELECT * FROM members WHERE Username = ?";
+            const result = await conn.query(sql, [Member_User]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -41,7 +41,7 @@ searchMember = (keyword) => {
         try {
             var dynamicInput = '%'.concat(keyword.concat('%'));
             const sql = "SELECT ID, Username, Firstname, Lastname, Phone_number, Phone_number2, Email FROM members WHERE ID like ? or Firstname like ? or Lastname like ? or Phone_number like ? or Phone_number2 like ? or Email like ?";
-            const result = await conn.query(sql, [dynamicInput,dynamicInput,dynamicInput,dynamicInput,dynamicInput,dynamicInput]);
+            const result = await conn.query(sql, [dynamicInput, dynamicInput, dynamicInput, dynamicInput, dynamicInput, dynamicInput]);
             resolve(result);
         } catch (e) {
             reject(e);

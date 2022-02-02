@@ -1,10 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const app = express();
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const app = express();
 const parserLimit = { limit: "10mb" }
+
+//env config
 require('dotenv').config();
 
+//Route
 const index = require("./routes/index");
 const book = require("./routes/book");
 const member = require("./routes/member");
@@ -14,18 +19,32 @@ const employee = require("./routes/employee");
 const type = require("./routes/type");
 const product = require("./routes/product");
 const place = require("./routes/place");
+const email = require("./routes/email");
 
-const orderdetail = require("./routes/orderdetail");
+const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
 const report2 = require("./routes/report2");
 
 app.use(cors());
+app.use(cookieParser());
 app.use(bodyParser.json(parserLimit));
 app.use(bodyParser.urlencoded({
     limit: "10mb",
     extended: true,
     parameterLimit: 10000,
 }));
+
+app.use(
+    session({
+        key: 'userId',
+        secret: 'subscribe',
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            expires: 60*60*4,
+        },
+    })
+)
 
 //ยังไม่รู้การทำงาน------------------------------------------------------------------------------------------
 // app.use(async (req, res, next) => {
@@ -55,9 +74,10 @@ app.use("/api/v1/employee", employee);
 app.use("/api/v1/type", type);
 app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
-app.use("/api/v1/orderdetail", orderdetail);
+app.use("/api/v1/placedetail", placedetail);
 app.use("/api/v1/deposit", deposit);
 app.use("/api/v1/report2", report2);
+app.use("/api/v1/email", email);
 
 
 if (process.env.NODE_ENV === 'test') {

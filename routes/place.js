@@ -41,15 +41,16 @@ router.post("/", async (req, res) => {
         let placeby = req.body.placeby;
         let status = req.body.status;
         let empid = req.body.empid;
+        let netprice = req.body.netprice;
         let datenow = Date.now();
         datenow = datenow.toString();
         datenow = datenow.substr(0, 9);
 
-        const results = await services.addPlace(memid, placeby, status, empid);
+        const results = await services.addPlace(memid, placeby, netprice ,status, empid);
         // const results2 = await services.getLastplace(memid,placeby,status,datenow,empid);
         //validation
-        if (!memid || !placeby|| !status|| !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status or empid.' })
+        if (!memid || !placeby|| !status|| !netprice|| !empid) {
+            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby netprice status or empid.' })
         } else {
             return res.send({ error: false, data: results, message: 'Place successfully added' ,lastplace: results.insertId})
             
@@ -90,11 +91,13 @@ router.put("/", async (req, res) => {
         let placeby = req.body.placeby;
         let status = req.body.status;
         let empid = req.body.empid;
-
-        const results = await services.updatePlaceById(memid, placeby, status, empid, id);
+        let netprice = req.body.netprice;
+        console.log("req",req)
+        
+        const results = await services.updatePlaceById(memid, placeby, netprice, status, empid, id);
         //validation
-        if (!memid || !placeby || !status || !empid || !id) {
-            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status empid or id.' })
+        if (!memid || !placeby || !netprice || !status || !empid || !id) {
+            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby netprice status empid or id.' })
         } else {
             let message = ""
             if (results.changedRows === 0) {

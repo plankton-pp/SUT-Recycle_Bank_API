@@ -40,12 +40,14 @@ router.post("/", async (req, res) => {
         //console.log(req);
         let typeid = req.body.typeid;
         let name = req.body.name;
+        let detail = req.body.detail;        
         let price = req.body.price;        
         let createby = req.body.createby;
-
-        const results = await services.addProduct(typeid, name, price, createby);
+        // console.log("result",req);
+        const results = await services.addProduct(typeid, name, detail, price, createby);
+        
         //validation
-        if (!typeid || !name || !price || !createby) {
+        if (!typeid || !name|| !price || !createby) {
             return res.status(400).send({ error: true, message: 'Please provide product\'s typeid name price and createby.' })
         } else {
             return res.send({ error: false, data: results, message: 'type successfully added' })
@@ -85,10 +87,11 @@ router.put("/", async (req, res) => {
         let matid = req.body.matid;
         let typeid = req.body.typeid;
         let name = req.body.name;
+        let detail = req.body.detail;        
         let price = req.body.price;        
         let updateby = req.body.updateby;
 
-        const results = await services.updateProductById(matid, typeid, name, price, updateby);
+        const results = await services.updateProductById(matid, typeid, name, detail, price, updateby);
         //validation
         if (!matid|| !typeid|| !name|| !price|| !updateby) {
             return res.status(400).send({ error: true, message: 'Please provide pruduct\'s matid typeid name price updateby.' })

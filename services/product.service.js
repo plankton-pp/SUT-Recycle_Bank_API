@@ -24,11 +24,14 @@ getProducts = () => {
 //     });
 // };
 
-addProduct = (typeid, name, price, createby) => {
+addProduct = (typeid, name, detail, price, createby) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO `product` (`Material_ID`, `Type_ID`, `Name`, `Price_per_unit`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, '', '', UNIX_TIMESTAMP(NOW()), ?);";
-            const result = await conn.query(sql, [typeid, name, price, createby]);
+            const sql = "INSERT INTO `product` (`Material_ID`, `Type_ID`, `Name`, `Detail`,`Price_per_unit`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, ?, '', '', UNIX_TIMESTAMP(NOW()), ?);";
+            // console.log("SQL",sql);
+            // console.log("typeid, name, detail, price, createby",typeid, name, detail, price, createby);
+            const result = await conn.query(sql, [typeid, name, detail, price, createby]);
+            
             resolve(result);
         } catch (e) {
             reject(e);
@@ -48,11 +51,13 @@ deleteProductById = (id) => {
     });
 };
 
-updateProductById = (matid, typeid, name, price, updateby) => {
+updateProductById = (matid, typeid, name, detail, price, updateby) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Price_per_unit = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Material_ID = ?";
-            const result = await conn.query(sql, [typeid, name, price, updateby, matid]);
+            const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Detail = ?, Price_per_unit = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Material_ID = ?";
+            const result = await conn.query(sql, [typeid, name, detail, price, updateby, matid]);
+            console.log("SQL",sql);
+            // console.log("typeid, name, detail, price, createby",typeid, name, detail, price, createby);
             resolve(result);
         } catch (e) {
             reject(e);
