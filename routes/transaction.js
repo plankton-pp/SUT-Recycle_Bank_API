@@ -18,6 +18,22 @@ router.get("/", async (req, res) => {
     }
 });
 
+//retrieve waiting transaction
+router.get("/Waiting", async (req, res) => {
+    try {
+        const result = await services.getWaitTransactions();
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Transactions table is empty";
+        } else {
+            message = "Successfully retrieved Waiting Transactions";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
 //retrieve data by id
 router.get("/:ID", async (req, res) => {
     try {

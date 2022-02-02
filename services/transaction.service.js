@@ -60,10 +60,22 @@ deleteTransactionByID = (id) => {
 //     });
 // };
 
+getWaitTransactions = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "SELECT * FROM transactions WHERE Type = 'waiting'";
+            const result = await conn.query(sql, []);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 module.exports = {
     getAllTransactions,
     getTransactionByMember_ID,
     addTransaction,
     deleteTransactionByID,
+    getWaitTransactions
 };
