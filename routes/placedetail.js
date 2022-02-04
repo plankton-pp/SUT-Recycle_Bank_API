@@ -42,6 +42,7 @@ router.post("/", async (req, res) => {
         let productid = req.body.productid;
         let unit = req.body.unit;
         let totalprice = req.body.totalprice;
+        
 
         const results = await services.addPlaceDetail(placeid, productid, unit, totalprice);
         //validation
@@ -86,10 +87,12 @@ router.put("/", async (req, res) => {
         let productid = req.body.productid;
         let unit = req.body.unit;
         let totalprice = req.body.totalprice;
-
-        const results = await services.updatePlaceDetailById(placeid, productid, unit, totalprice, id);
+        let bankprice = req.body.bankprice;
+        let memberprice = req.body.memberprice;
+        
+        const results = await services.updatePlaceDetailById(placeid, productid, unit, totalprice, bankprice, memberprice, id);
         //validation
-        if (!placeid || !productid || !unit || !totalprice || !id) {
+        if (!placeid || !productid || !unit || !totalprice || !bankprice || !memberprice || !id) {
             return res.status(400).send({ error: true, message: 'Please provide PlaceDetail placeid productid weight totalprice or id.' })
         } else {
             let message = ""
