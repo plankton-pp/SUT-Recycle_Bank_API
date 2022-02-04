@@ -89,7 +89,7 @@ router.post("/auth", async (req, res) => {
         } else {
             // console.log(result[0].Password);
             bcrypt.compare(password, result[0].Password, (err, response) => {
-                if (password) {
+                if (response) {
                     message = "Logged in";
                     const id = result[0].ID;
                     const token = jwt.sign({ id }, process.env.JWTSECRET, {
@@ -184,6 +184,34 @@ router.delete("/:id", async (req, res) => {
 });
 
 //update data
+
+router.put("/resetPassword", async (req, res) => {
+    try {
+        let email = req.body.email;
+        let phone = req.body.phone;
+        let newpassword = req.body.newpassword;
+
+        bcrypt.hash(newpassword, saltRound, async (err, hash) => {
+            //validation
+            if (!email || !phone || !newpassword) {
+                return res.status(400).send({ error: true, message: 'Please provide Member\'s email and new password to reset.' })
+            } else {
+                const results = await services.resetPassword(email, phone, hash);
+                let message = ""
+                if (results.changedRows === 0) {
+                    message = "Member not found";
+                } else {
+                    message = "Password successfully updated";
+                }
+                return res.send({ error: false, data: results, message: message })
+            }
+
+        })
+    } catch (e) {
+        throw e;
+    }
+});
+
 router.put("/", async (req, res) => {
     try {
         let id = req.body.id;
