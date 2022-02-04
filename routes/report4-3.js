@@ -5,7 +5,10 @@ const services = require('../services/report4-3.service')
 //retrieve Summary of deposits and withdrawals
 router.get("/", async (req, res) => {
     try {
-        const result = await services.getSumOfDepoAndWithd();
+
+        let year = req.body.Year; 
+
+        const result = await services.getSumOfDepoAndWithd(year);
         let message = ""
         if (result === undefined || result.length == 0) {
             message = "Summary of deposits and withdrawals is empty";
