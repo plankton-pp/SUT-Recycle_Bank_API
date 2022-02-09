@@ -24,13 +24,37 @@ getProducts = () => {
 //     });
 // };
 
-addProduct = (typeid, name, detail, price, unitdetail, fee, createby) => {
+addProduct = (typeid, name, detail, price, unitdetail, feeid
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    , createby) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO `product` (`Product_ID`, `Type_ID`, `Name`, `Detail`,`Price_per_unit`, `Unit_Detail`,`Operation_Fee`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, ?, ?, ?, '', '', UNIX_TIMESTAMP(NOW()), ?);";
+            const sql = "INSERT INTO `product` (`Product_ID`, `Type_ID`, `Name`, `Detail`, `Price_per_unit`, `Unit_Detail`, `Fee_ID`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, ?, ?, ?, '', '', UNIX_TIMESTAMP(NOW()), ?);";
             // console.log("SQL",sql);
             // console.log("typeid, name, detail, price, createby",typeid, name, detail, price, createby);
-            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, fee, createby]);
+            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, feeid, createby]);
             
             resolve(result);
         } catch (e) {
@@ -51,11 +75,11 @@ deleteProductById = (id) => {
     });
 };
 
-updateProductById = (typeid, name, detail, price, unitdetail, updateby, productid) => {
+updateProductById = (typeid, name, detail, price, unitdetail, feeid, updateby, productid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Detail = ?, Price_per_unit = ?, Unit_Detail = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Product_ID = ?";
-            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, updateby, productid]);        
+            const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Detail = ?, Price_per_unit = ?, Unit_Detail = ?, Fee_ID = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Product_ID = ?";
+            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, feeid, updateby, productid]);        
             // console.log("typeid, name, detail, price, createby",typeid, name, detail, price, createby);
             resolve(result);
         } catch (e) {
