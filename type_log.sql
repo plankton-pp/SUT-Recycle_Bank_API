@@ -24,18 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `place`
+-- Table structure for table `type_log`
 --
 
-CREATE TABLE `place` (
-  `Place_ID` int(11) NOT NULL,
-  `Member_ID` int(11) NOT NULL,
-  `Place_By` varchar(45) NOT NULL,
-  `Net_Price` float NOT NULL,
-  `Status` varchar(45) NOT NULL,
-  `Create_Date` varchar(45) NOT NULL,
+CREATE TABLE `type_log` (
+  `ID` int(11) NOT NULL,
+  `Type_ID` int(11) NOT NULL,
+  `Name` varchar(45) NOT NULL,
   `Update_Date` varchar(45) NOT NULL,
-  `Employee_ID` int(11) NOT NULL
+  `Create_Date` varchar(45) NOT NULL,
+  `Update_By` int(11) NOT NULL,
+  `Create_By` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -43,20 +42,20 @@ CREATE TABLE `place` (
 --
 
 --
--- Indexes for table `place`
+-- Indexes for table `type_log`
 --
-ALTER TABLE `place`
-  ADD PRIMARY KEY (`Place_ID`);
+ALTER TABLE `type_log`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `place`
+-- AUTO_INCREMENT for table `type_log`
 --
-ALTER TABLE `place`
-  MODIFY `Place_ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `type_log`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -24,18 +24,22 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `place`
+-- Table structure for table `product_log`
 --
 
-CREATE TABLE `place` (
-  `Place_ID` int(11) NOT NULL,
-  `Member_ID` int(11) NOT NULL,
-  `Place_By` varchar(45) NOT NULL,
-  `Net_Price` float NOT NULL,
-  `Status` varchar(45) NOT NULL,
-  `Create_Date` varchar(45) NOT NULL,
+CREATE TABLE `product_log` (
+  `ID` int(11) NOT NULL,
+  `Product_ID` int(11) NOT NULL,
+  `Type_ID` int(11) NOT NULL,
+  `Name` varchar(45) NOT NULL,
+  `Detail` varchar(45) NOT NULL,
+  `Price_per_unit` float NOT NULL,
+  `Unit_Detail` varchar(45) NOT NULL,
+  `Fee_ID` int(11) NOT NULL,
   `Update_Date` varchar(45) NOT NULL,
-  `Employee_ID` int(11) NOT NULL
+  `Update_By` int(11) NOT NULL,
+  `Create_Date` varchar(45) NOT NULL,
+  `Create_By` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -43,20 +47,20 @@ CREATE TABLE `place` (
 --
 
 --
--- Indexes for table `place`
+-- Indexes for table `product_log`
 --
-ALTER TABLE `place`
-  ADD PRIMARY KEY (`Place_ID`);
+ALTER TABLE `product_log`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `place`
+-- AUTO_INCREMENT for table `product_log`
 --
-ALTER TABLE `place`
-  MODIFY `Place_ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `product_log`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
