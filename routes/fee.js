@@ -40,7 +40,8 @@ router.post("/", async (req, res) => {
         //console.log(req);
         let fee = req.body.fee;
         let createby = req.body.createby;
-        fee = parseFloat(fee).toFixed(2).toString();
+        fee = parseFloat(fee).toFixed(2);
+        
         
         console.log("result",req);
         const results = await services.addFee(fee, createby);
@@ -86,7 +87,7 @@ router.put("/", async (req, res) => {
         let id = req.body.id;
         let fee = req.body.fee;
         let updateby = req.body.updateby;
-      
+        fee = parseFloat(fee).toFixed(2);
         
         const results = await services.updateFeeById(id,fee,updateby);
         //validation
