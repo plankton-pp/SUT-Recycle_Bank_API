@@ -42,12 +42,10 @@ router.post("/", async (req, res) => {
         let status = req.body.status;
         let empid = req.body.empid;
         let netprice = req.body.netprice;
-        let datenow = Date.now();
-        datenow = datenow.toString();
-        datenow = datenow.substr(0, 9);
+
 
         const results = await services.addPlace(memid, placeby, netprice ,status, empid);
-        // const results2 = await services.getLastplace(memid,placeby,status,datenow,empid);
+        
         //validation
         if (!memid || !placeby|| !status|| !netprice|| !empid) {
             return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby netprice status or empid.' })
@@ -114,27 +112,27 @@ router.put("/", async (req, res) => {
 
 
 //getlastplace
-router.post("/getlastplce", async (req, res) => {
-    try {
-        let memid = req.body.memid;
-        let placeby = req.body.placeby;
-        let status = req.body.status;
-        let empid = req.body.empid;
-        let datenow = Date.now();
-        datenow = datenow.toString();
-        datenow = datenow.substr(0, 9);
+// router.post("/getlastplce", async (req, res) => {
+//     try {
+//         let memid = req.body.memid;
+//         let placeby = req.body.placeby;
+//         let status = req.body.status;
+//         let empid = req.body.empid;
+//         let datenow = Date.now();
+//         datenow = datenow.toString();
+//         datenow = datenow.substr(0, 9);
 
-        const results = await services.getLastplace(memid,placeby,status,datenow,empid);
-        //validation
-        if (!memid || !placeby|| !status|| !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status or empid.' })
-        } else {
-            return res.send({ error: false, data: results, message: 'successfully get last place' })
-        }
-    } catch (e) {
-        throw e;
-    }
-});
+//         const results = await services.getLastplace(memid,placeby,status,datenow,empid);
+//         //validation
+//         if (!memid || !placeby|| !status|| !empid) {
+//             return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status or empid.' })
+//         } else {
+//             return res.send({ error: false, data: results, message: 'successfully get last place' })
+//         }
+//     } catch (e) {
+//         throw e;
+//     }
+// });
 
 
 
