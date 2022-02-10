@@ -20,7 +20,7 @@ const type = require("./routes/type");
 const product = require("./routes/product");
 const place = require("./routes/place");
 const email = require("./routes/email");
-
+const fee = require("./routes/fee");
 const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
 const report2 = require("./routes/report2");
@@ -78,6 +78,7 @@ app.use("/api/v1/placedetail", placedetail);
 app.use("/api/v1/deposit", deposit);
 app.use("/api/v1/report2", report2);
 app.use("/api/v1/email", email);
+app.use("/api/v1/fee", fee);
 
 
 if (process.env.NODE_ENV === 'test') {

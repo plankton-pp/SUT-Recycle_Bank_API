@@ -24,7 +24,7 @@ getMemberById = (id) => {
     });
 };
 
-loginMember = (Member_User) => {
+getMemberByUsername = (Member_User) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "SELECT * FROM members WHERE Username = ?";
@@ -85,13 +85,27 @@ updateMemberById = (Firstname, Lastname, id) => {
     });
 };
 
+resetPassword = (email, phone, newpassword) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "UPDATE members SET Password = ?  WHERE Email = ? and Phone_number = ?";
+            const result = await conn.query(sql, [newpassword, email, phone]);
+            const id = await conn.query("SELECT Employee_ID FROM employee WHERE Email = ? and Phone_number = ?", [email, phone]);
+            resolve({ ...result, updatedId: id });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 
 module.exports = {
     getMembers,
     getMemberById,
-    loginMember,
+    getMemberByUsername,
     searchMember,
     addMember,
     deleteMemberById,
     updateMemberById,
+    resetPassword,
 };

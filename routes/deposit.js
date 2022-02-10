@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const servicesPlace = require('../services/place.service')
 const servicesPlaceDetail = require('../services/placedetail.service')
+const servicesTransaction = require('../services/transaction.service')
 
 router.post("/", async (req, res) => {
     try {
@@ -9,15 +10,15 @@ router.post("/", async (req, res) => {
         let placeby = req.body.placeby;
         let status = req.body.status;
         let empid = req.body.empid;
-        let datenow = Date.now();
-        datenow = datenow.toString();
-        datenow = datenow.substr(0, 9);
+        let netprice = req.body.netprice;        
+        let type = "waiting";
+      
 
-        const resultsPlace = await servicesPlace.addPlace(memid, placeby, status, empid);
-        // const results2 = await services.getLastplace(memid,placeby,status,datenow,empid);
+        const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice ,status, empid);
+        
         //validation
-        if (!memid || !placeby || !status || !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status or empid.' })
+        if (!memid || !placeby || !netprice || !status || !empid) {
+            return res.status(400).send({ error: true, message: 'Please provide Place\'s all data.' })
         } else {
             //Global variable (this scope)
             let allResults = { error: false, dataPlace: resultsPlace, message: 'Place successfully added' }
@@ -28,10 +29,10 @@ router.post("/", async (req, res) => {
                 let products = Array.from(req.body.product);
                 if (products && products.length > 0) {
                     products.forEach(async (item, index) => {
-                        const results = await servicesPlaceDetail.addPlaceDetail(placeid, item.productid, item.unit, item.totalprice);
+                        const results = await servicesPlaceDetail.addPlaceDetail(placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.feeid, item.fee, item.unit, item.totalprice);
                         //validation
-                        if (!placeid || !item.productid || !item.unit || !item.totalprice) {
-                            return res.status(400).send({ error: true, message: 'Please provide placeid productid unit and totalprice.' })
+                        if (!placeid || !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.feeid || !item.fee || !item.unit || !item.totalprice) {
+                            return res.status(400).send({ error: true, message: 'Please provide all data.' })
                         } else {
                             allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'placedetail successfully added' }
                             console.log(allResults[`dataOrder-${index + 1}`]);
@@ -49,6 +50,15 @@ router.post("/", async (req, res) => {
                     //         console.log(allResults[`dataOrder-${index + 1}`]);
                     //     }
                     // })
+
+                    
+                    const results = await servicesTransaction.addTransaction(placeid, memid, empid, type);
+                        //validation
+                        if (!placeid || !memid || !empid || !type) {
+                            return res.status(400).send({ error: true, message: 'Please provide placeid memid empid and type.' })
+                        } else {
+                            return res.send({ error: false, data: results, message: 'Transaction successfully added' })
+                        }
                 }
             } catch (e) {
                 throw e;
