@@ -23,6 +23,8 @@ const email = require("./routes/email");
 const fee = require("./routes/fee");
 const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
+const userplace = require("./routes/userplace");
+
 
 app.use(cors());
 app.use(cookieParser());
@@ -77,6 +79,7 @@ app.use("/api/v1/placedetail", placedetail);
 app.use("/api/v1/deposit", deposit);
 app.use("/api/v1/email", email);
 app.use("/api/v1/fee", fee);
+app.use("/api/v1/userplace", userplace);
 
 
 if (process.env.NODE_ENV === 'test') {
