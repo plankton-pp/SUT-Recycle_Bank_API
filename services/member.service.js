@@ -85,6 +85,19 @@ updateMemberById = (Firstname, Lastname, id) => {
     });
 };
 
+resetPassword = (email, phone, newpassword) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "UPDATE members SET Password = ?  WHERE Email = ? and Phone_number = ?";
+            const result = await conn.query(sql, [newpassword, email, phone]);
+            const id = await conn.query("SELECT Employee_ID FROM employee WHERE Email = ? and Phone_number = ?", [email, phone]);
+            resolve({ ...result, updatedId: id });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 
 module.exports = {
     getMembers,
@@ -94,4 +107,5 @@ module.exports = {
     addMember,
     deleteMemberById,
     updateMemberById,
+    resetPassword,
 };

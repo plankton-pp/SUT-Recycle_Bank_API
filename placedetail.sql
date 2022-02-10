@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2022 at 07:15 PM
+-- Generation Time: Feb 09, 2022 at 08:44 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -30,19 +30,21 @@ SET time_zone = "+00:00";
 CREATE TABLE `placedetail` (
   `Place_Detail_ID` int(11) NOT NULL,
   `Place_ID` int(11) NOT NULL,
+  `Type_ID` int(11) NOT NULL,
+  `Type_Name` varchar(45) NOT NULL,
   `Product_ID` int(11) NOT NULL,
+  `Product_Name` varchar(45) NOT NULL,
+  `Price_per_Unit` float NOT NULL,
+  `Unit_detail` varchar(45) NOT NULL,
+  `Fee_ID` int(11) NOT NULL,
+  `Fee` float NOT NULL,
   `Unit` float NOT NULL,
   `Total_Price` float NOT NULL,
+  `Bank_Price` float NOT NULL,
+  `Member_Price` float NOT NULL,
   `Create_Date` varchar(45) NOT NULL,
   `Update_Date` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `placedetail`
---
-
-INSERT INTO `placedetail` (`Place_Detail_ID`, `Place_ID`, `Product_ID`, `Unit`, `Total_Price`, `Create_Date`, `Update_Date`) VALUES
-(5, 2, 2, 2, 2, '1643568682', '1643568692');
 
 --
 -- Indexes for dumped tables
@@ -62,7 +64,7 @@ ALTER TABLE `placedetail`
 -- AUTO_INCREMENT for table `placedetail`
 --
 ALTER TABLE `placedetail`
-  MODIFY `Place_Detail_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Place_Detail_ID` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

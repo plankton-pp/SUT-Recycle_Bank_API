@@ -11,16 +11,14 @@ router.post("/", async (req, res) => {
         let status = req.body.status;
         let empid = req.body.empid;
         let netprice = req.body.netprice;        
-        let datenow = Date.now();
         let type = "waiting";
-        datenow = datenow.toString();
-        datenow = datenow.substr(0, 9);
+      
 
-        const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice, status, empid);
-        // const results2 = await services.getLastplace(memid,placeby,status,datenow,empid);
+        const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice ,status, empid);
+        
         //validation
-        if (!memid || !placeby || !status || !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Place\'s memid placeby status or empid.' })
+        if (!memid || !placeby || !netprice || !status || !empid) {
+            return res.status(400).send({ error: true, message: 'Please provide Place\'s all data.' })
         } else {
             //Global variable (this scope)
             let allResults = { error: false, dataPlace: resultsPlace, message: 'Place successfully added' }
@@ -31,10 +29,10 @@ router.post("/", async (req, res) => {
                 let products = Array.from(req.body.product);
                 if (products && products.length > 0) {
                     products.forEach(async (item, index) => {
-                        const results = await servicesPlaceDetail.addPlaceDetail(placeid, item.productid, item.unit, item.totalprice);
+                        const results = await servicesPlaceDetail.addPlaceDetail(placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.feeid, item.fee, item.unit, item.totalprice);
                         //validation
-                        if (!placeid || !item.productid || !item.unit || !item.totalprice) {
-                            return res.status(400).send({ error: true, message: 'Please provide placeid productid unit and totalprice.' })
+                        if (!placeid || !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.feeid || !item.fee || !item.unit || !item.totalprice) {
+                            return res.status(400).send({ error: true, message: 'Please provide all data.' })
                         } else {
                             allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'placedetail successfully added' }
                             console.log(allResults[`dataOrder-${index + 1}`]);
