@@ -26,6 +26,14 @@ const deposit = require("./routes/deposit");
 const userplace = require("./routes/userplace");
 
 
+
+//Route Report
+const report2 = require("./routes/report2");
+const report43 = require("./routes/report4-3");
+const report51 = require("./routes/report5-1");
+
+
+
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json(parserLimit));
@@ -80,6 +88,9 @@ app.use("/api/v1/deposit", deposit);
 app.use("/api/v1/email", email);
 app.use("/api/v1/fee", fee);
 app.use("/api/v1/userplace", userplace);
+app.use("/api/v1/report2", report2);
+app.use("/api/v1/report4-3", report43);
+app.use("/api/v1/report5-1", report51);
 
 
 if (process.env.NODE_ENV === 'test') {
