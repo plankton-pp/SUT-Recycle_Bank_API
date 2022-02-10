@@ -24,31 +24,7 @@ getProducts = () => {
 //     });
 // };
 
-addProduct = (typeid, name, detail, price, unitdetail, feeid
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    , createby) => {
+addProduct = (typeid, name, detail, price, unitdetail, feeid, createby) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "INSERT INTO `product` (`Product_ID`, `Type_ID`, `Name`, `Detail`, `Price_per_unit`, `Unit_Detail`, `Fee_ID`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, ?, ?, ?, '', '', UNIX_TIMESTAMP(NOW()), ?);";
