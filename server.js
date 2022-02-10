@@ -25,6 +25,10 @@ const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
 const userplace = require("./routes/userplace");
 
+//Route Report
+const report1 = require("./routes/report1");
+const report42 = require("./routes/report4-2");
+const report52 = require("./routes/report5-2");
 
 
 //Route Report
@@ -91,6 +95,9 @@ app.use("/api/v1/userplace", userplace);
 app.use("/api/v1/report2", report2);
 app.use("/api/v1/report4-3", report43);
 app.use("/api/v1/report5-1", report51);
+app.use("/api/v1/report1", report1);
+app.use("/api/v1/report5-2", report52);
+app.use("/api/v1/report4-2", report42);
 
 
 if (process.env.NODE_ENV === 'test') {
