@@ -23,6 +23,7 @@ const email = require("./routes/email");
 const fee = require("./routes/fee");
 const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
+const report2 = require("./routes/report2");
 
 const report43 = require("./routes/report4-3");
 
@@ -77,6 +78,7 @@ app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
 app.use("/api/v1/placedetail", placedetail);
 app.use("/api/v1/deposit", deposit);
+app.use("/api/v1/report2", report2);
 app.use("/api/v1/email", email);
 app.use("/api/v1/fee", fee);
 
