@@ -23,9 +23,14 @@ const email = require("./routes/email");
 const fee = require("./routes/fee");
 const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
-const report2 = require("./routes/report2");
 
+
+//Route Report
+const report2 = require("./routes/report2");
 const report43 = require("./routes/report4-3");
+const report51 = require("./routes/report5-1");
+
+
 
 app.use(cors());
 app.use(cookieParser());
@@ -78,10 +83,11 @@ app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
 app.use("/api/v1/placedetail", placedetail);
 app.use("/api/v1/deposit", deposit);
-app.use("/api/v1/report2", report2);
 app.use("/api/v1/email", email);
 app.use("/api/v1/fee", fee);
+app.use("/api/v1/report2", report2);
 app.use("/api/v1/report4-3", report43);
+app.use("/api/v1/report5-1", report51);
 
 
 if (process.env.NODE_ENV === 'test') {
