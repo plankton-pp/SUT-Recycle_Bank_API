@@ -24,6 +24,11 @@ const email = require("./routes/email");
 const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
 
+//Route Report
+const report51 = require("./routes/report5-1");
+
+
+
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json(parserLimit));
@@ -76,7 +81,7 @@ app.use("/api/v1/place", place);
 app.use("/api/v1/placedetail", placedetail);
 app.use("/api/v1/deposit", deposit);
 app.use("/api/v1/email", email);
-
+app.use("/api/v1/report5-1", report51);
 
 if (process.env.NODE_ENV === 'test') {
     //listen port
