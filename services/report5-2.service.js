@@ -21,7 +21,7 @@ getIncomedetail = (year) => {
                 FROM place 
                 WHERE YEAR(FROM_UNIXTIME(CREATE_Date)) like ?
                 GROUP BY Month`;
-                const result = await conn.query(sql, [year]);               
+                const result = await conn.query(sql, [year]);             
                 resolve(result);
             } catch (e) {
                 reject(e);
