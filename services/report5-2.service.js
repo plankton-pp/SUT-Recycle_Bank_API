@@ -8,7 +8,7 @@ getIncomedetail = (year) => {
                 `SELECT date_format(FROM_UNIXTIME(Create_Date),'%M %Y') as month , sum(Net_Price) AS Bank, sum(Net_Price)*.25 AS Emp, sum(Net_Price)*.75 AS Fund 
                 FROM place                  
                 GROUP BY Month`;
-                const result = await conn.query(sql, [year]);
+                const result = await conn.query(sql);
                 resolve(result);
             } catch (e) {
                 reject(e);
