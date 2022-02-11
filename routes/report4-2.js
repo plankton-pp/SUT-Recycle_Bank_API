@@ -5,8 +5,6 @@ const services = require('../services/report4-2.service')
 //retrieve all data
 router.get("/", async (req, res) => {
     try {
-        // let memberid = req.body.memberid;
-        // let placeid = req.body.placeid;
 
         const result0 = await services.getUser();
         let results1 = [];
