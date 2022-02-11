@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2022 at 10:22 AM
+-- Generation Time: Feb 09, 2022 at 08:44 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -32,8 +32,8 @@ CREATE TABLE `type` (
   `Name` varchar(45) NOT NULL,
   `Update_Date` varchar(45) NOT NULL,
   `Create_Date` varchar(45) NOT NULL,
-  `Update_By` varchar(45) NOT NULL,
-  `Create_By` varchar(45) NOT NULL
+  `Update_By` int(11) NOT NULL,
+  `Create_By` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -41,12 +41,25 @@ CREATE TABLE `type` (
 --
 
 INSERT INTO `type` (`Type_ID`, `Name`, `Update_Date`, `Create_Date`, `Update_By`, `Create_By`) VALUES
-(1, 'กระดาษ', '', '1643273480', '', 'Developer'),
-(2, 'แก้ว', '', '1643273509', '', 'Developer'),
-(3, 'พลาสติก', '', '1643273527', '', 'Developer'),
-(4, 'โลหะ', '', '1643273546', '', 'Developer'),
-(5, 'เครื่องใช้ไฟฟ้า', '', '1643273558', '', 'Developer'),
-(6, 'ิอื่นๆ', '', '1643273697', '', 'Developer');
+(1, 'กระดาษ', '', '1643273480', 0, 0),
+(2, 'แก้ว', '', '1643273509', 0, 0),
+(3, 'พลาสติก', '', '1643273527', 0, 0),
+(4, 'โลหะ', '', '1643273546', 0, 0),
+(5, 'เครื่องใช้ไฟฟ้า', '', '1643273558', 0, 0),
+(6, 'อื่นๆ', '', '1643273697', 0, 0);
+
+--
+-- Triggers `type`
+--
+DELIMITER $$
+CREATE TRIGGER `update_type` AFTER UPDATE ON `type` FOR EACH ROW BEGIN
+    IF OLD.Update_Date != new.Update_Date THEN
+        INSERT INTO type_log(Type_ID,Name,Update_Date,Update_By,Create_Date,Create_By)
+        VALUES(old.Type_ID,old.Name,old.Update_Date,old.Update_By,old.Create_Date,old.Create_By);
+    END IF;
+END
+$$
+DELIMITER ;
 
 --
 -- Indexes for dumped tables

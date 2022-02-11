@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const services = require('../services/email.service')
 
-router.get("/", async (req, res) => {
-    let sendTo = 'b6123338@g.sut.ac.th'
+router.post("/validate", async (req, res) => {
+
+    let sendTo = req.body.sendto
     let context = {
-        subject: 'Test send mail',
-        body: 'Hello Peter'
+        subject: 'Confirm validational code',
+        body: req.body.validateCode
     } 
     try {
         const result = await services.sendMail(sendTo,context);
