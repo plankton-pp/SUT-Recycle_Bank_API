@@ -23,8 +23,7 @@ router.put("/", async (req, res) => {
 //retrieve all data
 router.get("/placedetail", async (req, res) => {
     try {
-        let memberid = req.body.memberid;
-        let placeid = req.body.placeid;
+        let memberid = req.body.memberid;      
 
         const results0 = await services.getUserplace(memberid);
         let results1 = [];
@@ -36,7 +35,7 @@ router.get("/placedetail", async (req, res) => {
         }
                
         //validation
-        if (!placeid) {
+        if (!memberid) {
             return res.status(400).send({ error: true, message: 'Please provide placeid.' })
         } else {
             // results0[0].placedetail=results1;

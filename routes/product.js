@@ -42,16 +42,15 @@ router.post("/", async (req, res) => {
         let name = req.body.name;
         let detail = req.body.detail;        
         let price = req.body.price; 
-        let unitdetail = req.body.unitdetail;    
-        let feeid = req.body.feeid;           
+        let unitdetail = req.body.unitdetail; 
         let createby = req.body.createby;
         
         price = parseFloat(price).toFixed(2);
         
-        const results = await services.addProduct(typeid, name, detail, price, unitdetail, feeid, createby);
+        const results = await services.addProduct(typeid, name, detail, price, unitdetail, createby);
         
         //validation
-        if (!typeid || !name|| !price|| !feeid || !createby || !unitdetail) {
+        if (!typeid || !name|| !price || !createby || !unitdetail) {
             return res.status(400).send({ error: true, message: 'Please provide product\'s typeid name price feeid unitdetail and createby.' })
         } else {
             return res.send({ error: false, data: results, message: 'Product successfully added' })
@@ -94,16 +93,15 @@ router.put("/", async (req, res) => {
         let detail = req.body.detail;        
         let price = req.body.price;            
         let unitdetail = req.body.unitdetail;
-        let feeid = req.body.feeid;
         let updateby = req.body.updateby;     
         let productid = req.body.productid;  
         
         price = parseFloat(price).toFixed(2);
         
-        const results = await services.updateProductById(typeid, name, detail, price, unitdetail, feeid, updateby, productid);
+        const results = await services.updateProductById(typeid, name, detail, price, unitdetail, updateby, productid);
         //validation
-        if (!productid|| !typeid|| !name|| !price|| !unitdetail || !feeid || !updateby) {
-            return res.status(400).send({ error: true, message: 'Please provide pruduct\'s productid typeid name price unitdetail fee updateby .' })
+        if (!productid|| !typeid|| !name|| !price|| !unitdetail || !updateby) {
+            return res.status(400).send({ error: true, message: 'Please provide pruduct\'s productid typeid name price unitdetail  updateby .' })
         } else {
             let message = ""
             if (results.changedRows === 0) {
