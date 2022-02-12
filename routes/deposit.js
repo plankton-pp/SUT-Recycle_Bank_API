@@ -29,9 +29,9 @@ router.post("/", async (req, res) => {
                 let products = Array.from(req.body.product);
                 if (products && products.length > 0) {
                     products.forEach(async (item, index) => {
-                        const results = await servicesPlaceDetail.addPlaceDetail(placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.feeid, item.fee, item.unit, item.totalprice);
+                        const results = await servicesPlaceDetail.addPlaceDetail(memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice);
                         //validation
-                        if (!placeid || !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.feeid || !item.fee || !item.unit || !item.totalprice) {
+                        if (!placeid || !memid|| !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.fee || !item.unit || !item.totalprice) {
                             return res.status(400).send({ error: true, message: 'Please provide all data.' })
                         } else {
                             allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'placedetail successfully added' }

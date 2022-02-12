@@ -37,22 +37,21 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-
         let placeid = req.body.placeid;
+        let memberid = req.body.memberid;        
         let typeid = req.body.typeid;
         let typename = req.body.typename;
         let productid = req.body.productid;
         let productname = req.body.productname;
         let productprice = req.body.productprice;
-        let unitdetail = req.body.unitdetail;
-        let feeid = req.body.feeid;
+        let unitdetail = req.body.unitdetail;      
         let fee = req.body.fee;
         let unit = req.body.unit;
         let totalprice = req.body.totalprice;
        
-        const results = await services.addPlaceDetail(placeid, typeid, typename, productid, productname, productprice, unitdetail, feeid, fee, unit, totalprice);
+        const results = await services.addPlaceDetail(memberid, placeid,  typeid, typename, productid, productname, productprice, unitdetail, fee, unit, totalprice);
         //validation
-        if (!placeid || !typeid || !typename || !productid || !productname || !productprice || !unitdetail || !feeid || !fee || !unit || !totalprice) {
+        if (!placeid || !memberid || !typeid || !typename || !productid || !productname || !productprice || !unitdetail || !fee || !unit || !totalprice) {
             return res.status(400).send({ error: true, message: 'Please input all data.' })
         } else {
             return res.send({ error: false, data: results, message: 'placedetail successfully added' })
@@ -89,21 +88,21 @@ router.delete("/:id", async (req, res) => {
 router.put("/", async (req, res) => {
     try {
         let placedetailid = req.body.placedetailid;
+        let memberid = req.body.memberid;
         let placeid = req.body.placeid;
         let typeid = req.body.typeid;
         let typename = req.body.typename;
         let productid = req.body.productid;
         let productname = req.body.productname;
         let productprice = req.body.productprice;
-        let unitdetail = req.body.unitdetail;
-        let feeid = req.body.feeid;
+        let unitdetail = req.body.unitdetail;        
         let fee = req.body.fee;
         let unit = req.body.unit;
         let totalprice = req.body.totalprice;       
          
-        const results = await services.updatePlaceDetailById(placeid, typeid, typename, productid, productname, productprice, unitdetail, feeid, fee, unit, totalprice, placedetailid);
+        const results = await services.updatePlaceDetailById(memberid, placeid,  typeid, typename, productid, productname, productprice, unitdetail,  fee, unit, totalprice, placedetailid);
         //validation
-        if (!placeid || !typeid || !typename || !productid || !productname || !productprice || !unitdetail || !feeid || !fee || !unit || !totalprice || !placedetailid) {
+        if (!placeid || !memberid || !typeid || !typename || !productid || !productname || !productprice || !unitdetail  || !fee || !unit || !totalprice || !placedetailid) {
             return res.status(400).send({ error: true, message: 'Please provide all data.' })
         } else {
             let message = ""
