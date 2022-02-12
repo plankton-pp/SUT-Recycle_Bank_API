@@ -18,6 +18,21 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/lastfee", async (req, res) => {
+    try {
+        const result = await services.getLastId();
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Fee table is empty";
+        } else {
+            message = "Successfully retrieved Last Fees";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
 //retrieve data by id
 // router.get("/:id", async (req, res) => {
 //     try {

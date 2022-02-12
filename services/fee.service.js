@@ -12,17 +12,17 @@ getFees = () => {
     });
 };
 
-// getBookById = (id) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             const sql = "SELECT * FROM books WHERE id = ?";
-//             const result = await conn.query(sql, [id]);
-//             resolve(result);
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
+getLastId = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "SELECT * FROM fee ORDER BY ID DESC LIMIT 1";
+            const result = await conn.query(sql,);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 addFee = (fee, createby) => {
     return new Promise(async (resolve, reject) => {
@@ -80,5 +80,6 @@ module.exports = {
     addFee,
     deleteFeeById,
     updateFeeById,
-    updateFee
+    updateFee,
+    getLastId
 };
