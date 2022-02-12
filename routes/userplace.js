@@ -21,7 +21,7 @@ router.put("/", async (req, res) => {
 });
 
 //retrieve all data
-router.put("/placedetail", async (req, res) => {
+router.get("/placedetail", async (req, res) => {
     try {
         let memberid = req.body.memberid;      
 
