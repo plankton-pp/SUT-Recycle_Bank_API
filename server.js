@@ -36,8 +36,7 @@ const report53 = require("./routes/report5-3");
 const report2 = require("./routes/report2");
 const report43 = require("./routes/report4-3");
 const report51 = require("./routes/report5-1");
-
-
+const emailing = require("./routes/email");
 
 app.use(cors());
 app.use(cookieParser());
@@ -79,6 +78,7 @@ app.use(
 //         next();
 //     }
 // });
+
 app.use("/", index);
 app.use("/api/v1/book", book);
 app.use("/api/v1/member", member);
@@ -102,6 +102,7 @@ app.use("/api/v1/report4-2", report42);
 app.use("/api/v1/report5-3", report53);
 
 
+app.use("/api/v1/email", emailing);
 
 if (process.env.NODE_ENV === 'test') {
     //listen port
