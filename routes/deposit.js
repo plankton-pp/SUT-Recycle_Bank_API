@@ -22,10 +22,9 @@ router.post("/", async (req, res) => {
         if (!memid || !placeby || !netprice || !status || !empid) {
             return res.status(400).send({ error: true, message: 'Please provide Place\'s all data.' })
         } else {
-            //Global variable (this scope)
-            let allResults = { error: false, dataPlace: resultsPlace, message: 'Place successfully added' }
+            //Global variable (this scope)            
             let placeid = resultsPlace.insertId;
-
+            let allResults;
             //Try to call other API
             try {
                 let products = Array.from(req.body.product);
@@ -35,35 +34,30 @@ router.post("/", async (req, res) => {
                         //validation
                         if (!placeid || !memid|| !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.fee || !item.unit || !item.totalprice) {
                             return res.status(400).send({ error: true, message: 'Please provide all data.' })
-                        } else {
-                            allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'placedetail successfully added' }
-                            // console.log(allResults[`dataOrder-${index + 1}`]);
-                        }
-                    })            
-                                          
-                        const results2 = await servicesTransaction.addTransaction(placeid, memid, empid, type, detail);
-                            //validation
-                            if (!placeid || !memid || !empid || !type || !detail) {
-                                return res.status(400).send({ error: true, message: 'Please provide placeid memid empid detail and type.' })
-                            } else {
-                                return res.send({ error: false, data: results2, message: 'Transaction successfully added' })  
-                                let transactionid = results2.insertId;             
-                                
-                            }
-                         
-                            if(String(transactionid).length > 0){
-                                const results2 = await servicesWallet.updateWalletById(memid, netprice,transactionid,placeid);
-                                //validation
-                                if (!netprice || !transactionid || !placeid || !memid) {
-                                    return res.status(400).send({ error: true, message: 'Please provide placeid memid empid and type.' })
-                                } else {
-                                    return res.send({ error: false, data: results, data2: results2, message: 'Transaction successfully added' })                   
-                                
+                        } else {                         
+                            if(results.length >=0){
+                                const results2 = await servicesTransaction.addTransaction(placeid, memid, empid, type, detail);
+                                if (!placeid || !memid || !empid || !type) {
+                                    return res.status(400).send({ error: true, message: 'Please provide placeid memid empid detail and type.' })
+                                } else {        
+                                    let transactionid = results2.insertId;          
+                                    if(String(transactionid).length > 0){
+                                        const results3 = await servicesWallet.updateWalletById(netprice,memid);
+                                        // updateWalletById(memid, netprice,transactionid,placeid)
+                                        //validation
+                                        if (!netprice || !memid) {
+                                            // !netprice || !transactionid || !placeid || !memid
+                                            return res.status(400).send({ error: true, message: 'Please provide netprice.' })
+                                        } else {                                           
+                                            allResults = { error: false, data: results, data2: results2, data3: results3, message: 'Deposit successfully added' }
+                                        }
+                                    }   
                                 }
-                            }   
-                            
-                   
-                    
+                                
+
+                            }
+                        }
+                    })       
                     }
             } catch (e) {
                 throw e;
