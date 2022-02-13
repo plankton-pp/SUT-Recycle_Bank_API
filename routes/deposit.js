@@ -8,11 +8,11 @@ const servicesWallet = require('../services/wallet.service')
 router.post("/", async (req, res) => {
     try {
         let memid = req.body.memid;
-        let placeby = req.body.placeby;
-        let status = req.body.status;
+        let placeby = req.body.placeby;        
         let empid = req.body.empid;
         let detail = req.body.detail;
-        let netprice = req.body.netprice;        
+        let netprice = req.body.netprice;  
+        let status = "unpaid";      
         let type = "deposit";
       
 
