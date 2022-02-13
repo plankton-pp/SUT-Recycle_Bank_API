@@ -2,9 +2,9 @@ const express = require('express');
 const router = express.Router();
 const services = require('../services/report5-4.service')
 
-router.get("/", async (req, res) => {
+router.get("/:year", async (req, res) => {
     try {
-        let year = req.body.year;  
+        let year = req.params.year;  
 
         const result = await services.getProductdetail(year);
         let message = ""

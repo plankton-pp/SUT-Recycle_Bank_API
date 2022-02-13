@@ -21,9 +21,9 @@ router.put("/", async (req, res) => {
 });
 
 //retrieve all data
-router.get("/placedetail", async (req, res) => {
+router.get("/placedetail/:memberid", async (req, res) => {
     try {
-        let memberid = req.body.memberid;      
+        let memberid = req.params.memberid;      
 
         const results0 = await services.getUserplace(memberid);
         let results1 = [];

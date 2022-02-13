@@ -2,10 +2,9 @@ const express = require('express');
 const router = express.Router();
 const services = require('../services/report5-2.service')
 
-router.get("/", async (req, res) => {
+router.get("/:year", async (req, res) => {
     try {
-        let year = req.body.year;  
-
+        let year = req.params.year;
         const result = await services.getIncomedetail(year);
         let message = ""
         if (result === undefined || result.length == 0) {
