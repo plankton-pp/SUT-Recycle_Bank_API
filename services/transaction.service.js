@@ -24,11 +24,11 @@ getTransactionByMember_ID = (id) => {
     });
 };
 
-addTransaction = (Place_ID, Place_Members_ID, Place_Employee_ID, Type) => {
+addTransaction = (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Detail) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO transactions (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Create_Date) VALUES(?, ?, ?, ?, UNIX_TIMESTAMP(NOW()))";
-            const result = await conn.query(sql, [Place_ID, Place_Members_ID, Place_Employee_ID, Type]);
+            const sql = "INSERT INTO transactions (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Detail, Create_Date) VALUES(?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()))";
+            const result = await conn.query(sql, [Place_ID, Place_Members_ID, Place_Employee_ID, Type, Detail]);
             resolve(result);
         } catch (e) {
             reject(e);

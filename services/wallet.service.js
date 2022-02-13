@@ -51,7 +51,7 @@ deleteWalletByMember_ID = (id) => {
 updateWalletById = (Balance, id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE wallets SET Balance = ? WHERE Member_ID = ?";
+            const sql = "UPDATE wallets SET Balance = Balance + ? WHERE Member_ID = ?";
             const result = await conn.query(sql, [Balance, id]);
             resolve(result);
         } catch (e) {
