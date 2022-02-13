@@ -12,6 +12,31 @@ getAllWallet = () => {
     });
 };
 
+getWalletWithBalance = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = 
+                `SELECT 
+                    M.ID,
+                    M.Firstname,
+                    M.Lastname,
+                    DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(T.Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%Y-%m-%d') as Create_Date,
+                    W.Balance
+                FROM wallets W
+                JOIN members M
+                ON M.ID = W.Member_ID
+                JOIN transactions T
+                ON T.ID = W.Transactions_ID
+                WHERE W.Balance = 0
+                `;
+            const result = await conn.query(sql, []);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 getWalletByMemberId = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -48,11 +73,11 @@ deleteWalletByMember_ID = (id) => {
     });
 };
 
-updateWalletById = (Balance, id) => {
+updateWalletById = (Balance, Transactions_ID, id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE wallets SET Balance = Balance + ? WHERE Member_ID = ?";
-            const result = await conn.query(sql, [Balance, id]);
+            const sql = "UPDATE wallets SET Balance = Balance + ?, Transactions_ID = ? WHERE Member_ID = ?";
+            const result = await conn.query(sql, [Balance, Transactions_ID, id,]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -63,6 +88,7 @@ updateWalletById = (Balance, id) => {
 
 module.exports = {
     getAllWallet,
+    getWalletWithBalance,
     getWalletByMemberId,
     addWallet,
     deleteWalletByMember_ID,
