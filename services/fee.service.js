@@ -12,24 +12,24 @@ getFees = () => {
     });
 };
 
-// getBookById = (id) => {
-//     return new Promise(async (resolve, reject) => {
-//         try {
-//             const sql = "SELECT * FROM books WHERE id = ?";
-//             const result = await conn.query(sql, [id]);
-//             resolve(result);
-//         } catch (e) {
-//             reject(e);
-//         }
-//     });
-// };
+getLastId = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "SELECT * FROM fee ORDER BY ID DESC LIMIT 1";
+            const result = await conn.query(sql,);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 addFee = (fee, createby) => {
     return new Promise(async (resolve, reject) => {
         try {
             
-            const sql = "INSERT INTO `fee` (`ID`, `fee`, `Create_Date`, `Create_By`, `Update_Date`, `Update_By`) VALUES (NULL, ?, UNIX_TIMESTAMP(NOW()), ?, '', '');";            
-            const result = await conn.query(sql, [fee, createby]);            
+            const sql = "INSERT INTO `fee` (`ID`, `fee`, `Create_Date`, `Create_By`, `Update_Date`, `Update_By`) VALUES (NULL, ?, UNIX_TIMESTAMP(NOW()), ?, UNIX_TIMESTAMP(NOW()), ?);";            
+            const result = await conn.query(sql, [fee, createby, createby]);            
             resolve(result);
         } catch (e) {
             reject(e);
@@ -80,5 +80,6 @@ module.exports = {
     addFee,
     deleteFeeById,
     updateFeeById,
-    updateFee
+    updateFee,
+    getLastId
 };

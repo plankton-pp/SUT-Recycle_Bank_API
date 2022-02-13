@@ -199,8 +199,11 @@ router.put("/", async (req, res) => {
         let id = req.body.id;
         let Firstname = req.body.firstname;
         let Lastname = req.body.lastname;
+        let Username = req.body.username;
+        let Phone = req.body.phone;
+        let Email = req.body.email;
 
-        const results = await services.updateEmployeeById(Firstname, Lastname, id);
+        const results = await services.updateEmployeeById(Firstname, Lastname,Username, Phone, Email, id);
         //validation
         if (!id || !Firstname || !Lastname) {
             return res.status(400).send({ error: true, message: 'Please provide Member\'s id firstname and lastname.' })

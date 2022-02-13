@@ -3,62 +3,74 @@ const router = express.Router();
 const servicesPlace = require('../services/place.service')
 const servicesPlaceDetail = require('../services/placedetail.service')
 const servicesTransaction = require('../services/transaction.service')
+const servicesWallet = require('../services/wallet.service')
 
 router.post("/", async (req, res) => {
     try {
         let memid = req.body.memid;
         let placeby = req.body.placeby;
-        let status = req.body.status;
         let empid = req.body.empid;
-        let netprice = req.body.netprice;        
-        let type = "waiting";
-      
+        let detail = req.body.detail;
+        let netprice = req.body.netprice;
+        let status = "unpaid";
+        let type = "deposit";
 
-        const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice ,status, empid);
-        
         //validation
         if (!memid || !placeby || !netprice || !status || !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Place\'s all data.' })
+            return res.status(400).send({ error: true, message: 'Please provide memid, placeby, netprice ,status, empid.' })
         } else {
+            const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice, status, empid);
             //Global variable (this scope)
-            let allResults = { error: false, dataPlace: resultsPlace, message: 'Place successfully added' }
+            let allResults = {};
             let placeid = resultsPlace.insertId;
+            let message1 = "";
+            let message2 = "";
+            let message3 = "";
 
             //Try to call other API
             try {
                 let products = Array.from(req.body.product);
                 if (products && products.length > 0) {
                     products.forEach(async (item, index) => {
-                        const results = await servicesPlaceDetail.addPlaceDetail(placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.feeid, item.fee, item.unit, item.totalprice);
                         //validation
-                        if (!placeid || !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.feeid || !item.fee || !item.unit || !item.totalprice) {
-                            return res.status(400).send({ error: true, message: 'Please provide all data.' })
+                        if (!placeid || !memid || !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.fee || !item.unit || !item.totalprice) {
+                            return res.status(400).send({ error: true, message: 'Please provide memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice.' })
                         } else {
-                            allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'placedetail successfully added' }
-                            console.log(allResults[`dataOrder-${index + 1}`]);
+                            const results = await servicesPlaceDetail.addPlaceDetail(memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice);
+                            if (results) {
+                                message1 = 'placedetail successfully added';
+                            } else {
+                                message1 = 'Cannot add placedetail';
+                            }
+                            // console.log("message1",message1);
                         }
                     })
 
-                //For other API
-                    // products.forEach(async (item, index) => {
-                    //     const results = await servicesOrderDetail.addOrderDetail(placeid, item.productid, item.weight, item.totalprice);
-                    //     //validation
-                    //     if (!placeid || !item.productid || !item.weight || !item.totalprice) {
-                    //         return res.status(400).send({ error: true, message: 'Please provide placeid productid weight and totalprice.' })
-                    //     } else {
-                    //         allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'orderdetail successfully added' }
-                    //         console.log(allResults[`dataOrder-${index + 1}`]);
-                    //     }
-                    // })
+                    //validation
+                    if (!placeid || !memid || !empid || !type || !detail) {
+                        return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type,netprice, detail.' })
+                    } else {
+                        const results2 = await servicesTransaction.addTransaction(placeid, memid, empid, type, netprice, detail);
+                        message2 = 'Transaction successfully added';
+                        let transactionid = results2.insertId;
 
-                    
-                    const results = await servicesTransaction.addTransaction(placeid, memid, empid, type);
-                        //validation
-                        if (!placeid || !memid || !empid || !type) {
-                            return res.status(400).send({ error: true, message: 'Please provide placeid memid empid and type.' })
-                        } else {
-                            return res.send({ error: false, data: results, message: 'Transaction successfully added' })
+                        if (String(transactionid).length > 0) {
+                            //validation
+                            if (!netprice || !transactionid || !placeid || !memid) {
+                                return res.status(400).send({ error: true, message: 'Please provide memid, netprice,transactionid,placeid.' })
+                            } else {
+                                const results3 = await servicesWallet.updateWalletById(memid, netprice, transactionid, placeid);
+                                if (results3) {
+                                    message3 = 'Wallet successfully update';
+                                    allResults = { error: false, message1: message1, message2: message2, message3: message3 }
+                                } else {
+                                    message3 = 'Cannot update wallet';
+                                    allResults = { error: false, message1: message1, message2: message2, message3: message3 }
+                                }
+                            }
                         }
+                    }
+
                 }
             } catch (e) {
                 throw e;

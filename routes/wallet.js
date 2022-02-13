@@ -18,6 +18,22 @@ router.get("/", async (req, res) => {
     }
 });
 
+//retrieve all wallet with balance
+router.get("/WWB", async (req, res) => {
+    try {
+        const result = await services.getWalletWithBalance();
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Wallet With Balance is empty";
+        } else {
+            message = "Successfully retrieved all data";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
 //retrieve data by id
 router.get("/:ID", async (req, res) => {
     try {
@@ -84,10 +100,11 @@ router.put("/", async (req, res) => {
     try {
         let Member_ID = req.body.Member_ID;
         let Balance = req.body.Balance;
+        let Transactions_ID = req.body.Transactions_ID;
 
-        const results = await services.updateWalletById(Balance, Member_ID);
+        const results = await services.updateWalletById(Balance, Transactions_ID, Member_ID);
         //validation
-        if (!Balance || !Member_ID) {
+        if (!Balance || !Transactions_ID || !Member_ID) {
             return res.status(400).send({ error: true, message: 'Please provide Member\'s id and Balance.' })
         } else {
             let message = ""

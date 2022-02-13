@@ -3,10 +3,10 @@ const router = express.Router();
 const services = require('../services/report4-3.service')
 
 //retrieve Summary of deposits and withdrawals
-router.get("/", async (req, res) => {
+router.get("/:year", async (req, res) => {
     try {
 
-        let year = req.body.Year; 
+        let year = req.params.year; 
 
         const result = await services.getSumOfDepoAndWithd(year);
         let message = ""

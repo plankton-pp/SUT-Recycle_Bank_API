@@ -3,10 +3,10 @@ const router = express.Router();
 const services = require('../services/report2.service')
 
 
-router.get("/", async (req, res) => {
+router.get("/:role", async (req, res) => {
     try {
         
-        let role = req.body.Role;  
+        let role = req.params.role;  
 
         const result = await services.getMemberByRole(role);
         let message = ""

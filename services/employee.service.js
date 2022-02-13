@@ -40,7 +40,7 @@ authEmployee = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "SELECT * FROM employee WHERE Username = ? or Email = ?";
-            const result = await conn.query(sql, [keyword,keyword]);
+            const result = await conn.query(sql, [keyword, keyword]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -84,11 +84,11 @@ deleteEmployeeById = (id) => {
     });
 };
 
-updateEmployeeById = (Firstname, Lastname, id) => {
+updateEmployeeById = (Firstname, Lastname, Username, Phone, Email, id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE employee SET Firstname = ?, Lastname = ? WHERE ID = ?";
-            const result = await conn.query(sql, [Firstname, Lastname, id]);
+            const sql = "UPDATE employee SET Firstname = ?, Lastname = ?, Username = ?, Phone = ?, Email = ? WHERE ID = ?";
+            const result = await conn.query(sql, [Firstname, Lastname, Username, Phone, Email, id]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -102,7 +102,7 @@ resetPassword = (email, newpassword) => {
             const sql = "UPDATE employee SET Password = ?  WHERE Email = ?";
             const result = await conn.query(sql, [newpassword, email]);
             const id = await conn.query("SELECT Employee_ID FROM employee WHERE Email = ?", [email]);
-            resolve({...result, updatedId: id});
+            resolve({ ...result, updatedId: id });
         } catch (e) {
             reject(e);
         }

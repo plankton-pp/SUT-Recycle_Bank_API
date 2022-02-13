@@ -29,7 +29,8 @@ const userplace = require("./routes/userplace");
 const report1 = require("./routes/report1");
 const report42 = require("./routes/report4-2");
 const report52 = require("./routes/report5-2");
-
+const report53 = require("./routes/report5-3");
+const report54 = require("./routes/report5-4");
 
 //Route Report
 const report2 = require("./routes/report2");
@@ -98,6 +99,10 @@ app.use("/api/v1/report5-1", report51);
 app.use("/api/v1/report1", report1);
 app.use("/api/v1/report5-2", report52);
 app.use("/api/v1/report4-2", report42);
+app.use("/api/v1/report5-3", report53);
+app.use("/api/v1/report5-4", report54);
+
+
 app.use("/api/v1/email", emailing);
 
 if (process.env.NODE_ENV === 'test') {
