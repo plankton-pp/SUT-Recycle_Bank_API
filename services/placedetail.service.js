@@ -32,7 +32,7 @@ addPlaceDetail = (memberid, placeid,  typeid, typename, productid, productname, 
         try {
             const sql = "INSERT INTO `placedetail` (`Place_Detail_ID`, `Member_ID`, `Place_ID`, `Type_ID`, `Type_Name`, `Product_ID`, `Product_Name`, `Price_per_Unit`, `Unit_detail`, `Fee`, `Unit`, `Total_Price`, `Bank_Price`, `Member_Price`, `Create_Date`, `Update_Date`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), '');";
             const result = await conn.query(sql, [memberid, placeid,  typeid, typename, productid, productname, productprice, unitdetail, fee, unit, totalprice, bankprice, memberprice]);
-            console.log("result",memberid);
+            // console.log("result",memberid);
             resolve(result);
         } catch (e) {
             reject(e);
