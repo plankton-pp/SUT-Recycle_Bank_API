@@ -24,9 +24,9 @@ router.get("/WWB", async (req, res) => {
         const result = await services.getWalletWithBalance();
         let message = ""
         if (result === undefined || result.length == 0) {
-            message = "Wallets table is empty";
+            message = "Wallet With Balance is empty";
         } else {
-            message = "Successfully retrieved all Wallets";
+            message = "Successfully retrieved all data";
         }
         return res.send({ error: false, data: result, message: message })
     } catch (e) {
