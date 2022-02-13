@@ -3,6 +3,7 @@ const router = express.Router();
 const servicesPlace = require('../services/place.service')
 const servicesPlaceDetail = require('../services/placedetail.service')
 const servicesTransaction = require('../services/transaction.service')
+const servicesWallet = require('../services/wallet.service')
 
 router.post("/", async (req, res) => {
     try {
@@ -10,8 +11,9 @@ router.post("/", async (req, res) => {
         let placeby = req.body.placeby;
         let status = req.body.status;
         let empid = req.body.empid;
+        let detail = req.body.detail;
         let netprice = req.body.netprice;        
-        let type = "waiting";
+        let type = "deposit";
       
 
         const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice ,status, empid);
@@ -35,31 +37,34 @@ router.post("/", async (req, res) => {
                             return res.status(400).send({ error: true, message: 'Please provide all data.' })
                         } else {
                             allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'placedetail successfully added' }
-                            console.log(allResults[`dataOrder-${index + 1}`]);
+                            // console.log(allResults[`dataOrder-${index + 1}`]);
                         }
-                    })
-
-                //For other API
-                    // products.forEach(async (item, index) => {
-                    //     const results = await servicesOrderDetail.addOrderDetail(placeid, item.productid, item.weight, item.totalprice);
-                    //     //validation
-                    //     if (!placeid || !item.productid || !item.weight || !item.totalprice) {
-                    //         return res.status(400).send({ error: true, message: 'Please provide placeid productid weight and totalprice.' })
-                    //     } else {
-                    //         allResults[`dataOrder-${index + 1}`] = { order: `dataOrder-${index + 1}`, error: false, data: results, message: 'orderdetail successfully added' }
-                    //         console.log(allResults[`dataOrder-${index + 1}`]);
-                    //     }
-                    // })
-
+                    })            
+                                          
+                        const results2 = await servicesTransaction.addTransaction(placeid, memid, empid, type, detail);
+                            //validation
+                            if (!placeid || !memid || !empid || !type || !detail) {
+                                return res.status(400).send({ error: true, message: 'Please provide placeid memid empid detail and type.' })
+                            } else {
+                                return res.send({ error: false, data: results2, message: 'Transaction successfully added' })  
+                                let transactionid = results2.insertId;             
+                                
+                            }
+                         
+                            if(String(transactionid).length > 0){
+                                const results2 = await servicesWallet.updateWalletById(memid, netprice,transactionid,placeid);
+                                //validation
+                                if (!netprice || !transactionid || !placeid || !memid) {
+                                    return res.status(400).send({ error: true, message: 'Please provide placeid memid empid and type.' })
+                                } else {
+                                    return res.send({ error: false, data: results, data2: results2, message: 'Transaction successfully added' })                   
+                                
+                                }
+                            }   
+                            
+                   
                     
-                    const results = await servicesTransaction.addTransaction(placeid, memid, empid, type);
-                        //validation
-                        if (!placeid || !memid || !empid || !type) {
-                            return res.status(400).send({ error: true, message: 'Please provide placeid memid empid and type.' })
-                        } else {
-                            return res.send({ error: false, data: results, message: 'Transaction successfully added' })
-                        }
-                }
+                    }
             } catch (e) {
                 throw e;
             }
