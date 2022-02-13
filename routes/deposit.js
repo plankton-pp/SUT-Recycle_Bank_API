@@ -14,14 +14,12 @@ router.post("/", async (req, res) => {
         let netprice = req.body.netprice;  
         let status = "unpaid";      
         let type = "deposit";
-      
 
-        const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice ,status, empid);
-        
         //validation
         if (!memid || !placeby || !netprice || !status || !empid) {
-            return res.status(400).send({ error: true, message: 'Please provide Place\'s all data.' })
+            return res.status(400).send({ error: true, message: 'Please provide memid, placeby, netprice ,status, empid.' })
         } else {
+            const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice ,status, empid);
             //Global variable (this scope)
             let allResults;
             let placeid = resultsPlace.insertId;
@@ -36,17 +34,17 @@ router.post("/", async (req, res) => {
                     products.forEach(async (item, index) => {                        
                         //validation
                         if (!placeid || !memid|| !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.fee || !item.unit || !item.totalprice) {
-                            return res.status(400).send({ error: true, message: 'Please provide all data.' })
+                            return res.status(400).send({ error: true, message: 'Please provide memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice.' })
                         } else {
                             const results = await servicesPlaceDetail.addPlaceDetail(memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice);
                             message1 = 'placedetail successfully added';
-                            console.log("message1",message1);
+                            // console.log("message1",message1);
                         }
                     })            
  
                     //validation
                     if (!placeid || !memid || !empid || !type || !detail) {
-                        return res.status(400).send({ error: true, message: 'Please provide placeid memid empid detail and type.' })
+                        return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type,netprice, detail.' })
                     } else {
                         const results2 = await servicesTransaction.addTransaction(placeid, memid, empid, type,netprice, detail);
                         message2 =  'Transaction successfully added';
@@ -55,7 +53,7 @@ router.post("/", async (req, res) => {
                         if(String(transactionid).length > 0){
                             //validation
                             if (!netprice || !transactionid || !placeid || !memid) {
-                                return res.status(400).send({ error: true, message: 'Please provide placeid memid empid and type.' })
+                                return res.status(400).send({ error: true, message: 'Please provide memid, netprice,transactionid,placeid.' })
                             } else {
                                 const results3 = await servicesWallet.updateWalletById(memid, netprice,transactionid,placeid);
                                 message3 = 'Wallet successfully update';            
