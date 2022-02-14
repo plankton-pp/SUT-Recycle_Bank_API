@@ -38,14 +38,14 @@ const addTransaction = async (placeid, memid, empid, type, netprice) => {
 
 }
 
-const addWallet = async (transactionid, memid, netprice, placeid) => {
+const addWallet = async (netprice,transactionid, memid) => {
     if (String(transactionid).length > 0) {
         //validation
-        if (!netprice || !transactionid || !placeid || !memid) {
+        if (!netprice || !transactionid || !memid) {
             return res.status(400).send({ error: true, message: 'Please provide memid, netprice,transactionid,placeid.' })
         } else {
             try {
-                const results = await servicesWallet.updateWalletById(memid, netprice, transactionid, placeid);
+                const results = await servicesWallet.updateWalletById(netprice,transactionid, memid);
                 return 'Wallet successfully update';
             } catch (error) {
                 return 'Cannot update wallet: ' + error;
@@ -82,8 +82,8 @@ router.post("/", async (req, res) => {
 
                     message.placeDetail = await addProduct(placeid, memid, products)
                     transactionResponse = await addTransaction(placeid, memid, empid, type, netprice)
-                    message.transaction = transactionResponse[0]
-                    message.wallet = await addWallet(transactionResponse[1], memid, netprice, placeid)
+                    message.transaction = transactionResponse[0] 
+                    message.wallet = await addWallet(netprice, transactionResponse[1], memid)
 
                     if (message.placeDetail.includes("Cannot") || message.transaction.includes("Cannot") || message.wallet.includes("Cannot")) {
                         return res.send({ error: true, message: message })
