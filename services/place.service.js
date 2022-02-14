@@ -60,6 +60,18 @@ updatePlaceById = (memid, placeby, netprice, status, empid, id) => {
     });
 };
 
+updatePlaceById2 = (status, place_id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "UPDATE place SET Status = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Place_ID = ?";
+            const result = await conn.query(sql, [status, place_id]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 getLastplace = (memid,placeid,status,datenow,empid) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -78,5 +90,6 @@ module.exports = {
     addPlace,
     deletePlaceById,
     updatePlaceById,
+    updatePlaceById2,
     getLastplace
 };
