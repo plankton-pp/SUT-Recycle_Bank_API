@@ -27,7 +27,7 @@ getWalletWithBalance = () => {
                 ON M.ID = W.Member_ID
                 JOIN transactions T
                 ON T.ID = W.Transactions_ID
-                WHERE W.Balance = 0
+                WHERE W.Balance > 0
                 `;
             const result = await conn.query(sql, []);
             resolve(result);

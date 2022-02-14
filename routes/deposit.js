@@ -9,9 +9,10 @@ router.post("/", async (req, res) => {
     try {
         let memid = req.body.memid;
         let placeby = req.body.placeby;        
-        let empid = req.body.empid;       
+        let empid = req.body.empid;
+        let detail = req.body.detail;
         let netprice = req.body.netprice;  
-        let status = "unpaid";      
+        let status = "inProgress";      
         let type = "deposit";
 
         //validation
@@ -41,12 +42,11 @@ router.post("/", async (req, res) => {
                         }
                     })            
  
-
                     //validation
-                    if (!placeid || !memid || !empid || !type ) {
-                        return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type,netprice.' })
+                    if (!placeid || !memid || !empid || !type || !detail) {
+                        return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type,netprice, detail.' })
                     } else {
-                        const results2 = await servicesTransaction.addTransaction(placeid, memid, empid, type,netprice);
+                        const results2 = await servicesTransaction.addTransaction(placeid, memid, empid, type,netprice, detail);
                         message2 =  'Transaction successfully added';
                         let transactionid = results2.insertId; 
 
