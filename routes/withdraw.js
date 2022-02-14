@@ -6,15 +6,14 @@ const servicesWallet = require('../services/wallet.service')
 
 
 
-
-const addTransaction = async (placeid, memid, empid, type, netprice) => {
-    console.log(placeid, memid, empid, type, netprice);
+const addTransaction2 = async (memid, empid, type, netprice) => {
+    console.log(memid, empid, type, netprice);
     //validation
-    if (!placeid || !memid || !empid || !type) {
-        return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type,netprice.' })
+    if ( !memid || !empid || !type || !netprice) {
+        return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type, netprice.' })
     } else {
         try {
-            const results = await servicesTransaction.addTransaction(placeid, memid, empid, type, netprice);
+            const results = await servicesTransaction.addTransaction2(memid, empid, type, netprice);
             return ['Transaction successfully added', results.insertId];
         } catch (error) {
             return 'Cannot add transaction: ' + error;
@@ -23,14 +22,14 @@ const addTransaction = async (placeid, memid, empid, type, netprice) => {
 
 }
 
-const withdrawWallet = async (transactionid, memid, netprice, placeid) => {
-    if (String(transactionid).length > 0) {
+const withdrawWallet = async (memid, netprice) => {
+    if (String(memid).length > 0) {
         //validation
-        if (!netprice || !transactionid || !placeid || !memid) {
-            return res.status(400).send({ error: true, message: 'Please provide memid, netprice,transactionid,placeid.' })
+        if (!netprice || !memid) {
+            return res.status(400).send({ error: true, message: 'Please provide memid, netprice.' })
         } else {
             try {
-                const results = await servicesWallet.updateWalletByIdWithdraw(memid, netprice, transactionid, placeid);
+                const results = await servicesWallet.updateWalletByIdWithdraw(netprice ,memid);
                 return 'Wallet successfully update';
             } catch (error) {
                 return 'Cannot update wallet: ' + error;
@@ -50,34 +49,28 @@ router.post("/", async (req, res) => {
         if (!memid  || !netprice || !status || !empid) {
             return res.status(400).send({ error: true, message: 'Please provide memid, placeby, netprice ,status, empid.' })
         } else {
+            const resultsTransaction = await addTransaction2(memid, empid, type, netprice)
 
-            const resultsPlace = await servicesPlace.addPlace(memid, placeby, netprice, status, empid);
-            // //Try to call other API
             try {
-                let products = Array.from(req.body.product);
-                if (products && products.length > 0) {
-                    let allResults = {};
-                    let placeid = resultsPlace.insertId;
-                    let message = {
-                        placeDetail: '',
-                        transaction: '',
-                        wallet: '',
-                    }
+                let allResults = {};
+                let transactionid = resultsTransaction.insertId;
+                let message = {
+                    transaction: '',
+                    wallet: '',
+                }
 
-                    message.placeDetail = await addProduct(placeid, memid, products)
-                    transactionResponse = await addTransaction(placeid, memid, empid, type, netprice)
-                    message.transaction = transactionResponse[0]
-                    message.wallet = await addWallet(transactionResponse[1], memid, netprice, placeid)
+                message.transaction = resultsTransaction[0]
+                message.wallet = await withdrawWallet(memid, netprice, transactionid)
 
-                    if (message.placeDetail.includes("Cannot") || message.transaction.includes("Cannot") || message.wallet.includes("Cannot")) {
-                        return res.send({ error: true, message: message })
-                    } else {
-                        return res.send({ error: false, message: message })
-                    }
+                if (message.transaction.includes("Cannot") || message.wallet.includes("Cannot")) {
+                    return res.send({ error: true, message: message })
+                } else {
+                    return res.send({ error: false, message: message })
                 }
             } catch (e) {
                 throw e;
             }
+            
 
             //Finally
             // console.log(allResults);
