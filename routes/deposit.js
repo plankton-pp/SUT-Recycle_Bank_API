@@ -6,49 +6,50 @@ const servicesTransaction = require('../services/transaction.service')
 const servicesWallet = require('../services/wallet.service')
 
 
-const addProduct = async (placeid, memid, products) => {
+const addProduct = async (placeid, memid, products, fee) => {
     try {
         products.map(async (item) => {
             //validation
-            if (!placeid || !memid || !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !item.fee || !item.unit || !item.totalprice) {
-                return res.status(400).send({ error: true, message: 'Please provide memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice.' })
+            if (!placeid || !memid || !item.typeid || !item.typename || !item.productid || !item.productname || !item.productprice || !item.unitdetail || !fee || !item.unit || !item.totalprice) {
+                return { error: true, message: 'Please provide memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice.' }
             } else {
-                const results = await servicesPlaceDetail.addPlaceDetail(memid, placeid, item.typeid, item.typename, item.productid, item.productname, item.productprice, item.unitdetail, item.fee, item.unit, item.totalprice);
+                const results = await servicesPlaceDetail.addPlaceDetail(memid, placeid, item.typeid, item.typename, Number(item.productid), item.productname, item.productprice, item.unitdetail, fee, item.unit, item.totalprice);
             }
         })
         return "Place's detail successfully added"
     } catch (error) {
-        return "Cannot add place detail: " + error;
+        return "Cannot add place detail: " + String(error);
     }
 }
 
-const addTransaction = async (placeid, memid, empid, type, netprice) => {
-    console.log(placeid, memid, empid, type, netprice);
+const addTransaction = async (placeid, memid, empid, type, price, lastFee) => {
     //validation
     if (!placeid || !memid || !empid || !type) {
-        return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type,netprice.' })
+        return { error: true, message: 'Please provide placeid, memid, empid, type,netprice.' }
     } else {
         try {
-            const results = await servicesTransaction.addTransaction(placeid, memid, empid, type, netprice);
-            return ['Transaction successfully added', results.insertId];
+            const results = await servicesTransaction.addTransaction(placeid, memid, empid, type, Number(price) * (1 - lastFee));
+            const resultsBank = await servicesTransaction.addTransaction(placeid, 115, empid, "sum", price);
+            return ['Transaction successfully added', results.insertId, resultsBank.insertId];
         } catch (error) {
-            return 'Cannot add transaction: ' + error;
+            return ['Cannot add transaction: ', "-", "-"];
         }
     }
 
 }
 
-const addWallet = async (netprice,transactionid, memid) => {
+const addWallet = async (price, transactionid, memid) => {
+    console.log("wallet: ", price, transactionid, memid);
     if (String(transactionid).length > 0) {
         //validation
-        if (!netprice || !transactionid || !memid) {
-            return res.status(400).send({ error: true, message: 'Please provide memid, netprice,transactionid,placeid.' })
+        if (!price || !transactionid || !memid) {
+            return { error: true, message: 'Please provide memid, netprice,transactionid,placeid.' }
         } else {
             try {
-                const results = await servicesWallet.updateWalletById(netprice,transactionid, memid);
+                const results = await servicesWallet.updateWalletById(price, transactionid, memid);
                 return 'Wallet successfully update';
             } catch (error) {
-                return 'Cannot update wallet: ' + error;
+                return 'Cannot update wallet: ' + String(error);
             }
         }
     }
@@ -58,8 +59,9 @@ router.post("/", async (req, res) => {
     try {
         let memid = req.body.memid;
         let placeby = req.body.placeby;
-        let empid = req.body.empid;       
+        let empid = req.body.empid;
         let netprice = req.body.netprice;
+        let lastFee = Number(req.body.lastFee) / 100;
         let status = "inProgress";
         let type = "deposit";
         //validation
@@ -72,19 +74,20 @@ router.post("/", async (req, res) => {
             try {
                 let products = Array.from(req.body.product);
                 if (products && products.length > 0) {
-                    let allResults = {};
                     let placeid = resultsPlace.insertId;
                     let message = {
                         placeDetail: '',
                         transaction: '',
                         wallet: '',
+                        walletBank: '',
                     }
-
-                    message.placeDetail = await addProduct(placeid, memid, products)
-                    transactionResponse = await addTransaction(placeid, memid, empid, type, netprice)
-                    message.transaction = transactionResponse[0] 
-                    message.wallet = await addWallet(netprice, transactionResponse[1], memid)
-
+                    //member
+                    message.placeDetail = await addProduct(placeid, memid, products, req.body.lastFee)
+                    transactionResponse = await addTransaction(placeid, memid, empid, type, netprice, lastFee)
+                    message.transaction = transactionResponse[0]
+                    message.wallet = await addWallet(Number(netprice) * (1 - lastFee), transactionResponse[1], memid)
+                    message.walletBank = await addWallet(netprice, transactionResponse[2], 115)
+                    console.log("message: ", transactionResponse);
                     if (message.placeDetail.includes("Cannot") || message.transaction.includes("Cannot") || message.wallet.includes("Cannot")) {
                         return res.send({ error: true, message: message })
                     } else {
@@ -94,10 +97,6 @@ router.post("/", async (req, res) => {
             } catch (e) {
                 throw e;
             }
-
-            //Finally
-            // console.log(allResults);
-            // return res.send(allResults)
         }
     } catch (e) {
         throw e;

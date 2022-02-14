@@ -7,7 +7,6 @@ const servicesWallet = require('../services/wallet.service')
 
 
 const addTransaction2 = async (memid, empid, type, netprice) => {
-    console.log(memid, empid, type, netprice);
     //validation
     if ( !memid || !empid || !type || !netprice) {
         return res.status(400).send({ error: true, message: 'Please provide placeid, memid, empid, type, netprice.' })
@@ -70,11 +69,6 @@ router.post("/", async (req, res) => {
             } catch (e) {
                 throw e;
             }
-            
-
-            //Finally
-            // console.log(allResults);
-            // return res.send(allResults)
         }
     } catch (e) {
         throw e;
