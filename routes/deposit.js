@@ -39,7 +39,6 @@ const addTransaction = async (placeid, memid, empid, type, price, lastFee) => {
 }
 
 const addWallet = async (price, transactionid, memid) => {
-    console.log("wallet: ", price, transactionid, memid);
     if (String(transactionid).length > 0) {
         //validation
         if (!price || !transactionid || !memid) {
@@ -87,7 +86,6 @@ router.post("/", async (req, res) => {
                     message.transaction = transactionResponse[0]
                     message.wallet = await addWallet(Number(netprice) * (1 - lastFee), transactionResponse[1], memid)
                     message.walletBank = await addWallet(netprice, transactionResponse[2], 115)
-                    console.log("message: ", transactionResponse);
                     if (message.placeDetail.includes("Cannot") || message.transaction.includes("Cannot") || message.wallet.includes("Cannot")) {
                         return res.send({ error: true, message: message })
                     } else {
