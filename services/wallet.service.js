@@ -28,6 +28,7 @@ getWalletWithBalance = () => {
                 JOIN transactions T
                 ON T.ID = W.Transactions_ID
                 WHERE W.Balance > 0
+                and M.ID != 1
                 `;
             const result = await conn.query(sql, []);
             resolve(result);
