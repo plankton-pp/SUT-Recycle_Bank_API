@@ -49,11 +49,11 @@ getWalletByMemberId = (id) => {
     });
 };
 
-addWallet = (Member_ID, Balance, Transactions_ID, Transactions_Place_ID, Transactions_Place_Members_ID, Transactions_Place_Employee_ID) => {
+addWallet = (Member_ID) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO wallets (Member_ID, Balance, Transactions_ID, Transactions_Place_ID, Transactions_Place_Members_ID, Transactions_Place_Employee_ID) VALUES(?, ?, ?, ?, ?, ?)";
-            const result = await conn.query(sql, [Member_ID, Balance, Transactions_ID, Transactions_Place_ID, Transactions_Place_Members_ID, Transactions_Place_Employee_ID]);
+            const sql = "INSERT INTO wallets (Member_ID, Balance, Transactions_ID, Transactions_Place_ID) VALUES(?, 0, 0, 0)";
+            const result = await conn.query(sql, [Member_ID]);
             resolve(result);
         } catch (e) {
             reject(e);
