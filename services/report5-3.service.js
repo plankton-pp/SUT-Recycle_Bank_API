@@ -7,7 +7,7 @@ getProductdetail = (year) => {
             try {
                 const sql = 
                 `SELECT * FROM (SELECT Product_ID,Name FROM product) e 
-                LEft JOIN (SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear,Product_ID as Product_Used,sum(Unit) 
+                LEft JOIN (SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear,Product_ID as Product_Used,sum(Unit) as Unit
                 FROM placedetail WHERE 
                 IF(
                     MONTH(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'))>9
@@ -26,7 +26,7 @@ getProductdetail = (year) => {
             try {
                 const sql = 
                 `SELECT * FROM (SELECT Product_ID,Name FROM product) e 
-                LEft JOIN (SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear,Product_ID as Product_Used,sum(Unit) 
+                LEft JOIN (SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear,Product_ID as Product_Used,sum(Unit) as Unit
                 FROM placedetail 
                 WHERE
                 IF(
