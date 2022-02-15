@@ -6,7 +6,7 @@ getProductdetail = (year) => {
                 // year = '%'.concat(year.concat('%'));
                 try {
                     const sql = 
-                    `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as Month, Role ,sum(Unit)
+                    `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as Month, Role ,sum(Unit) as Unit
                     FROM members 
                     LEft JOIN placedetail
                     ON members.ID = placedetail.Member_ID
@@ -26,7 +26,7 @@ getProductdetail = (year) => {
         }else{
             try {
                 const sql = 
-                `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as Month, Role ,sum(Unit) 
+                `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as Month, Role ,sum(Unit) as Unit
                 FROM members 
                 LEft JOIN placedetail
                 ON members.ID = placedetail.Member_ID
