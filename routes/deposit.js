@@ -29,7 +29,7 @@ const addTransaction = async (placeid, memid, empid, type, price, lastFee) => {
     } else {
         try {
             const results = await servicesTransaction.addTransaction(placeid, memid, empid, type, Number(price) * (1 - lastFee));
-            const resultsBank = await servicesTransaction.addTransaction(placeid, 115, empid, "sum", price);
+            const resultsBank = await servicesTransaction.addTransaction(placeid, 1, empid, "sum", price);
             return ['Transaction successfully added', results.insertId, resultsBank.insertId];
         } catch (error) {
             return ['Cannot add transaction: ', "-", "-"];
@@ -85,7 +85,7 @@ router.post("/", async (req, res) => {
                     transactionResponse = await addTransaction(placeid, memid, empid, type, netprice, lastFee)
                     message.transaction = transactionResponse[0]
                     message.wallet = await addWallet(Number(netprice) * (1 - lastFee), transactionResponse[1], memid)
-                    message.walletBank = await addWallet(netprice, transactionResponse[2], 115)
+                    message.walletBank = await addWallet(netprice, transactionResponse[2], 1)
                     if (message.placeDetail.includes("Cannot") || message.transaction.includes("Cannot") || message.wallet.includes("Cannot")) {
                         return res.send({ error: true, message: message })
                     } else {
