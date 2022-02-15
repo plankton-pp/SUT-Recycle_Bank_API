@@ -1,10 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
+const servicesPlace = require('../services/place.service')
 const servicesTransaction = require('../services/transaction.service')
 const servicesWallet = require('../services/wallet.service')
 
+const updatePlace = async (status,memid) => {
+    //validation
+    if ( !status || !memid) {
+        return res.status(400).send({ error: true, message: 'Please provide memid.' })
+    } else {
+        try {
+            const results = await servicesPlace.updatePlaceById2(status,memid);
+            return 'Place successfully update';
+        } catch (error) {
+            return 'Cannot update place: ' + error;
+        }
+    }
 
+}
 
 const addTransaction2 = async (memid, empid, type, netprice) => {
     //validation
@@ -56,10 +70,12 @@ router.post("/", async (req, res) => {
                 let message = {
                     transaction: '',
                     wallet: '',
+                    place: '',
                 }
 
                 message.transaction = resultsTransaction[0]
                 message.wallet = await withdrawWallet(memid, netprice, transactionid)
+                message.place = await updatePlace(status,memid)
 
                 if (message.transaction.includes("Cannot") || message.wallet.includes("Cannot")) {
                     return res.send({ error: true, message: message })
