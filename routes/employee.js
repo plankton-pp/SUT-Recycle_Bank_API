@@ -223,7 +223,7 @@ router.put("/", async (req, res) => {
 
 
 //add New Employee
-router.put("/addnewemployee", async (req, res) => {
+router.post("/addnewemployee", async (req, res) => {
     try {
         let Empid = req.body.Empid;       
         let Email = req.body.Email;
@@ -231,7 +231,7 @@ router.put("/addnewemployee", async (req, res) => {
         
         //validation
         if (!Empid || !Email) {
-            return res.status(400).send({ error: true, message: 'Please provide Member\'s id firstname and lastname.' })
+            return res.status(400).send({ error: true, message: 'Please provide Empid and Email.' })
         } else {
             const results = await services.addNewEmployee(Empid, Email);
             let message = ""
