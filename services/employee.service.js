@@ -24,6 +24,18 @@ getEmployeeById = (id) => {
     });
 };
 
+getEmployeeByEmpId = (empid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "SELECT ID,Firstname, Lastname, Employee_ID, Username, Role, Phone, Email FROM employee WHERE Employee_ID = ?";
+            const result = await conn.query(sql, [empid]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 getEmployeeByUsername = (username) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -136,6 +148,7 @@ updateNewEmployee = (Firstname, Lastname, Username, Password, Role, Phone, Emplo
 module.exports = {
     getEmployees,
     getEmployeeById,
+    getEmployeeByEmpId,
     getEmployeeByUsername,
     authEmployee,
     getEmployeeByEmail,

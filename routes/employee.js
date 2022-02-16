@@ -38,6 +38,23 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+//retrieve data by empId
+router.get("/checkEmp/:empId", async (req, res) => {
+    try {
+        let empId = req.params.empId;
+        const result = await services.getEmployeeByEmpId(String(empId));
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Employee not found";
+        } else {
+            message = "Successfully retrieved Employee data";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
 router.post("/checkDuplicate", async (req, res) => {
     const username = req.body.username
     const email = req.body.email
@@ -203,7 +220,7 @@ router.put("/", async (req, res) => {
         let Phone = req.body.phone;
         let Email = req.body.email;
 
-        const results = await services.updateEmployeeById(Firstname, Lastname,Username, Phone, Email, id);
+        const results = await services.updateEmployeeById(Firstname, Lastname, Username, Phone, Email, id);
         //validation
         if (!id || !Firstname || !Lastname) {
             return res.status(400).send({ error: true, message: 'Please provide Member\'s id firstname and lastname.' })
