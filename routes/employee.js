@@ -59,13 +59,13 @@ router.post("/checkDuplicate", async (req, res) => {
 })
 
 router.post("/register", async (req, res) => {
-    const username = req.body.username
-    const password = req.body.password
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
-    const empId = req.body.empId;
-    const role = req.body.role;
+    const username = req.body.username;
+    const password = req.body.password;
+    const role = "Employee";
     const phone = req.body.phone;
+    const empId = req.body.empId;   
     const email = req.body.email;
 
     try {
@@ -77,8 +77,8 @@ router.post("/register", async (req, res) => {
             //validation
             if (!username || !password || !firstname || !lastname || !empId || !role || !phone || !email) {
                 return res.status(400).send({ error: true, message: 'Please provide Employee\'s data.' })
-            } else {
-                const results = await services.addEmployee(firstname, lastname, empId, username, hash, role, phone, email);
+            } else {                            
+                const results = await services.updateNewEmployee(firstname, lastname, username, hash, role, phone, empId, email);
                 return res.send({ error: false, data: results, message: 'Employee successfully added' })
             }
         })
@@ -221,5 +221,30 @@ router.put("/", async (req, res) => {
     }
 });
 
+
+//add New Employee
+router.put("/addnewemployee", async (req, res) => {
+    try {
+        let Empid = req.body.Empid;       
+        let Email = req.body.Email;
+        
+        
+        //validation
+        if (!Empid || !Email) {
+            return res.status(400).send({ error: true, message: 'Please provide Member\'s id firstname and lastname.' })
+        } else {
+            const results = await services.addNewEmployee(Empid, Email);
+            let message = ""
+            if (results.insertId === 0) {
+                message = "Add new employee failed";
+            } else {
+                message = "successfully added new employee";
+            }
+            return res.send({ error: false, data: results, message: message })
+        }
+    } catch (e) {
+        throw e;
+    }
+});
 
 module.exports = router;
