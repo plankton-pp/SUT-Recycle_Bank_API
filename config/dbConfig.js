@@ -6,9 +6,9 @@ const con = mysql.createPool({
   connectTimeout: 60 * 60 * 1000,
   acquireTimeout: 60 * 60 * 1000,
   timeout: 60 * 60 * 1000,
-  host: "localhost",
+  host: process.env.DB_ADDRESS,
   user: "root",
-  password: "",
+  password: process.env.DB_ACCESS,
   database: "nodejs_api",
 });
 
