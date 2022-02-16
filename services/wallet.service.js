@@ -89,7 +89,7 @@ updateWalletById = (Balance, Transactions_ID, id) => {
 updateWalletByIdWithdraw = (Balance, id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE wallets SET Balance = Balance - ?, Transactions_ID = 0 WHERE Member_ID = ?";
+            const sql = "UPDATE wallets SET Balance = Balance - CONVERT(?, float), Transactions_ID = 0 WHERE Member_ID = ?";
             const result = await conn.query(sql, [Balance, id]);
             resolve(result);
         } catch (e) {
