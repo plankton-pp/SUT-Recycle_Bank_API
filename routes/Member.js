@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const services = require('../services/member.service')
+const servicesWallet = require('../services/wallet.service')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const saltRound = 10;
@@ -132,6 +133,8 @@ router.post("/register", async (req, res) => {
                 return res.status(400).send({ error: true, message: 'Please provide Member\'s data.' })
             } else {
                 const results = await services.addMember(username, hash, firstname, lastname, role, bank, accnumber, phone, phone2, email, remark);
+                let memid = results.insertId;
+                const result2 = await servicesWallet.addWallet(memid);
                 return res.send({ error: false, data: results, message: 'Member successfully added' })
             }
 

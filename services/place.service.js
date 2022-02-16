@@ -60,11 +60,11 @@ updatePlaceById = (memid, placeby, netprice, status, empid, id) => {
     });
 };
 
-updatePlaceById2 = (status, place_id) => {
+updatePlaceById2 = (status, memid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE place SET Status = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Place_ID = ?";
-            const result = await conn.query(sql, [status, place_id]);
+            const sql = "UPDATE place SET Status = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Member_ID = ?";
+            const result = await conn.query(sql, [status, memid]);
             resolve(result);
         } catch (e) {
             reject(e);
