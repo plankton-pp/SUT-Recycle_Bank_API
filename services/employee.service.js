@@ -109,6 +109,29 @@ resetPassword = (email, newpassword) => {
     });
 };
 
+addNewEmployee = (Empid, Email) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "INSERT INTO employee (Employee_ID, Email) VALUES(?, ?)";
+            const result = await conn.query(sql, [Empid, Email]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+updateNewEmployee = (Firstname, Lastname, Username, Password, Role, Phone, Employee_ID, Email) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "UPDATE employee SET Firstname = ?, Lastname = ?, Username = ?, Password = ?, Role = ?, Phone = ?WHERE Employee_ID = ? AND  Email = ? ";
+            const result = await conn.query(sql, [Firstname, Lastname, Username, Password, Role, Phone, Employee_ID, Email]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 module.exports = {
     getEmployees,
@@ -119,5 +142,7 @@ module.exports = {
     addEmployee,
     deleteEmployeeById,
     updateEmployeeById,
-    resetPassword
+    resetPassword,
+    addNewEmployee,
+    updateNewEmployee
 };
