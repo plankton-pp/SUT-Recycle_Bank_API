@@ -28,6 +28,7 @@ getWalletWithBalance = () => {
                 JOIN transactions T
                 ON T.ID = W.Transactions_ID
                 WHERE W.Balance > 0
+                and M.ID != 1
                 `;
             const result = await conn.query(sql, []);
             resolve(result);
@@ -49,11 +50,11 @@ getWalletByMemberId = (id) => {
     });
 };
 
-addWallet = (Member_ID, Balance, Transactions_ID, Transactions_Place_ID, Transactions_Place_Members_ID, Transactions_Place_Employee_ID) => {
+addWallet = (Member_ID) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO wallets (Member_ID, Balance, Transactions_ID, Transactions_Place_ID, Transactions_Place_Members_ID, Transactions_Place_Employee_ID) VALUES(?, ?, ?, ?, ?, ?)";
-            const result = await conn.query(sql, [Member_ID, Balance, Transactions_ID, Transactions_Place_ID, Transactions_Place_Members_ID, Transactions_Place_Employee_ID]);
+            const sql = "INSERT INTO wallets (Member_ID, Balance, Transactions_ID, Transactions_Place_ID) VALUES(?, 0, 0, 0)";
+            const result = await conn.query(sql, [Member_ID]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -85,6 +86,18 @@ updateWalletById = (Balance, Transactions_ID, id) => {
     });
 };
 
+updateWalletByIdWithdraw = (Balance, id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "UPDATE wallets SET Balance = Balance - CONVERT(?, float), Transactions_ID = 0 WHERE Member_ID = ?";
+            const result = await conn.query(sql, [Balance, id]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 
 module.exports = {
     getAllWallet,
@@ -93,4 +106,5 @@ module.exports = {
     addWallet,
     deleteWalletByMember_ID,
     updateWalletById,
+    updateWalletByIdWithdraw,
 };

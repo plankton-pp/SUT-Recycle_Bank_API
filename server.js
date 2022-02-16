@@ -23,6 +23,7 @@ const email = require("./routes/email");
 const fee = require("./routes/fee");
 const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
+const withdraw = require("./routes/withdraw");
 const userplace = require("./routes/userplace");
 
 //Route Report
@@ -90,6 +91,7 @@ app.use("/api/v1/product", product);
 app.use("/api/v1/place", place);
 app.use("/api/v1/placedetail", placedetail);
 app.use("/api/v1/deposit", deposit);
+app.use("/api/v1/withdraw", withdraw);
 app.use("/api/v1/email", email);
 app.use("/api/v1/fee", fee);
 app.use("/api/v1/userplace", userplace);

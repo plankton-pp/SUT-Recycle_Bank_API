@@ -6,8 +6,8 @@ getIncomedetail = (year) => {
             // year = '%'.concat(year.concat('%'));
             try {
                 const sql = 
-                `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear , sum(Net_Price) AS Bank, sum(Net_Price)*.25 AS Emp, sum(Net_Price)*.75 AS Fund 
-                FROM place 
+                `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear , sum(Bank_Price) AS Bank, sum(Bank_Price)*.25 AS Emp, sum(Bank_Price)*.75 AS Fund 
+                FROM placedetail 
                 WHERE IF(
                     MONTH(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'))>9
                     ,YEAR(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'))+1
@@ -22,8 +22,8 @@ getIncomedetail = (year) => {
         }else{
             try {
                 const sql = 
-                `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear , sum(Net_Price) AS Bank, sum(Net_Price)*.25 AS Emp, sum(Net_Price)*.75 AS Fund 
-                FROM place   
+                `SELECT DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%b %Y') as MonthYear , sum(Bank_Price) AS Bank, sum(Bank_Price)*.25 AS Emp, sum(Bank_Price)*.75 AS Fund 
+                FROM placedetail   
                 WHERE
                 IF(
                     MONTH(date_format(FROM_UNIXTIME(Create_Date),'%Y-%m-%d'))>9

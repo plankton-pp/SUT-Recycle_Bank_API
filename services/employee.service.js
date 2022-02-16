@@ -24,6 +24,18 @@ getEmployeeById = (id) => {
     });
 };
 
+getEmployeeByEmpId = (empid) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "SELECT ID,Firstname, Lastname, Employee_ID, Username, Role, Phone, Email FROM employee WHERE Employee_ID = ?";
+            const result = await conn.query(sql, [empid]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 getEmployeeByUsername = (username) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -109,15 +121,41 @@ resetPassword = (email, newpassword) => {
     });
 };
 
+addNewEmployee = (Empid, Email) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "INSERT INTO employee (Employee_ID, Email) VALUES(?, ?)";
+            const result = await conn.query(sql, [Empid, Email]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+updateNewEmployee = (Firstname, Lastname, Username, Password, Role, Phone, Employee_ID, Email) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sql = "UPDATE employee SET Firstname = ?, Lastname = ?, Username = ?, Password = ?, Role = ?, Phone = ?WHERE Employee_ID = ? AND  Email = ? ";
+            const result = await conn.query(sql, [Firstname, Lastname, Username, Password, Role, Phone, Employee_ID, Email]);
+            resolve(result);
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
 
 module.exports = {
     getEmployees,
     getEmployeeById,
+    getEmployeeByEmpId,
     getEmployeeByUsername,
     authEmployee,
     getEmployeeByEmail,
     addEmployee,
     deleteEmployeeById,
     updateEmployeeById,
-    resetPassword
+    resetPassword,
+    addNewEmployee,
+    updateNewEmployee
 };
