@@ -39,7 +39,12 @@ const report43 = require("./routes/report4-3");
 const report51 = require("./routes/report5-1");
 const emailing = require("./routes/email");
 
-app.use(cors());
+const corsOptions = {
+    origin: '*',
+    credentials: true,
+  }
+
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(bodyParser.json(parserLimit));
 app.use(bodyParser.urlencoded({
