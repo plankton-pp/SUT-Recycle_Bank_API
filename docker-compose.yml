@@ -1,0 +1,86 @@
+# MariaDB + phpMyAdmin + NodeJS + React
+# Docker-Compose
+version: '3.7'
+
+networks:
+  api:
+    driver: bridge
+  database:
+    driver: bridge
+  frontend:
+    driver: bridge
+
+services:
+  recycle-api:
+    container_name: recycle-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3014:3014"
+    env_file:
+      - .env
+    depends_on:
+      - recycle-db
+    links:
+      - recycle-db
+    networks:
+      - api
+      - database
+    restart: on-failure
+
+  recycle-db:
+    image: mariadb:10
+    container_name: recycle-mariadb
+    volumes:
+      - recycle-db:/var/lib/mysql
+      - recycle-db:/docker-entrypoint-initdb.d
+    environment:
+      TZ: "Asia/Bangkok"
+      MYSQL_DATABASE: "nodejs_api"
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: "@mariadb1995"
+      MARIADB_ROOT_PASSWORD: "@mariadb1995"
+    ports:
+      - "3306:3306"
+    networks:
+      - database
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - database
+    ports:
+      - "8080:8080"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    links:
+      - recycle-api
+      - recycle-frontend
+    ports:
+      - "80:80"
+      - "7777:7777"
+    networks:
+      - api
+      - frontend
+    restart: on-failure
+
+  recycle-frontend:
+    container_name: recycle-frontend
+    build:
+      context: ./recycle_frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3015:3015"
+    networks:
+      - frontend
+    restart: on-failure
+
+volumes:
+  recycle-db:
+    name: recycle-db

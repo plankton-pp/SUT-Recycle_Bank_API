@@ -1,19 +1,8 @@
-FROM alpine:latest
-RUN apk add --no-cache nodejs npm
+FROM node:lts-gallium
 
+WORKDIR /usr/src/app
+COPY package.json ./
+RUN yarn install
+COPY . .
 
-WORKDIR /app
-
-
-COPY . /app
-
-
-RUN npm install
-
-
-EXPOSE 3014
-
-
-ENTRYPOINT [ "node" ]
-
-CMD ["server.js"]
+CMD ["yarn","run","prod"]
