@@ -44,7 +44,7 @@ const corsOptions = {
     credentials: true,
   }
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json(parserLimit));
 app.use(bodyParser.urlencoded({
@@ -64,27 +64,7 @@ app.use(
         },
     })
 )
-
 //ยังไม่รู้การทำงาน------------------------------------------------------------------------------------------
-// app.use(async (req, res, next) => {
-//     var allowedOrigins = ["http://localhost:4200", "http://localhost:4000"];
-//     var origin = req.headers.origin;
-//     res.header("Access-Control-Allow-Credentials", true);
-//     if (allowedOrigins.indexOf(origin) > -1) {
-//         res.setHeader("Access-Control-Allow-Origin", origin);
-//     }
-//     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTION");
-//     res.header(
-//         "Access-Control-Allow-Headers",
-//         "Content-Type, Option, Authorization"
-//     );
-//     if ("OPTIONS" == req.method) {
-//         res.sendStatus(200); //200 is OK
-//     } else {
-//         next();
-//     }
-// });
-
 app.use("/", index);
 app.use("/api/v1/book", book);
 app.use("/api/v1/member", member);

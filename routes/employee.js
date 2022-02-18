@@ -257,9 +257,11 @@ router.post("/addnewemployee", async (req, res) => {
             } else {
                 message = "successfully added new employee";
             }
+            console.log("res",results);
             return res.send({ error: false, data: results, message: message })
         }
     } catch (e) {
+        console.log("error",e);
         throw e;
     }
 });
