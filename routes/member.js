@@ -118,8 +118,8 @@ router.post("/register", async (req, res) => {
     const role = req.body.role;
     const phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
     const email = req.body.email;
-    const bank = String(req.body.bank).replace(/[^\w\s]/gi, '');
-    const accnumber = req.body.accnumber;
+    const bank = req.body.bank;
+    const accnumber = String(req.body.accnumber).replace(/[^\w\s]/gi, '');
     const phone2 = String(req.body.phone2).replace(/[^\w\s]/gi, '');
     const remark = req.body.remark;
 

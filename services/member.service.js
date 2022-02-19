@@ -52,7 +52,7 @@ searchMember = (keyword) => {
 addMember = (Username, Password, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO members (Username, Password, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) VALUES(?, MD5(?), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            const sql = "INSERT INTO members (Username, Password, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             const result = await conn.query(sql, [Username, Password, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark]);
             resolve(result);
         } catch (e) {
