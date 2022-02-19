@@ -116,11 +116,11 @@ router.post("/register", async (req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const role = req.body.role;
-    const phone = req.body.phone;
+    const phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
     const email = req.body.email;
-    const bank = req.body.bank;
+    const bank = String(req.body.bank).replace(/[^\w\s]/gi, '');
     const accnumber = req.body.accnumber;
-    const phone2 = req.body.phone2;
+    const phone2 = String(req.body.phone2).replace(/[^\w\s]/gi, '');
     const remark = req.body.remark;
 
     try {
@@ -191,7 +191,7 @@ router.delete("/:id", async (req, res) => {
 router.put("/resetPassword", async (req, res) => {
     try {
         let email = req.body.email;
-        let phone = req.body.phone;
+        let phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
         let newpassword = req.body.newpassword;
 
         bcrypt.hash(newpassword, saltRound, async (err, hash) => {
