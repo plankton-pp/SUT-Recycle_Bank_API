@@ -81,7 +81,7 @@ router.put("/register", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const role = "Employee";
-    const phone = req.body.phone;
+    const phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
     const empId = req.body.empId;
     const email = req.body.email;
 
@@ -217,7 +217,7 @@ router.put("/", async (req, res) => {
         let Firstname = req.body.firstname;
         let Lastname = req.body.lastname;
         let Username = req.body.username;
-        let Phone = req.body.phone;
+        let Phone = String(req.body.phone).replace(/[^\w\s]/gi, '')
         let Email = req.body.email;
 
         const results = await services.updateEmployeeById(Firstname, Lastname, Username, Phone, Email, id);
@@ -257,9 +257,11 @@ router.post("/addnewemployee", async (req, res) => {
             } else {
                 message = "successfully added new employee";
             }
+            console.log("res",results);
             return res.send({ error: false, data: results, message: message })
         }
     } catch (e) {
+        console.log("error",e);
         throw e;
     }
 });

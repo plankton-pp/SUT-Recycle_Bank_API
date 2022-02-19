@@ -42,9 +42,9 @@ const emailing = require("./routes/email");
 const corsOptions = {
     origin: '*',
     credentials: true,
-}
+  }
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json(parserLimit));
 app.use(bodyParser.urlencoded({
@@ -60,40 +60,11 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            expires: 60 * 60 * 4,
+            expires: 60*60*4,
         },
     })
 )
-
-// app.use(async (req, res, next) => {
-//     var allowedOrigins = ["*"];
-//     var origin = req.headers.origin;
-//     res.header("Access-Control-Allow-Credentials", true);
-//     if (allowedOrigins.indexOf(origin) > -1) {
-//         res.setHeader("Access-Control-Allow-Origin", origin);
-//     }
-//     res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTION");
-//     res.header(
-//         "Access-Control-Allow-Headers",
-//         "Content-Type, Option, Authorization"
-//     );
-//     if ("OPTIONS" == req.method) {
-//         res.sendStatus(200); //200 is OK
-//     } else {
-//         next();
-//     }
-// });
-
-
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*'); //หรือใส่แค่เฉพาะ domain ที่ต้องการได้
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
-
-
+//ยังไม่รู้การทำงาน------------------------------------------------------------------------------------------
 app.use("/", index);
 app.use("/api/v1/book", book);
 app.use("/api/v1/member", member);

@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
         fee = parseFloat(fee).toFixed(2);
         
         
-        // console.log("result",req);
+        console.log("result",req);
         const results = await services.addFee(fee, createby);
         
         //validation
