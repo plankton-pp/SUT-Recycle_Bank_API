@@ -36,21 +36,21 @@ router.get("/", async (req, res) => {
 // });
 
 router.post("/", async (req, res) => {
-    try {       
+    try {
         //console.log(req);
-        let typeid = req.body.typeid;   
+        let typeid = req.body.typeid;
         let name = req.body.name;
-        let detail = req.body.detail;        
-        let price = req.body.price; 
-        let unitdetail = req.body.unitdetail; 
+        let detail = req.body.detail;
+        let price = req.body.price;
+        let unitdetail = req.body.unitdetail;
         let createby = req.body.createby;
-        
+
         price = parseFloat(price).toFixed(2);
-        
+
         const results = await services.addProduct(typeid, name, detail, price, unitdetail, createby);
-        
+
         //validation
-        if (!typeid || !name|| !price || !createby || !unitdetail) {
+        if (!typeid || !name || !price || !createby || !unitdetail) {
             return res.status(400).send({ error: true, message: 'Please provide product\'s typeid name price feeid unitdetail and createby.' })
         } else {
             return res.send({ error: false, data: results, message: 'Product successfully added' })
@@ -87,20 +87,18 @@ router.delete("/:id", async (req, res) => {
 router.put("/", async (req, res) => {
     try {
         //console.log(req);
-        
-        let typeid = req.body.typeid;       
+
+        let typeid = req.body.typeid;
         let name = req.body.name;
-        let detail = req.body.detail;        
-        let price = req.body.price;            
+        let detail = req.body.detail;
+        let price = Number(req.body.price).toFixed(2);
         let unitdetail = req.body.unitdetail;
-        let updateby = req.body.updateby;     
-        let productid = req.body.productid;  
-        
-        price = parseFloat(price).toFixed(2);
-        
+        let updateby = req.body.updateby;
+        let productid = req.body.productid;
+
         const results = await services.updateProductById(typeid, name, detail, price, unitdetail, updateby, productid);
         //validation
-        if (!productid|| !typeid|| !name|| !price|| !unitdetail || !updateby) {
+        if (!productid || !typeid || !name || !price || !unitdetail || !updateby) {
             return res.status(400).send({ error: true, message: 'Please provide pruduct\'s productid typeid name price unitdetail  updateby .' })
         } else {
             let message = ""
@@ -121,7 +119,7 @@ router.put("/", async (req, res) => {
 //     try {
 //         //console.log(req);
 //         let fee = req.body.fee;  
-        
+
 //         const results = await services.updateFee(fee);
 //         //validation
 //         if (!fee) {
