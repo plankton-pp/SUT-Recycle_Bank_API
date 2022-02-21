@@ -11,7 +11,6 @@ require('dotenv').config();
 
 //Route
 const index = require("./routes/index");
-const book = require("./routes/book");
 const member = require("./routes/member");
 const wallet = require("./routes/wallet");
 const transaction = require("./routes/transaction");
@@ -66,7 +65,6 @@ app.use(
 )
 //ยังไม่รู้การทำงาน------------------------------------------------------------------------------------------
 app.use("/", index);
-app.use("/api/v1/book", book);
 app.use("/api/v1/member", member);
 app.use("/api/v1/wallet", wallet);
 app.use("/api/v1/transaction", transaction);
