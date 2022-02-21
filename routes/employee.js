@@ -111,7 +111,7 @@ const verifyJWT = (req, res, next) => {
         const token = bearerToken[1];
         jwt.verify(token, process.env.JWTSECRET, (err, decoded) => {
             if (err) {
-                res.send({ error: true, auth: false, message: "failed to authenticated" })
+                res.send({ error: true, auth: false, message: "user unauthenticated, cannot access system" })
             } else {
                 req.userId = decoded.id
                 next();
@@ -131,7 +131,7 @@ router.post("/auth", async (req, res) => {
 
         const username = req.body.username;//username or email
         const password = req.body.password;
-
+        return res.send({ error: true, data: req.body })
         const result = await services.authEmployee(username);
         let message = ""
         if (result === undefined || result.length === 0) {
