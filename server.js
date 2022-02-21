@@ -88,9 +88,6 @@ app.use("/api/v1/report5-3", report53);
 app.use("/api/v1/report5-4", report54);
 
 
-app.use("/employee", employee);
-
-
 app.use("/api/v1/email", emailing);
 
 if (process.env.NODE_ENV === 'test') {
