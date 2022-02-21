@@ -11,6 +11,8 @@ getType = () => {
                 T.Create_Date,
                 CONCAT(E.Firstname,' ',E.Lastname) AS Update_By,
                 CONCAT(E1.Firstname,' ',E1.Lastname) AS Create_By
+                T.Update_By as UpdateBy,
+                T.Create_By as CreateBy
             FROM type T
             left JOIN employee E 
             ON T.Update_By = E.ID
@@ -24,14 +26,14 @@ getType = () => {
     });
 };
 
-addType = (name,createby) => { 
-    
+addType = (name, createby) => {
+
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "INSERT INTO `type` (`Type_ID`, `Name`, `Update_Date`, `Create_Date`, `Update_By`, `Create_By`) VALUES (NULL, ?, '', UNIX_TIMESTAMP(NOW()), '', ?);";
-            const result = await conn.query(sql, [name,createby]);
+            const result = await conn.query(sql, [name, createby]);
             resolve(result);
-        } catch (e) { 
+        } catch (e) {
             reject(e);
         }
     });

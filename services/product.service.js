@@ -16,6 +16,8 @@ getProducts = () => {
                 CONCAT(E.Firstname,' ',E.Lastname) AS Update_By,
                 P.Create_Date,
                 CONCAT(E1.Firstname,' ',E1.Lastname) AS Create_By
+                P.Update_By as UpdateBy,
+                P.Create_By as CreateBy
             FROM product P
             LEFT JOIN employee E
             ON P.Update_By = E.ID 

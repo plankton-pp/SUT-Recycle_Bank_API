@@ -67,7 +67,7 @@ router.put("/", async (req, res) => {
     try {
         //console.log("req",req);
         let id = req.body.id;
-        let name = req.body.name;       
+        let name = req.body.name;
         let updateby = req.body.updateby;
 
         const results = await services.updateTypeById(name, updateby, id);
