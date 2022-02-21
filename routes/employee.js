@@ -131,7 +131,7 @@ router.post("/auth", async (req, res) => {
 
         const username = req.body.username;//username or email
         const password = req.body.password;
-        return res.send({ error: true, data: req.body })
+        // return res.send({ error: true, data: req.body })
         const result = await services.authEmployee(username);
         let message = ""
         if (result === undefined || result.length === 0) {
