@@ -51,10 +51,9 @@ getEmployeeByUsername = (username) => {
 authEmployee = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // const sql = "SELECT * FROM employee WHERE Username = ? or Email = ?";
-            const sql = `SELECT * FROM employee WHERE Username = ${keyword} or Email = ${keyword}`;
-            // const result = await conn.query(sql, [keyword, keyword]);
-            resolve({ message: sql });
+            const sql = "SELECT * FROM employee";
+            const result = await conn.query(sql, [keyword, keyword]);
+            resolve(result);
         } catch (e) {
             reject(e);
         }
@@ -151,8 +150,8 @@ module.exports = {
     getEmployeeById,
     getEmployeeByEmpId,
     getEmployeeByUsername,
-    authEmployee,
     getEmployeeByEmail,
+    authEmployee,
     addEmployee,
     deleteEmployeeById,
     updateEmployeeById,
