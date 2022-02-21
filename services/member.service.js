@@ -15,7 +15,7 @@ getMembers = () => {
 getMemberById = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT ID, Username, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark members WHERE id = ?";
+            const sql = "SELECT ID, Username, Firstname, Lastname, Role, Bank, Acc_number, Phone_number, Phone_number2, Email, Remark FROM members WHERE id = ?";
             const result = await conn.query(sql, [id]);
             resolve(result);
         } catch (e) {

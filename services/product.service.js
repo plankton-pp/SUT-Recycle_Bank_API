@@ -73,11 +73,11 @@ deleteProductById = (id) => {
 updateProductById = (typeid, name, detail, price, unitdetail, updateby, productid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Detail = ?, Price_per_unit = ?, Unit_Detail = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Product_ID = ?";
-            const sql = `UPDATE Product SET Type_ID = ${typeid}, Name = ${name}, Detail = ${detail}, Price_per_unit = ${price}, Unit_Detail = ${unitdetail}, Update_By = ${updateby}, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Product_ID = ${productid}`;
-            // const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, updateby, productid]);
+            const sql = "UPDATE product SET Type_ID = ?, Name = ?, Detail = ?, Price_per_unit = ?, Unit_Detail = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Product_ID = ?";
+            // const sql = `UPDATE product SET Type_ID = ${typeid}, Name = ${name}, Detail = ${detail}, Price_per_unit = ${price}, Unit_Detail = ${unitdetail}, Update_By = ${updateby}, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Product_ID = ${productid}`;
+            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, updateby, productid]);
             // console.log("typeid, name, detail, price, createby",typeid, name, detail, price, createby);
-            resolve({ message: sql });
+            resolve(result);
         } catch (e) {
             reject(e);
         }
@@ -87,7 +87,7 @@ updateProductById = (typeid, name, detail, price, unitdetail, updateby, producti
 updateFee = (Fee) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE Product SET Operation_Fee = ?";
+            const sql = "UPDATE product SET Operation_Fee = ?";
             const result = await conn.query(sql, [Fee]);
             resolve(result);
         } catch (e) {
