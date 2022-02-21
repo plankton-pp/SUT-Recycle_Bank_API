@@ -242,8 +242,8 @@ router.put("/", async (req, res) => {
 //add New Employee
 router.post("/addnewemployee", async (req, res) => {
     try {
-        let Empid = req.body.Empid;
-        let Email = req.body.Email;
+        let Empid = String(req.body.Empid);
+        let Email = String(req.body.Email);
 
 
         //validation
@@ -257,11 +257,11 @@ router.post("/addnewemployee", async (req, res) => {
             } else {
                 message = "successfully added new employee";
             }
-            console.log("res",results);
+            console.log("res", results);
             return res.send({ error: false, data: results, message: message })
         }
     } catch (e) {
-        console.log("error",e);
+        console.log("error", e);
         throw e;
     }
 });

@@ -124,9 +124,9 @@ resetPassword = (email, newpassword) => {
 addNewEmployee = (Empid, Email) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = `INSERT INTO employee (Employee_ID, Email) VALUES(${Empid}, ${Email})`;
-            // const result = await conn.query(sql, [Empid, Email]);
-            resolve({ message: sql });
+            const sql = `INSERT INTO employee (Employee_ID, Email) VALUES( ?, ?)`;
+            const result = await conn.query(sql, [Empid, Email]);
+            resolve(result);
         } catch (e) {
             reject(e);
         }
