@@ -10,7 +10,7 @@ getType = () => {
                 T.Update_Date,
                 T.Create_Date,
                 CONCAT(E.Firstname,' ',E.Lastname) AS Update_By,
-                CONCAT(E1.Firstname,' ',E1.Lastname) AS Create_By
+                CONCAT(E1.Firstname,' ',E1.Lastname) AS Create_By,
                 T.Update_By as UpdateBy,
                 T.Create_By as CreateBy
             FROM type T
