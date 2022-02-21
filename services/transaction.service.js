@@ -52,8 +52,8 @@ addTransaction = (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount) =
 addTransaction2 = (Place_Members_ID, Place_Employee_ID, Type, Amount) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO transactions (Place_Members_ID, Place_Employee_ID, Type, Amount, Create_Date, Detail) VALUES(?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), ?)";
-            const result = await conn.query(sql, [Place_Members_ID, Place_Employee_ID, Type, Amount, "withdraw"]);
+            const sql = "INSERT INTO transactions (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount, Create_Date, Detail) VALUES(?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), ?)";
+            const result = await conn.query(sql, ["", Place_Members_ID, Place_Employee_ID, Type, Amount, "withdraw"]);
             resolve(result);
         } catch (e) {
             reject(e);
