@@ -51,8 +51,8 @@ getEmployeeByUsername = (username) => {
 authEmployee = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT * FROM employee";
-            const result = await conn.query(sql, [keyword, keyword]);
+            const sql = "SELECT * FROM employee WHERE Email = ?";
+            const result = await conn.query(sql, [String(keyword), keyword]);
             resolve(result);
         } catch (e) {
             reject(e);
