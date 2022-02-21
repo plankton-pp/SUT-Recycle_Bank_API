@@ -3,7 +3,7 @@ const conn = require('../config/dbConfig')
 getAllTransactions = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = 
+            const sql =
                 `SELECT 
                     M.Firstname,
                     M.Lastname,
@@ -40,8 +40,8 @@ getTransactionByMember_ID = (id) => {
 addTransaction = (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO transactions (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount, Create_Date) VALUES(?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()))";
-            const result = await conn.query(sql, [Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount]);
+            const sql = "INSERT INTO transactions (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount, Create_Date, Detail) VALUES(?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()),?)";
+            const result = await conn.query(sql, [Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount, ""]);
             resolve(result);
         } catch (e) {
             reject(e);
@@ -49,11 +49,11 @@ addTransaction = (Place_ID, Place_Members_ID, Place_Employee_ID, Type, Amount) =
     });
 };
 
-addTransaction2 = (Place_Members_ID,  Place_Employee_ID, Type, Amount) => {
+addTransaction2 = (Place_Members_ID, Place_Employee_ID, Type, Amount) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "INSERT INTO transactions (Place_Members_ID, Place_Employee_ID, Type, Amount, Create_Date) VALUES(?, ?, ?, ?, UNIX_TIMESTAMP(NOW()))";
-            const result = await conn.query(sql, [Place_Members_ID,  Place_Employee_ID, Type, Amount]);
+            const result = await conn.query(sql, [Place_Members_ID, Place_Employee_ID, Type, Amount]);
             resolve(result);
         } catch (e) {
             reject(e);
