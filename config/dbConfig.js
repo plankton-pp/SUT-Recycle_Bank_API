@@ -7,14 +7,14 @@ const con = mysql.createPool({
   acquireTimeout: 60 * 60 * 1000,
   timeout: 60 * 60 * 1000,
   host: process.env.DB_ADDRESS,
-  user: "root",
+  user: process.env.DB_USER,
   password: process.env.DB_ACCESS,
   database: "nodejs_api",
 });
 
 query = (sql, values) => {
   return new Promise((resolve, reject) => {
-    con.getConnection(function(err, connection) {
+    con.getConnection(function (err, connection) {
       connection.query(sql, values, (err, result) => {
         if (err) {
           reject("Error Query : " + err);
