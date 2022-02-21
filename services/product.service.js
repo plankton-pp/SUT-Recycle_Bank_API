@@ -3,7 +3,24 @@ const conn = require('../config/dbConfig')
 getProducts = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT * FROM product";
+            const sql = `
+            SELECT 
+                P.Product_ID,
+                P.Type_ID,
+                P.Name,
+                P.Detail,
+                P.Price_per_unit,
+                P.Unit_Detail,
+                P.Fee_ID,
+                P.Update_Date,
+                CONCAT(E.Firstname,' ',E.Lastname) AS Update_By,
+                P.Create_Date,
+                CONCAT(E1.Firstname,' ',E1.Lastname) AS Create_By
+            FROM product P
+            LEFT JOIN employee E
+            ON P.Update_By = E.ID 
+            LEFT JOIN employee E1
+            ON P.Update_By = E1.ID `;
             const result = await conn.query(sql, []);
             resolve(result);
         } catch (e) {
