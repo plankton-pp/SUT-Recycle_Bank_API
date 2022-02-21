@@ -28,8 +28,8 @@ addType = (name,createby) => {
     
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "INSERT INTO `type` (`Type_ID`, `Name`, `Update_Date`, `Create_Date`, `Update_By`, `Create_By`) VALUES (NULL, ?, '', UNIX_TIMESTAMP(NOW()), '', ?);";
-            const result = await conn.query(sql, [name,createby]);
+            const sql = "INSERT INTO `type` (`Type_ID`, `Name`, `Update_Date`, `Create_Date`, `Update_By`, `Create_By`) VALUES (NULL, ?, UNIX_TIMESTAMP(NOW()), UNIX_TIMESTAMP(NOW()), ?, ?);";
+            const result = await conn.query(sql, [name, createby ,createby]);
             resolve(result);
         } catch (e) { 
             reject(e);
