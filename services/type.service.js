@@ -3,7 +3,19 @@ const conn = require('../config/dbConfig')
 getType = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "SELECT * FROM type";
+            const sql = `
+            SELECT
+                T.Type_ID,
+                T.Name,
+                T.Update_Date,
+                T.Create_Date,
+                CONCAT(E.Firstname,' ',E.Lastname) AS Update_By,
+                CONCAT(E1.Firstname,' ',E1.Lastname) AS Create_By
+            FROM type T
+            left JOIN employee E 
+            ON T.Update_By = E.ID
+            left JOIN employee E1
+            ON T.Update_By = E1.ID;`;
             const result = await conn.query(sql, []);
             resolve(result);
         } catch (e) {
