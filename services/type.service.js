@@ -15,7 +15,7 @@ getType = () => {
             left JOIN employee E 
             ON T.Update_By = E.ID
             left JOIN employee E1
-            ON T.Update_By = E1.ID;`;
+            ON T.Create_By = E1.ID;`;
             const result = await conn.query(sql, []);
             resolve(result);
         } catch (e) {

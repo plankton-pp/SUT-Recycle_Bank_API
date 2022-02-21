@@ -20,7 +20,7 @@ getProducts = () => {
             LEFT JOIN employee E
             ON P.Update_By = E.ID 
             LEFT JOIN employee E1
-            ON P.Update_By = E1.ID `;
+            ON P.Create_By = E1.ID `;
             const result = await conn.query(sql, []);
             resolve(result);
         } catch (e) {
@@ -46,9 +46,9 @@ addProduct = (typeid, name, detail, price, unitdetail, createby) => {
         try {
             const sql = "INSERT INTO `product` (`Product_ID`, `Type_ID`, `Name`, `Detail`, `Price_per_unit`, `Unit_Detail`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (NULL, ?, ?, ?, ?, ?, '', '', UNIX_TIMESTAMP(NOW()), ?);";
             // console.log("SQL",sql);
-            console.log("typeid, name, detail, price, createby",typeid, name, detail, price, createby);
+            console.log("typeid, name, detail, price, createby", typeid, name, detail, price, createby);
             const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, createby]);
-            
+
             resolve(result);
         } catch (e) {
             reject(e);
@@ -72,7 +72,7 @@ updateProductById = (typeid, name, detail, price, unitdetail, updateby, producti
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "UPDATE Product SET Type_ID = ?, Name = ?, Detail = ?, Price_per_unit = ?, Unit_Detail = ?, Update_By = ?, Update_Date = UNIX_TIMESTAMP(NOW()) WHERE Product_ID = ?";
-            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, updateby, productid]);        
+            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, updateby, productid]);
             // console.log("typeid, name, detail, price, createby",typeid, name, detail, price, createby);
             resolve(result);
         } catch (e) {
@@ -85,7 +85,7 @@ updateFee = (Fee) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = "UPDATE Product SET Operation_Fee = ?";
-            const result = await conn.query(sql, [Fee]);    
+            const result = await conn.query(sql, [Fee]);
             resolve(result);
         } catch (e) {
             reject(e);
