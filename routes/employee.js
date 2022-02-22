@@ -252,7 +252,7 @@ router.post("/addnewemployee", async (req, res) => {
         }
 
         if (resultsEmail !== undefined && resultsEmail[0].Email === Email && resultsEmail[0].Employee_ID === Empid) {
-            return res.status(400).send({ error: true, message: 'Duplicate email or empoyee id.' })
+            return res.status(400).send({ error: true, duplicate: true, message: 'Duplicate email or empoyee id.' })
         }
         else {
             const results = await services.addNewEmployee(Empid, Email);
