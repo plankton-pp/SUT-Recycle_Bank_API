@@ -246,30 +246,23 @@ router.post("/addnewemployee", async (req, res) => {
         let Email = String(req.body.Email);
 
         const resultsEmail = await services.getEmployeeByEmail(Email);
-        // return res.status(401).send({ error: true, message: resultsEmail.Email, typeof: typeof resultsEmail.Email+' '+ typeof Email})
         //validation
         if (!Empid || !Email) {
             return res.status(400).send({ error: true, message: 'Please provide Empid and Email.' })
         }
 
         if (resultsEmail) {
-            if (resultsEmail.Email) {
-                return res.status(400).send({ error: true, message: resultsEmail.Email, dup: resultsEmail.Email === Email })
-            }
+            return res.send({ error: false, data: resultsEmail, email: resultsEmail.Email })
         } else {
-            return res.status(400).send({ error: true, message: 'Duplicate email or employee id', data: resultsEmail })
+            const results = await services.addNewEmployee(Empid, Email);
+            let message = ""
+            if (results.insertId === 0) {
+                message = "Add new employee failed";
+            } else {
+                message = "successfully added new employee";
+            }
+            return res.send({ error: false, data: results, message: message })
         }
-        // } else {
-        //     const results = await services.addNewEmployee(Empid, Email);
-        //     let message = ""
-        //     if (results.insertId === 0) {
-        //         message = "Add new employee failed";
-        //     } else {
-        //         message = "successfully added new employee";
-        //     }
-        //     console.log("res", results);
-        //     return res.send({ error: false, data: results, message: message })
-        // }
     } catch (e) {
         console.log("error", e);
         throw e;
