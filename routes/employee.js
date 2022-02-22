@@ -251,17 +251,20 @@ router.post("/addnewemployee", async (req, res) => {
             return res.status(400).send({ error: true, message: 'Please provide Empid and Email.' })
         }
 
-        if (resultsEmail) {
-            return res.send({ error: false, data: resultsEmail, email: resultsEmail.Email })
-        } else {
-            const results = await services.addNewEmployee(Empid, Email);
-            let message = ""
-            if (results.insertId === 0) {
-                message = "Add new employee failed";
+        else {
+            if (resultsEmail !== undefined) {
+                return res.send({ error: false, data: resultsEmail, email: resultsEmail.Email })
             } else {
-                message = "successfully added new employee";
+                return res.send({ error: false })
+                // const results = await services.addNewEmployee(Empid, Email);
+                // let message = ""
+                // if (results.insertId === 0) {
+                //     message = "Add new employee failed";
+                // } else {
+                //     message = "successfully added new employee";
+                // }
+                // return res.send({ error: false, data: results, message: message })
             }
-            return res.send({ error: false, data: results, message: message })
         }
     } catch (e) {
         console.log("error", e);
