@@ -252,10 +252,12 @@ router.post("/addnewemployee", async (req, res) => {
             return res.status(400).send({ error: true, message: 'Please provide Empid and Email.' })
         }
 
-        if (resultsEmail && resultsEmail.Email === Email && resultsEmail.Employee_ID === Empid) {
-            return res.status(401).send({ error: true, message: 'Duplicate email or employee id' })
+        if (resultsEmail) {
+            if (resultsEmail.Email) {
+                return res.status(400).send({ error: true, message: resultsEmail.Email, dup: resultsEmail.Email === Email })
+            }
         } else {
-            return res.status(401).send({ error: true, message: 'Duplicate email or employee id', data: resultsEmail })
+            return res.status(400).send({ error: true, message: 'Duplicate email or employee id', data: resultsEmail })
         }
         // } else {
         //     const results = await services.addNewEmployee(Empid, Email);
