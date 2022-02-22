@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
         let detail = req.body.detail;
         let price = req.body.price;
         let unitdetail = req.body.unitdetail;
-        let createby = req.body.createby;
+        let createby = Number(req.body.createby);
 
         price = parseFloat(price).toFixed(2);
 
@@ -88,13 +88,13 @@ router.put("/", async (req, res) => {
     try {
         //console.log(req);
 
-        let typeid = req.body.typeid;
-        let name = req.body.name;
-        let detail = req.body.detail;
+        let typeid = Number(req.body.typeid);
+        let name = String(req.body.name);
+        let detail = String(req.body.detail);
         let price = Number(req.body.price).toFixed(2);
-        let unitdetail = req.body.unitdetail;
-        let updateby = req.body.updateby;
-        let productid = req.body.productid;
+        let unitdetail = String(req.body.unitdetail);
+        let updateby = Number(req.body.updateby);
+        let productid = Number(req.body.productid);
 
         const results = await services.updateProductById(typeid, name, detail, price, unitdetail, updateby, productid);
         //validation
