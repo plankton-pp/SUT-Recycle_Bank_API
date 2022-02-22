@@ -44,10 +44,11 @@ router.post("/", async (req, res) => {
         let price = req.body.price;
         let unitdetail = req.body.unitdetail;
         let createby = Number(req.body.createby);
+        let feeid = Number(req.body.feeid);
 
         price = parseFloat(price).toFixed(2);
 
-        const results = await services.addProduct(typeid, name, detail, price, unitdetail, createby);
+        const results = await services.addProduct(typeid, name, detail, price, unitdetail, createby, feeid);
 
         //validation
         if (!typeid || !name || !price || !createby || !unitdetail) {

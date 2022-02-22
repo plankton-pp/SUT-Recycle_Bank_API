@@ -43,13 +43,13 @@ getProducts = () => {
 //     });
 // };
 
-addProduct = (typeid, name, detail, price, unitdetail, createby) => {
+addProduct = (typeid, name, detail, price, unitdetail, createby, feeid) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // const sql = "INSERT INTO `product` ( `Type_ID`, `Name`, `Detail`, `Price_per_unit`, `Unit_Detail`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`) VALUES (?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), ?, UNIX_TIMESTAMP(NOW()), ?);";
-            const sql = `INSERT INTO product ( Type_ID, Name, Detail, Price_per_unit, Unit_Detail, Update_Date, Update_By, Create_Date, Create_By) VALUES (${typeid}, ${name}, ${detail}, ${price}, ${unitdetail}, UNIX_TIMESTAMP(NOW()), ${createby}, UNIX_TIMESTAMP(NOW()), ${createby});`;
-            // const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, createby, createby]);
-            resolve({ message: sql });
+            const sql = "INSERT INTO `product` ( `Type_ID`, `Name`, `Detail`, `Price_per_unit`, `Unit_Detail`, `Update_Date`, `Update_By`, `Create_Date`, `Create_By`, `FEE_ID`) VALUES (?, ?, ?, ?, ?, UNIX_TIMESTAMP(NOW()), ?, UNIX_TIMESTAMP(NOW()), ?,?);";
+            // const sql = `INSERT INTO product ( Type_ID, Name, Detail, Price_per_unit, Unit_Detail, Update_Date, Update_By, Create_Date, Create_By) VALUES (${typeid}, ${name}, ${detail}, ${price}, ${unitdetail}, UNIX_TIMESTAMP(NOW()), ${createby}, UNIX_TIMESTAMP(NOW()), ${createby});`;
+            const result = await conn.query(sql, [typeid, name, detail, price, unitdetail, createby, createby, feeid]);
+            resolve(result);
         } catch (e) {
             reject(e);
         }
