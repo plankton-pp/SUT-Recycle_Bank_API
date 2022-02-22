@@ -255,16 +255,19 @@ router.post("/addnewemployee", async (req, res) => {
         if (resultsEmail && resultsEmail.Email === Email && resultsEmail.Employee_ID === Empid) {
             return res.status(401).send({ error: true, message: 'Duplicate email or employee id' })
         } else {
-            const results = await services.addNewEmployee(Empid, Email);
-            let message = ""
-            if (results.insertId === 0) {
-                message = "Add new employee failed";
-            } else {
-                message = "successfully added new employee";
-            }
-            console.log("res", results);
-            return res.send({ error: false, data: results, message: message })
+            return res.status(401).send({ error: true, message: 'Duplicate email or employee id', data: resultsEmail })
         }
+        // } else {
+        //     const results = await services.addNewEmployee(Empid, Email);
+        //     let message = ""
+        //     if (results.insertId === 0) {
+        //         message = "Add new employee failed";
+        //     } else {
+        //         message = "successfully added new employee";
+        //     }
+        //     console.log("res", results);
+        //     return res.send({ error: false, data: results, message: message })
+        // }
     } catch (e) {
         console.log("error", e);
         throw e;
