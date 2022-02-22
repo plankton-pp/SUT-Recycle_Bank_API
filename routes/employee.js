@@ -238,6 +238,15 @@ router.put("/", async (req, res) => {
     }
 });
 
+const checkDup = async () => {
+    const resultsEmail = await services.getEmployeeByEmail(Email);
+    if (resultsEmail !== undefined && resultsEmail[0].Email === Email && resultsEmail[0].Employee_ID === Empid) {
+        return false
+    } else {
+        return true
+    }
+}
+
 
 //add New Employee
 router.post("/addnewemployee", async (req, res) => {
@@ -245,24 +254,23 @@ router.post("/addnewemployee", async (req, res) => {
         let Empid = String(req.body.Empid);
         let Email = String(req.body.Email);
 
-        const resultsEmail = await services.getEmployeeByEmail(Email);
         //validation
         if (!Empid || !Email) {
             return res.status(400).send({ error: true, message: 'Please provide Empid and Email.' })
-        }
-
-        if (resultsEmail !== undefined && resultsEmail[0].Email === Email && resultsEmail[0].Employee_ID === Empid) {
-            return res.status(400).send({ error: true, duplicate: true, message: 'Duplicate email or empoyee id.' })
-        }
-        else {
-            const results = await services.addNewEmployee(Empid, Email);
-            let message = ""
-            if (results.insertId === 0) {
-                message = "Add new employee failed";
+        } else {
+            if (checkDup()) {
+                const results = await services.addNewEmployee(Empid, Email);
+                let message = ""
+                if (results.insertId === 0) {
+                    message = "Add new employee failed";
+                } else {
+                    message = "successfully added new employee";
+                }
+                return res.send({ error: false, data: results, message: message })
             } else {
-                message = "successfully added new employee";
+                return res.status(400).send({ error: true, duplicate: true, message: 'Duplicate email or empoyee id.' })
             }
-            return res.send({ error: false, data: results, message: message })
+
         }
     } catch (e) {
         console.log("error", e);
