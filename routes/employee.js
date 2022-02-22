@@ -245,7 +245,8 @@ router.post("/addnewemployee", async (req, res) => {
         let Empid = String(req.body.Empid);
         let Email = String(req.body.Email);
 
-
+        const resultsEmail = await services.getEmployeeByEmail(Email);
+        return res.send({ error: true, data: resultsEmail })
         //validation
         if (!Empid || !Email) {
             return res.status(400).send({ error: true, message: 'Please provide Empid and Email.' })
