@@ -238,15 +238,6 @@ router.put("/", async (req, res) => {
     }
 });
 
-const checkDup = async () => {
-    const resultsEmail = await services.getEmployeeByEmail(Email);
-    if (resultsEmail !== undefined && resultsEmail[0].Email === Email && resultsEmail[0].Employee_ID === Empid) {
-        return false
-    } else {
-        return true
-    }
-}
-
 
 //add New Employee
 router.post("/addnewemployee", async (req, res) => {
@@ -258,7 +249,11 @@ router.post("/addnewemployee", async (req, res) => {
         if (!Empid || !Email) {
             return res.status(400).send({ error: true, message: 'Please provide Empid and Email.' })
         } else {
-            if (checkDup()) {
+            const resultsEmail = await services.getEmployeeByEmail(Email);
+            if (resultsEmail !== undefined && resultsEmail[0].Email === Email && resultsEmail[0].Employee_ID === Empid) {
+                return res.status(400).send({ error: true, duplicate: true, message: 'Duplicate email or empoyee id.' })
+            }
+            else {
                 const results = await services.addNewEmployee(Empid, Email);
                 let message = ""
                 if (results.insertId === 0) {
@@ -267,10 +262,7 @@ router.post("/addnewemployee", async (req, res) => {
                     message = "successfully added new employee";
                 }
                 return res.send({ error: false, data: results, message: message })
-            } else {
-                return res.status(400).send({ error: true, duplicate: true, message: 'Duplicate email or empoyee id.' })
             }
-
         }
     } catch (e) {
         console.log("error", e);
