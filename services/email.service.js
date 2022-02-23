@@ -6,9 +6,8 @@ sendMail = (sendTo, context) => {
     const msg = {
         to: sendTo, // Change to your recipient
         from: process.env.EMAIL_USERNAME, // Change to your verified sender
-        subject: 'Sending with SendGrid is Fun',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+        subject: context.subject,
+        text: context.body,
     }
 
     return new Promise(async (resolve, reject) => {
