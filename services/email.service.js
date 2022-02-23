@@ -1,21 +1,42 @@
 const nodemailer = require("nodemailer");
 const sgMail = require('@sendgrid/mail')
-
+const sgTransport = require('nodemailer-sendgrid-transport');
 sendMail = (sendTo, context) => {
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
-    const msg = {
-        to: sendTo, // Change to your recipient
-        from: process.env.EMAIL_USERNAME, // Change to your verified sender
-        subject: context.subject,
-        text: context.body,
-    }
-    sgMail.send(msg).then((response) => {
-        console.log(response[0].statusCode)
-        console.log(response[0].headers)
-    }).catch((error) => {
-        console.error(error)
-    })
 
+
+    let options = {
+        auth: {
+            api_user: process.env.SMTP_USERNAME,
+            api_key: process.env.SMTP_PASSWORD
+        }
+
+    }
+    // var client = nodemailer.createTransport({
+    //     service: 'SendGrid',
+    //     auth: {
+    //         user: 'SENDGRID_USERNAME',
+    //         pass: 'SENDGRID_PASSWORD'
+    //     }
+    // });
+
+    let client = nodemailer.createTransport(sgTransport(options));
+
+    let email = {
+        from: process.env.SMTP_EMAIL,
+        to: 'planktonplnt@gmail.com',
+        subject: 'Hello',
+        text: 'Hello world',
+        html: '<b>Hello world</b>'
+    };
+
+    client.sendMail(email, function (err, info) {
+        if (err) {
+            console.log(error);
+        }
+        else {
+            console.log('Message sent: ' + info.response);
+        }
+    });
 
     // // create reusable transporter object using the default SMTP transport
     // let transporter = nodemailer.createTransport({
