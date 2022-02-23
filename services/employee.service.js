@@ -64,8 +64,8 @@ getEmployeeByEmail = (email) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sql = `SELECT * FROM employee WHERE Email = "${email}"`;
-            // const result = await conn.query(sql, [email]);
-            resolve({ message: sql });
+            const result = await conn.query(sql, []);
+            resolve({ message: sql, result:  result});
         } catch (e) {
             reject(e);
         }
