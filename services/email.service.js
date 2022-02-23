@@ -9,19 +9,13 @@ sendMail = (sendTo, context) => {
         subject: context.subject,
         text: context.body,
     }
+    sgMail.send(msg).then((response) => {
+        console.log(response[0].statusCode)
+        console.log(response[0].headers)
+    }).catch((error) => {
+        console.error(error)
+    })
 
-    return new Promise(async (resolve, reject) => {
-        try {
-            sgMail.send(msg).then((response) => {
-                console.log(response[0].statusCode)
-                console.log(response[0].headers)
-            }).catch((error) => {
-                console.error(error)
-            })
-        } catch (e) {
-            reject(e);
-        }
-    });
 
     // // create reusable transporter object using the default SMTP transport
     // let transporter = nodemailer.createTransport({
