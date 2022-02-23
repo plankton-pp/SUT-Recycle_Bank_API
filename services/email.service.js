@@ -11,15 +11,15 @@ sendMail = (sendTo, context) => {
         }
 
     }
-    // var client = nodemailer.createTransport({
-    //     service: 'SendGrid',
-    //     auth: {
-    //         user: 'SENDGRID_USERNAME',
-    //         pass: 'SENDGRID_PASSWORD'
-    //     }
-    // });
+    var client = nodemailer.createTransport({
+        service: 'SendGrid',
+        auth: {
+            api_user: process.env.SMTP_USERNAME,
+            api_key: process.env.SMTP_PASSWORD
+        }
+    });
 
-    let client = nodemailer.createTransport(sgTransport(options));
+    // let client = nodemailer.createTransport(sgTransport(options));
 
     let email = {
         from: process.env.SMTP_EMAIL,
