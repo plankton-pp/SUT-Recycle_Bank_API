@@ -14,14 +14,11 @@ sendMail = (sendTo, context) => {
         text: 'and easy to do anywhere, even with Node.js',
         html: '<strong>and easy to do anywhere, even with Node.js</strong>',
     }
-    sendgrid
-        .send(msg)
-        .then((resp) => {
-            console.log('Email sent\n', resp)
-        })
-        .catch((error) => {
-            console.error(error)
-        })
+    sendgrid.send(msg).then((resp) => {
+        console.log('Email sent\n', resp)
+    }).catch((error) => {
+        console.error(error)
+    })
 
 
     // // create reusable transporter object using the default SMTP transport
