@@ -55,6 +55,23 @@ router.get("/checkEmp/:empId", async (req, res) => {
     }
 });
 
+router.get("/checkEmpViaEmail/:email", async (req, res) => {
+    try {
+        let email = req.params.email;
+        const result = await services.getEmployeeByEmail(String(email));
+        let message = ""
+        if (result === undefined || result.length == 0) {
+            message = "Employee not found";
+        } else {
+            message = "Successfully retrieved Employee data";
+        }
+        return res.send({ error: false, data: result, message: message })
+    } catch (e) {
+        throw e;
+    }
+});
+
+
 router.post("/checkDuplicate", async (req, res) => {
     const username = req.body.username
     const email = req.body.email
