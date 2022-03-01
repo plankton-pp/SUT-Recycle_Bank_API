@@ -76,7 +76,7 @@ services:
       context: ./recycle_frontend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "3015:3015"
     networks:
       - frontend
     restart: on-failure
