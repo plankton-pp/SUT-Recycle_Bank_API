@@ -63,8 +63,8 @@ services:
       - recycle-api
       - recycle-frontend
     ports:
+      - "3011:3011"
       - "80:80"
-      - "7777:7777"
     networks:
       - api
       - frontend
@@ -76,7 +76,7 @@ services:
       context: ./recycle_frontend
       dockerfile: Dockerfile
     ports:
-      - "3015:3015"
+      - "80:80"
     networks:
       - frontend
     restart: on-failure
