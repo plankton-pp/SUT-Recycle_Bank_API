@@ -4,7 +4,7 @@ sendMail = (sendTo, context) => {
     let transporter = nodemailer.createTransport({
         service: "gmail",
         // port: PORT,
-        // secure: false, // true for 465, false for other ports
+        secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.EMAIL_USERNAME,
             pass: process.env.EMAIL_PASSWORD,
@@ -36,7 +36,7 @@ sendReceipt = (sendTo, context) => {
     let transporter = nodemailer.createTransport({
         service: "gmail",
         // port: PORT,
-        // secure: false, // true for 465, false for other ports
+        secure: false, // true for 465, false for other ports
         auth: {
             user: process.env.EMAIL_USERNAME,
             pass: process.env.EMAIL_PASSWORD,
