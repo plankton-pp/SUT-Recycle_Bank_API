@@ -17,8 +17,8 @@ getProductdetail = (year) => {
                     ) + 543 = ?
                     GROUP by Role,month`;
                     const result = await conn.query(sql, [year]);   
-                    console.log("sql",sql)       
-                    console.log("year",year)         
+                    // console.log("sql",sql)       
+                    // console.log("year",year)         
                     resolve(result);
                 } catch (e) {
                     reject(e);

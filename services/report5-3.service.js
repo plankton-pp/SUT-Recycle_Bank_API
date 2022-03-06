@@ -16,8 +16,8 @@ getProductdetail = (year) => {
                     ) + 543 = ?
                       GROUP BY Product_ID) f ON e.Product_ID = f.Product_Used`;
                 const result = await conn.query(sql, [year]);   
-                console.log("sql",sql)       
-                console.log("year",year)         
+                // console.log("sql",sql)       
+                // console.log("year",year)         
                 resolve(result);
             } catch (e) {
                 reject(e);
@@ -41,7 +41,7 @@ getProductdetail = (year) => {
                 GROUP BY Product_ID) f
                 ON e.Product_ID = f.Product_Used`;                
                 const result = await conn.query(sql);    
-                console.log("sql",sql)            
+                // console.log("sql",sql)            
                 resolve(result);
             } catch (e) {
                 reject(e);

@@ -97,7 +97,6 @@ router.post("/auth", async (req, res) => {
                         expiresIn: '3h',
                     })
                     req.session.user = result;
-                    console.log(password, result[0].Password);
                     return res.send({ error: false, auth: true, token: token, data: result, message: message })
                 } else {
                     message = "Wrong username/password combination";
