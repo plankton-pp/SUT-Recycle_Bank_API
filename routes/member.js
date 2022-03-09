@@ -97,7 +97,6 @@ router.post("/auth", async (req, res) => {
                         expiresIn: '3h',
                     })
                     req.session.user = result;
-                    console.log(password, result[0].Password);
                     return res.send({ error: false, auth: true, token: token, data: result, message: message })
                 } else {
                     message = "Wrong username/password combination";
@@ -116,11 +115,11 @@ router.post("/register", async (req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const role = req.body.role;
-    const phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
+    let phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
     const email = req.body.email;
     const bank = req.body.bank;
-    const accnumber = String(req.body.accnumber).replace(/[^\w\s]/gi, '');
-    const phone2 = String(req.body.phone2).replace(/[^\w\s]/gi, '');
+    let accnumber = String(req.body.accnumber).replace(/[^\w\s]/gi, '');
+    let phone2 = String(req.body.phone2).replace(/[^\w\s]/gi, '');
     const remark = req.body.remark;
 
     try {
@@ -192,6 +191,7 @@ router.put("/resetPassword", async (req, res) => {
     try {
         let email = req.body.email;
         let phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
+        phone = phone.slice(0, 3) + "-" + phone.slice(3, 6) + "-" + phone.slice(6);
         let newpassword = req.body.newpassword;
 
         bcrypt.hash(newpassword, saltRound, async (err, hash) => {

@@ -98,7 +98,8 @@ router.put("/register", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     const role = "Employee";
-    const phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
+    let phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
+    phone = phone.slice(0,3)+"-"+phone.slice(3,6)+"-"+phone.slice(6);
     const empId = req.body.empId;
     const email = req.body.email;
 
@@ -191,10 +192,12 @@ router.delete("/:id", async (req, res) => {
             let message = ""
             if (results.affectedRows === 0) {
                 message = "Employee not found";
+                return res.status(400).send({ error: true, message: message })
             } else {
                 message = "Data successfully delete";
+                return res.send({ error: false, data: results, message: message })
             }
-            return res.send({ error: false, data: results, message: message })
+
         }
     } catch (e) {
         throw e;
@@ -235,6 +238,7 @@ router.put("/", async (req, res) => {
         let Lastname = req.body.lastname;
         let Username = req.body.username;
         let Phone = String(req.body.phone).replace(/[^\w\s]/gi, '')
+        Phone = Phone.slice(0,3)+"-"+Phone.slice(3,6)+"-"+Phone.slice(6);
         let Email = req.body.email;
 
         const results = await services.updateEmployeeById(Firstname, Lastname, Username, Phone, Email, id);
@@ -272,13 +276,15 @@ router.post("/addnewemployee", async (req, res) => {
                 let message = ""
                 if (results.insertId === 0) {
                     message = "Add new employee failed";
+                    return res.status(400).send({ error: true, data: results, message: message })
                 } else {
                     message = "successfully added new employee";
+                    return res.send({ error: false, data: results, message: message })
                 }
                 return res.send({ error: false, data: results, message: message })
             }
             else {
-                return res.status(400).send({ error: true, duplicate: true, message: 'Duplicate email or empoyee id.' })
+                return res.send({ error: true, duplicate: true, message: 'Duplicate email or empoyee id.' })
             }
         }
     } catch (e) {

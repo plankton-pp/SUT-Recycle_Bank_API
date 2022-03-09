@@ -24,6 +24,7 @@ const placedetail = require("./routes/placedetail");
 const deposit = require("./routes/deposit");
 const withdraw = require("./routes/withdraw");
 const userplace = require("./routes/userplace");
+const membertype = require("./routes/member.type");
 
 //Route Report
 const report1 = require("./routes/report1");
@@ -41,7 +42,7 @@ const emailing = require("./routes/email");
 const corsOptions = {
     origin: '*',
     credentials: true,
-  }
+}
 
 app.use(cors());
 app.use(cookieParser());
@@ -59,12 +60,13 @@ app.use(
         resave: false,
         saveUninitialized: false,
         cookie: {
-            expires: 60*60*4,
+            expires: 60 * 60 * 4,
         },
     })
 )
 //ยังไม่รู้การทำงาน------------------------------------------------------------------------------------------
 app.use("/", index);
+app.use("/api/v1/membertype", membertype);
 app.use("/api/v1/member", member);
 app.use("/api/v1/wallet", wallet);
 app.use("/api/v1/transaction", transaction);

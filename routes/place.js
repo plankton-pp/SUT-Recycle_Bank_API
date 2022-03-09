@@ -90,7 +90,6 @@ router.put("/", async (req, res) => {
         let status = req.body.status;
         let empid = req.body.empid;
         let netprice = req.body.netprice;
-        console.log("req",req)
         
         const results = await services.updatePlaceById(memid, placeby, netprice, status, empid, id);
         //validation
