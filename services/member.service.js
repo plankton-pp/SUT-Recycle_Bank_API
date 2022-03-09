@@ -40,7 +40,7 @@ searchMember = (keyword) => {
     return new Promise(async (resolve, reject) => {
         try {
             var dynamicInput = '%'.concat(keyword.concat('%'));
-            const sql = "SELECT ID, Username, Firstname, Lastname, Phone_number, Phone_number2, Email FROM members WHERE ID like ? or Firstname like ? or Lastname like ? or Phone_number like ? or Phone_number2 like ? or Email like ?";
+            const sql = "SELECT ID, Username, Firstname, Lastname, Phone_number, Phone_number2, Email, Role FROM members WHERE ID like ? or Firstname like ? or Lastname like ? or Phone_number like ? or Phone_number2 like ? or Email like ?";
             const result = await conn.query(sql, [dynamicInput, dynamicInput, dynamicInput, dynamicInput, dynamicInput, dynamicInput]);
             resolve(result);
         } catch (e) {
