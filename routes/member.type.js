@@ -1,51 +1,36 @@
 const express = require('express');
 const router = express.Router();
-const services = require('../services/book.service')
+const services = require('../services/member.type.service')
 
-//retrieve all data
 router.get("/", async (req, res) => {
     try {
-        const result = await services.getBooks();
+        const result = await services.getMemberType();
         let message = ""
         if (result === undefined || result.length == 0) {
-            message = "Books table is empty";
+            message = "Employee table is empty";
+            return res.status(400).send({ error: true, data: result, message: message })
         } else {
-            message = "Successfully retrieved all books";
+            message = "Successfully retrieved all member's types";
+            return res.send({ error: false, data: result, message: message })
         }
-        return res.send({ error: false, data: result, message: message })
+
     } catch (e) {
         throw e;
     }
 });
 
-//retrieve data by id
-router.get("/:id", async (req, res) => {
-    try {
-        let id = req.params.id;
-        const result = await services.getBookById(id);
-        let message = ""
-        if (result === undefined || result.length == 0) {
-            message = "Book not found";
-        } else {
-            message = "Successfully retrieved book data";
-        }
-        return res.send({ error: false, data: result, message: message })
-    } catch (e) {
-        throw e;
-    }
-});
 
 router.post("/", async (req, res) => {
     try {
-        let name = req.body.name;
-        let author = req.body.author;
+        let membertype = req.body.membertype;
+        let remark = req.body.remark;
 
-        const results = await services.addBook(name, author);
+        const results = await services.addMemberType(membertype, remark);
         //validation
-        if (!name || !author) {
-            return res.status(400).send({ error: true, message: 'Please provide book\'s name and author.' })
+        if (!membertype) {
+            return res.status(400).send({ error: true, message: 'Please provide type\'s name.' })
         } else {
-            return res.send({ error: false, data: results, message: 'Book successfully added' })
+            return res.send({ error: false, data: results, message: 'Type successfully added' })
         }
     } catch (e) {
         throw e;
@@ -57,14 +42,14 @@ router.delete("/:id", async (req, res) => {
     try {
         let id = req.params.id;
 
-        const results = await services.deleteById(id);
+        const results = await services.deleteMemberTypeById(id);
         //validation
         if (!id) {
-            return res.status(400).send({ error: true, message: 'Please provide book\'s id.' })
+            return res.status(400).send({ error: true, message: 'Please provide type\'s id.' })
         } else {
             let message = ""
             if (results.affectedRows === 0) {
-                message = "Book not found";
+                message = "Type not found";
             } else {
                 message = "Data successfully delete";
             }
@@ -100,8 +85,4 @@ router.put("/", async (req, res) => {
     }
 });
 
-
 module.exports = router;
-
-
-
