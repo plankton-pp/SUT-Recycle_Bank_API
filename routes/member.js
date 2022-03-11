@@ -115,11 +115,14 @@ router.post("/register", async (req, res) => {
     const firstname = req.body.firstname;
     const lastname = req.body.lastname;
     const role = req.body.role;
-    let phone = String(req.body.phone).replace(/[^\w\s]/gi, '');
+    let phone1 = String(req.body.phone1).replace(/[^\w\s]/gi, '');
+    phone1 = String(phone1).length > 1 ? phone1.slice(0, 3) + "-" + phone1.slice(3, 6) + "-" + phone1.slice(6) : '-';
+    let phone2 = String(req.body.phone2).replace(/[^\w\s]/gi, '');
+    phone2 = String(phone2).length > 1 ? phone2.slice(0, 3) + "-" + phone2.slice(3, 6) + "-" + phone2.slice(6) : '-';
+
     const email = req.body.email;
     const bank = req.body.bank;
     let accnumber = String(req.body.accnumber).replace(/[^\w\s]/gi, '');
-    let phone2 = String(req.body.phone2).replace(/[^\w\s]/gi, '');
     const remark = req.body.remark;
 
     try {
