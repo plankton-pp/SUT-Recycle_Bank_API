@@ -1,3 +1,4 @@
+const { use } = require('bcrypt/promises');
 const conn = require('../config/dbConfig')
 
 getMembers = () => {
@@ -73,11 +74,11 @@ deleteMemberById = (id) => {
     });
 };
 
-updateMemberById = (Firstname, Lastname, id) => {
+updateMemberById = (username, firstname, lastname, bankaccount, bank, phone1, phone2, email, role, remark, id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sql = "UPDATE members SET Firstname = ?, Lastname = ? WHERE ID = ?";
-            const result = await conn.query(sql, [Firstname, Lastname, id]);
+            const sql = `UPDATE members SET Username = ?,Firstname = ?,Lastname = ?, Acc_number = ?, Bank = ?, Phone_number = ?, Phone_number2 = ?, Email = ?, Role = ?, Remark = ? WHERE ID = ?`;
+            const result = await conn.query(sql, [username, firstname, lastname, bankaccount, bank, phone1, phone2, email, role, remark, id]);
             resolve(result);
         } catch (e) {
             reject(e);
