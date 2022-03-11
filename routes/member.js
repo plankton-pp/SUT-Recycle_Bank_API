@@ -218,12 +218,22 @@ router.put("/resetPassword", async (req, res) => {
 router.put("/", async (req, res) => {
     try {
         let id = req.body.id;
-        let Firstname = req.body.firstname;
-        let Lastname = req.body.lastname;
+        let username = req.body.username;
+        let firstname = req.body.firstname;
+        let lastname = req.body.lastname;
+        let phone1 = String(req.body.phone1).replace(/[^\w\s]/gi, '');
+        phone1 = String(phone1).length > 1 ? phone1.slice(0, 3) + "-" + phone1.slice(3, 6) + "-" + phone1.slice(6) : '-';
+        let phone2 = String(req.body.phone2).replace(/[^\w\s]/gi, '');
+        phone2 = String(phone2).length > 1 ? phone2.slice(0, 3) + "-" + phone2.slice(3, 6) + "-" + phone2.slice(6) : '-';
+        let email = req.body.email;
+        let bankaccount = req.body.accnumber;
+        let bank = req.body.bank;
+        let role = req.body.role;
+        let remark = req.body.remark;
 
-        const results = await services.updateMemberById(Firstname, Lastname, id);
+        const results = await services.updateMemberById(username, firstname, lastname, bankaccount, bank, phone1, phone2, email, role, remark, id);
         //validation
-        if (!id || !Firstname || !Lastname) {
+        if (!id || !firstname || !lastname) {
             return res.status(400).send({ error: true, message: 'Please provide Member\'s id firstname and lastname.' })
         } else {
             let message = ""
@@ -232,7 +242,7 @@ router.put("/", async (req, res) => {
             } else {
                 message = "Member successfully updated";
             }
-            return res.send({ error: false, data: results, message: message })
+            return res.send({ error: false, data: results, message: message, body: req.body })
         }
     } catch (e) {
         throw e;
