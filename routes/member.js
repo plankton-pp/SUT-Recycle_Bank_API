@@ -134,7 +134,7 @@ router.post("/register", async (req, res) => {
             if (!username || !password || !firstname || !lastname || !role || !bank || !accnumber || !phone) {
                 return res.status(400).send({ error: true, message: 'Please provide Member\'s data.' })
             } else {
-                const results = await services.addMember(username, hash, firstname, lastname, role, bank, accnumber, phone, phone2, email, remark);
+                const results = await services.addMember(username, hash, firstname, lastname, role, bank, accnumber, phone1, phone2, email, remark);
                 let memid = results.insertId;
                 const result2 = await servicesWallet.addWallet(memid);
                 return res.send({ error: false, data: results, message: 'Member successfully added' })
