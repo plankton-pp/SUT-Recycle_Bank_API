@@ -22,7 +22,7 @@ getWalletWithBalance = () => {
                     M.Lastname,
                     M.Bank,
                     M.Acc_number,
-                    DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(T.Create_Date),'%Y-%m-%d'), INTERVAL 543 YEAR),'%Y-%m-%d') as Create_Date,
+                    T.Create_Date as Create_Date,
                     W.Balance
                 FROM wallets W
                 JOIN members M

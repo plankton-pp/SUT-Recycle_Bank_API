@@ -10,8 +10,7 @@ getAllTransactions = () => {
                 T.Detail, 
                 T.Type, 
                 T.Amount, 
-                DATE_FORMAT(DATE_ADD(date_format(FROM_UNIXTIME(T.Create_Date),'%Y-%m-%d'), 
-                INTERVAL 543 YEAR),'%Y-%m-%d') as Create_Date, 
+                T.Create_Date as Create_Date, 
                 CONCAT(E.Firstname,' ',E.Lastname) AS Create_By 
                 FROM transactions T 
                 JOIN members M ON M.id = T.Place_Members_ID 
