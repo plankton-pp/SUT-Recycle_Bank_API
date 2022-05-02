@@ -6,9 +6,11 @@ const con = mysql.createPool({
   connectTimeout: 60 * 60 * 1000,
   acquireTimeout: 60 * 60 * 1000,
   timeout: 60 * 60 * 1000,
-  host: process.env.DB_ADDRESS,
-  user: process.env.DB_USER,
-  password: process.env.DB_ACCESS,
+  //host
+  host: process.env.NODE_ENV==="test"?process.env.DB_ADDRESS_DEV:process.env.DB_ADDRESS,
+  user: process.env.NODE_ENV==="test"?process.env.DB_USER_DEV:process.env.DB_USER,
+  password: process.env.NODE_ENV==="test"?process.env.DB_ACCESS_DEV:process.env.DB_ACCESS,
+  port:3306,
   database: "nodejs_api",
 });
 
@@ -23,7 +25,7 @@ query = (sql, values) => {
         if (result) {
           resolve(result);
         } else {
-          resolve("");
+          resolve("connection failed by manual");
         }
       });
     });

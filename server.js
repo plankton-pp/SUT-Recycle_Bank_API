@@ -88,7 +88,7 @@ app.use("/api/v1/report4-2", report42);
 app.use("/api/v1/report5-3", report53);
 app.use("/api/v1/report5-4", report54);
 
-if (process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV !== '') {
     //listen port
     app.listen(process.env.PORT, () => {
         console.log('API Server');
